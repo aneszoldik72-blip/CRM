@@ -1,8 +1,11 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import type { User } from "@supabase/supabase-js";
 import type { Database } from "@/types/database";
 
-export async function updateSession(request: NextRequest) {
+export async function updateSession(
+  request: NextRequest,
+): Promise<{ supabaseResponse: NextResponse; user: User | null }> {
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient<Database>(
@@ -29,7 +32,9 @@ export async function updateSession(request: NextRequest) {
   // IMPORTANT: do not place any logic between createServerClient and
   // supabase.auth.getUser(). A subtle change here can cause users to be
   // randomly logged out.
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  return supabaseResponse;
+  return { supabaseResponse, user };
 }
