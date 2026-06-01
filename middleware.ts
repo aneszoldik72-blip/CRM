@@ -12,7 +12,13 @@ const AUTH_PATHS = new Set([
 
 // Paths inside the (app) route group. Route groups don't appear in URLs, so
 // these are bare paths (e.g. /dashboard, not /app/dashboard).
-const PROTECTED_PATHS = ["/dashboard"];
+const PROTECTED_PATHS = [
+  "/dashboard",
+  "/products",
+  "/agents",
+  "/stock",
+  "/settings",
+];
 
 export async function middleware(request: NextRequest) {
   const { supabaseResponse, user } = await updateSession(request);

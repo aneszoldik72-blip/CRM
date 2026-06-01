@@ -33,8 +33,40 @@
   --radius-2xl: calc(var(--radius) * 1.8);
 }
 
-/* Single dark-only theme. No light variant for now. */
+/* Light (default). */
 :root {
+  --background: #fbfbfa;
+  --foreground: #0b0b0e;
+
+  --card: #ffffff;
+  --card-foreground: #0b0b0e;
+
+  --popover: #ffffff;
+  --popover-foreground: #0b0b0e;
+
+  --primary: #6d4dff;
+  --primary-foreground: #ffffff;
+
+  --secondary: rgba(0, 0, 0, 0.04);
+  --secondary-foreground: #0b0b0e;
+
+  --muted: rgba(0, 0, 0, 0.04);
+  --muted-foreground: #6b6862;
+
+  --accent: rgba(109, 77, 255, 0.10);
+  --accent-foreground: #0b0b0e;
+
+  --destructive: #d83a3a;
+
+  --border: rgba(0, 0, 0, 0.08);
+  --input: rgba(0, 0, 0, 0.025);
+  --ring: #6d4dff;
+
+  --radius: 0.625rem;
+}
+
+/* Dark (activated by next-themes via class="dark" on <html>). */
+.dark {
   --background: #0b0b0e;
   --foreground: #edeae3;
 
@@ -61,8 +93,6 @@
   --border: rgba(255, 255, 255, 0.08);
   --input: rgba(255, 255, 255, 0.025);
   --ring: #8b6bff;
-
-  --radius: 0.625rem;
 }
 
 @layer base {
@@ -71,6 +101,9 @@
   }
   html {
     @apply font-sans;
+    color-scheme: light;
+  }
+  html.dark {
     color-scheme: dark;
   }
   body {
