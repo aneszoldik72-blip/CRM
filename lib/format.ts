@@ -66,3 +66,33 @@ export function formatDays(
     maximumFractionDigits: 0,
   }).format(n)} j`;
 }
+
+// Compact currency for cramped axis labels. 12 345 67 cents → "1,2 M MAD",
+// 123 450 cents → "1,2 K MAD", 4 500 cents → "45 MAD".
+export function formatCurrencyShort(
+  cents: number,
+  currency: string,
+  locale: string = DEFAULT_LOCALE,
+): string {
+  const value = cents / 100;
+  const abs = Math.abs(value);
+  const sign = value < 0 ? "−" : "";
+  let body: string;
+  if (abs >= 1_000_000) {
+    body = `${numberFmt(locale, {
+      minimumFractionDigits: abs >= 10_000_000 ? 0 : 1,
+      maximumFractionDigits: 1,
+    }).format(abs / 1_000_000)} M`;
+  } else if (abs >= 1_000) {
+    body = `${numberFmt(locale, {
+      minimumFractionDigits: abs >= 10_000 ? 0 : 1,
+      maximumFractionDigits: 1,
+    }).format(abs / 1_000)} K`;
+  } else {
+    body = numberFmt(locale, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(abs);
+  }
+  return `${sign}${body} ${currency}`;
+}

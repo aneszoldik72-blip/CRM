@@ -55,6 +55,31 @@ const NULL = (kind: MetricKind, tone: MetricTone = "neutral"): MetricValue => ({
   tone,
 });
 
+// Net profit in cents = revenue − sum of all cost cents. Same formula used by
+// computeMetrics and by the trend chart's server-side aggregation.
+export function computeNetProfitCents(
+  e: Pick<
+    MetricsInput,
+    | "revenue_cents"
+    | "ads_spend_cents"
+    | "test_spend_cents"
+    | "ad_account_cents"
+    | "product_cost_cents"
+    | "service_cost_cents"
+    | "bonus_cents"
+  >,
+): number {
+  return (
+    e.revenue_cents -
+    (e.ads_spend_cents +
+      e.test_spend_cents +
+      e.ad_account_cents +
+      e.product_cost_cents +
+      e.service_cost_cents +
+      e.bonus_cents)
+  );
+}
+
 function toneFromBands(
   value: number,
   bands: { good?: number; bad?: number; critical?: number },

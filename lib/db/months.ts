@@ -11,8 +11,13 @@ import type { CreateMonthInput } from "@/lib/validators/month";
 import type { Database } from "@/types/database";
 
 export type MonthRow = Database["public"]["Tables"]["months"]["Row"];
-type EntriesRow = Database["public"]["Tables"]["entries"]["Row"];
+export type EntryRow = Database["public"]["Tables"]["entries"]["Row"];
+type EntriesRow = EntryRow;
 type EntriesInsert = Database["public"]["Tables"]["entries"]["Insert"];
+
+export type MonthWithEntry = MonthRow & {
+  entries: EntryRow | null;
+};
 
 export async function listMonths(productId: string): Promise<MonthRow[]> {
   const supabase = await createClient();
@@ -117,4 +122,28 @@ export async function getOrCreateCurrentMonth(
 
 export function getMonthYyyymm(row: MonthRow): string {
   return yyyymmFromDate(row.start_date);
+}
+
+// Returns all months for a product with their joined entries row (or null).
+// Sorted oldest → newest so charts can render time-series in natural order.
+export async function getMonthsWithEntries(
+  productId: string,
+): Promise<MonthWithEntry[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("months")
+    .select("*, entries(*)")
+    .eq("product_id", productId)
+    .order("start_date", { ascending: true });
+  if (error) throw error;
+
+  return (data ?? []).map((row) => {
+    const { entries, ...month } = row as MonthRow & {
+      entries: EntryRow[] | null;
+    };
+    return {
+      ...month,
+      entries: Array.isArray(entries) ? (entries[0] ?? null) : (entries ?? null),
+    };
+  });
 }

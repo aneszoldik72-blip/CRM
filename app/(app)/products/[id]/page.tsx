@@ -5,13 +5,16 @@ import { ArrowLeft } from "lucide-react";
 import { getCountry } from "@/lib/data/countries";
 import { getEntry } from "@/lib/db/entries";
 import {
+  getMonthsWithEntries,
   getOrCreateCurrentMonth,
   listMonths,
   type MonthRow,
 } from "@/lib/db/months";
 import { getProduct } from "@/lib/db/products";
+import { computeNetProfitCents } from "@/lib/metrics";
 import { Badge } from "@/components/ui/badge";
 import { EntryForm } from "@/components/entries/entry-form";
+import type { TrendPoint } from "@/components/charts/profit-trend-chart";
 import { MonthSwitcher } from "@/components/months/month-switcher";
 
 export default async function ProductDetailPage({
@@ -95,9 +98,30 @@ export default async function ProductDetailPage({
         month={selected}
         product={product}
         daysElapsed={daysElapsedFor(selected, new Date())}
+        trendData={await buildTrendData(product.id)}
       />
     </div>
   );
+}
+
+async function buildTrendData(productId: string): Promise<TrendPoint[]> {
+  const rows = await getMonthsWithEntries(productId);
+  return rows.map((row) => ({
+    id: row.id,
+    label: row.label,
+    startDate: row.start_date,
+    profitCents: row.entries
+      ? computeNetProfitCents({
+          revenue_cents: row.entries.revenue_cents,
+          ads_spend_cents: row.entries.ads_spend_cents,
+          test_spend_cents: row.entries.test_spend_cents,
+          ad_account_cents: row.entries.ad_account_cents,
+          product_cost_cents: row.entries.product_cost_cents,
+          service_cost_cents: row.entries.service_cost_cents,
+          bonus_cents: row.entries.bonus_cents,
+        })
+      : 0,
+  }));
 }
 
 // Days from a month's start through `today` (or the full month duration for

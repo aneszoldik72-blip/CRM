@@ -15,6 +15,8 @@ import {
   type EntryValues,
 } from "@/lib/validators/entry";
 import { Form } from "@/components/ui/form";
+import { ChartsTabs } from "@/components/charts/charts-tabs";
+import type { TrendPoint } from "@/components/charts/profit-trend-chart";
 import { CostsSection } from "@/components/entries/costs-section";
 import {
   SaveIndicator,
@@ -64,11 +66,13 @@ export function EntryForm({
   month,
   product,
   daysElapsed,
+  trendData,
 }: {
   entry: EntryRow | null;
   month: MonthRow;
   product: ProductRow;
   daysElapsed: number | null;
+  trendData: TrendPoint[];
 }) {
   const initial = toFormValues(entry);
 
@@ -223,6 +227,13 @@ export function EntryForm({
           control={form.control}
           currency={product.currency}
           daysElapsed={daysElapsed}
+        />
+
+        <ChartsTabs
+          control={form.control}
+          currency={product.currency}
+          serverTrend={trendData}
+          currentMonthId={month.id}
         />
 
         <div className="flex flex-col gap-8">
