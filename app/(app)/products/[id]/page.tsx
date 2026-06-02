@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 import { getCountry } from "@/lib/data/countries";
+import { getEntry } from "@/lib/db/entries";
 import {
   getOrCreateCurrentMonth,
   listMonths,
@@ -10,6 +11,7 @@ import {
 } from "@/lib/db/months";
 import { getProduct } from "@/lib/db/products";
 import { Badge } from "@/components/ui/badge";
+import { EntryForm } from "@/components/entries/entry-form";
 import { MonthSwitcher } from "@/components/months/month-switcher";
 
 export default async function ProductDetailPage({
@@ -87,11 +89,12 @@ export default async function ProductDetailPage({
         selectedMonthId={selected.id}
       />
 
-      <section className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
-        Modification de{" "}
-        <span className="font-medium text-foreground">{selected.label}</span>{" "}
-        — <span className="font-medium text-foreground">{product.name}</span>
-      </section>
+      <EntryForm
+        key={selected.id}
+        entry={await getEntry(selected.id)}
+        month={selected}
+        product={product}
+      />
     </div>
   );
 }
