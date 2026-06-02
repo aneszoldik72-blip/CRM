@@ -94,7 +94,24 @@ export default async function ProductDetailPage({
         entry={await getEntry(selected.id)}
         month={selected}
         product={product}
+        daysElapsed={daysElapsedFor(selected, new Date())}
       />
     </div>
   );
+}
+
+// Days from a month's start through `today` (or the full month duration for
+// past months). Returns null for future months. UTC-anchored to match the way
+// month bounds are stored.
+function daysElapsedFor(month: MonthRow, today: Date): number | null {
+  const start = new Date(`${month.start_date}T00:00:00Z`);
+  const end = new Date(`${month.end_date}T00:00:00Z`);
+  const todayUtc = new Date(
+    Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()),
+  );
+  if (todayUtc < start) return null;
+  const dayMs = 1000 * 60 * 60 * 24;
+  if (todayUtc > end)
+    return Math.round((end.getTime() - start.getTime()) / dayMs) + 1;
+  return Math.round((todayUtc.getTime() - start.getTime()) / dayMs) + 1;
 }

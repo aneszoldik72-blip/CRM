@@ -16,13 +16,13 @@ import {
 } from "@/lib/validators/entry";
 import { Form } from "@/components/ui/form";
 import { CostsSection } from "@/components/entries/costs-section";
-import { LiveKpis } from "@/components/entries/live-kpis";
 import {
   SaveIndicator,
   type SaveState,
 } from "@/components/entries/save-indicator";
 import { SalesSection } from "@/components/entries/sales-section";
 import { StockSection } from "@/components/entries/stock-section";
+import { KpiGrid } from "@/components/kpi/kpi-grid";
 
 const DEBOUNCE_MS = 800;
 
@@ -63,10 +63,12 @@ export function EntryForm({
   entry,
   month,
   product,
+  daysElapsed,
 }: {
   entry: EntryRow | null;
   month: MonthRow;
   product: ProductRow;
+  daysElapsed: number | null;
 }) {
   const initial = toFormValues(entry);
 
@@ -217,7 +219,11 @@ export function EntryForm({
           <SaveIndicator state={saveState} />
         </div>
 
-        <LiveKpis control={form.control} currency={product.currency} />
+        <KpiGrid
+          control={form.control}
+          currency={product.currency}
+          daysElapsed={daysElapsed}
+        />
 
         <div className="flex flex-col gap-8">
           <SalesSection
