@@ -20,6 +20,7 @@ export type Database = {
           full_name: string | null;
           locale: string;
           country: string | null;
+          default_currency: string;
           onboarding_complete: boolean;
           created_at: string;
         };
@@ -29,6 +30,7 @@ export type Database = {
           full_name?: string | null;
           locale?: string;
           country?: string | null;
+          default_currency?: string;
           onboarding_complete?: boolean;
           created_at?: string;
         };
@@ -38,6 +40,7 @@ export type Database = {
           full_name?: string | null;
           locale?: string;
           country?: string | null;
+          default_currency?: string;
           onboarding_complete?: boolean;
           created_at?: string;
         };

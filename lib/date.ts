@@ -62,3 +62,11 @@ export function nextYyyymm(yyyymm: string): string {
   const date = new Date(Date.UTC(y, m, 1)); // m is 0-indexed elsewhere, so m+1 here = next month's index
   return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
 }
+
+// Returns the YYYY-MM that precedes the given one (e.g. "2026-01" → "2025-12").
+export function prevYyyymm(yyyymm: string): string {
+  const [y, m] = yyyymm.split("-").map(Number);
+  if (!y || !m) return yyyymm;
+  const date = new Date(Date.UTC(y, m - 2, 1));
+  return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
+}

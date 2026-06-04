@@ -80,6 +80,45 @@ export function computeNetProfitCents(
   );
 }
 
+type AggregatableEntry = Omit<MetricsInput, "daysElapsed">;
+
+// Sums per-field across many entries. Stock fields collapse to null because
+// summing "initial_stock" across products has no meaningful interpretation.
+export function aggregateEntries(
+  entries: AggregatableEntry[],
+): AggregatableEntry {
+  return entries.reduce<AggregatableEntry>(
+    (acc, e) => ({
+      leads: acc.leads + e.leads,
+      orders: acc.orders + e.orders,
+      delivered: acc.delivered + e.delivered,
+      revenue_cents: acc.revenue_cents + e.revenue_cents,
+      ads_spend_cents: acc.ads_spend_cents + e.ads_spend_cents,
+      test_spend_cents: acc.test_spend_cents + e.test_spend_cents,
+      ad_account_cents: acc.ad_account_cents + e.ad_account_cents,
+      product_cost_cents: acc.product_cost_cents + e.product_cost_cents,
+      service_cost_cents: acc.service_cost_cents + e.service_cost_cents,
+      bonus_cents: acc.bonus_cents + e.bonus_cents,
+      initial_stock: null,
+      current_stock: null,
+    }),
+    {
+      leads: 0,
+      orders: 0,
+      delivered: 0,
+      revenue_cents: 0,
+      ads_spend_cents: 0,
+      test_spend_cents: 0,
+      ad_account_cents: 0,
+      product_cost_cents: 0,
+      service_cost_cents: 0,
+      bonus_cents: 0,
+      initial_stock: null,
+      current_stock: null,
+    },
+  );
+}
+
 function toneFromBands(
   value: number,
   bands: { good?: number; bad?: number; critical?: number },
