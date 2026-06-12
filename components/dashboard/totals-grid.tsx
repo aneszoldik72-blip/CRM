@@ -1,6 +1,9 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
+
 import { cn } from "@/lib/utils";
+import { bcp47, type AppLocale } from "@/i18n/routing";
 import { formatCurrency, formatNumber } from "@/lib/format";
 import type { Metrics, MetricValue } from "@/lib/metrics";
 import { KpiCard } from "@/components/kpi/kpi-card";
@@ -17,14 +20,15 @@ export type TotalsGridProps = {
   ratesFetchedAt?: string;
 };
 
-function formatRatesDate(iso: string | undefined): string {
+function formatRatesDate(iso: string | undefined, locale: string): string {
   if (!iso) return "";
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "";
-  return new Intl.DateTimeFormat("fr-FR", {
+  return new Intl.DateTimeFormat(locale, {
     day: "numeric",
     month: "long",
     year: "numeric",
+    numberingSystem: "latn",
   }).format(d);
 }
 
@@ -39,13 +43,17 @@ export function TotalsGrid({
   ratesStale,
   ratesFetchedAt,
 }: TotalsGridProps) {
+  const t = useTranslations("dashboard");
+  const tMetrics = useTranslations("metrics");
+  const locale = useLocale() as AppLocale;
+  const bcp = bcp47(locale);
   const profit = metrics.netProfit;
 
   const heroValue = !hasData
     ? "—"
     : profit.value === null
       ? `— ${currency}`
-      : formatCurrency(profit.value, currency);
+      : formatCurrency(profit.value, currency, bcp);
 
   const heroPrefix =
     hasData && profit.value !== null && profit.value > 0
@@ -61,12 +69,10 @@ export function TotalsGrid({
   };
 
   return (
-    <section aria-label="Totaux du mois" className="flex flex-col gap-8">
+    <section aria-label={t("totalsOfMonth")} className="flex flex-col gap-8">
       <div className="flex flex-col items-center gap-3 py-4 text-center">
         <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
-          {hasData
-            ? "Bénéfice net ce mois"
-            : "Pas encore de données pour ce mois"}
+          {hasData ? t("netProfitThisMonth") : t("noDataForMonth")}
         </p>
         <p
           className={cn(
@@ -86,50 +92,51 @@ export function TotalsGrid({
         </p>
         {hasData && (
           <p className="text-sm text-muted-foreground">
-            {formatNumber(productCount)}{" "}
-            {productCount > 1 ? "produits actifs" : "produit actif"} ·{" "}
-            {formatNumber(orderCount)} commandes ·{" "}
-            {formatNumber(deliveredCount)} livrées
+            {t("productsActive", { count: productCount })} ·{" "}
+            {t("orders", { count: formatNumber(orderCount, bcp) })} ·{" "}
+            {t("delivered", { count: formatNumber(deliveredCount, bcp) })}
           </p>
         )}
         <p className="text-xs text-muted-foreground">
-          Totaux convertis en{" "}
+          {t("convertedTo")}{" "}
           <span className="font-medium text-foreground">{currency}</span>
           {" · "}
           {ratesStale
-            ? "taux indisponibles — totaux indicatifs"
+            ? t("ratesStale")
             : ratesFetchedAt
-              ? `taux mis à jour le ${formatRatesDate(ratesFetchedAt)}`
-              : "taux mis à jour quotidiennement"}
+              ? t("ratesUpdatedOn", {
+                  date: formatRatesDate(ratesFetchedAt, bcp),
+                })
+              : t("ratesUpdatedDaily")}
         </p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <KpiCard
           variant="secondary"
-          label="Chiffre d'affaires"
-          formula="Somme du CA des produits"
+          label={tMetrics("revenue")}
+          formula={tMetrics("revenueFormula")}
           value={revenueMetric}
           currency={currency}
         />
         <KpiCard
           variant="secondary"
-          label="Dépenses totales"
-          formula="Somme des coûts des produits"
+          label={tMetrics("totalSpend")}
+          formula={tMetrics("totalSpendDashboardFormula")}
           value={metrics.totalSpend}
           currency={currency}
         />
         <KpiCard
           variant="secondary"
-          label="Marge"
-          formula="Bénéfice / CA"
+          label={tMetrics("margin")}
+          formula={tMetrics("marginHint")}
           value={metrics.margin}
           currency={currency}
         />
         <KpiCard
           variant="secondary"
-          label="ROAS"
-          formula="CA / Pub"
+          label={tMetrics("roas")}
+          formula={tMetrics("roasHint")}
           value={metrics.roas}
           currency={currency}
         />

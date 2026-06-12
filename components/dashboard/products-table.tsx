@@ -1,10 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import { ArrowUpDown, ChevronRight, Search } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
+import { bcp47, type AppLocale } from "@/i18n/routing";
 import { getCountry } from "@/lib/data/countries";
 import {
   formatCurrency,
@@ -52,23 +54,12 @@ type SortDir = "asc" | "desc";
 
 type FilterMode = "all" | "with-data";
 
-const COLUMNS: { key: SortKey; label: string; align?: "end" }[] = [
-  { key: "name", label: "Produit" },
-  { key: "currency", label: "Devise" },
-  { key: "revenueCents", label: "CA", align: "end" },
-  { key: "spendCents", label: "Dépenses", align: "end" },
-  { key: "profitCents", label: "Bénéfice", align: "end" },
-  { key: "margin", label: "Marge", align: "end" },
-  { key: "roas", label: "ROAS", align: "end" },
-  { key: "deliveryRate", label: "Livraison", align: "end" },
-];
-
-function compareValues(a: unknown, b: unknown): number {
+function compareValues(a: unknown, b: unknown, locale: string): number {
   if (a === null && b === null) return 0;
-  if (a === null) return 1; // nulls always last
+  if (a === null) return 1;
   if (b === null) return -1;
   if (typeof a === "string" && typeof b === "string")
-    return a.localeCompare(b, "fr");
+    return a.localeCompare(b, locale);
   if (typeof a === "number" && typeof b === "number") return a - b;
   return 0;
 }
@@ -80,6 +71,11 @@ export function ProductsTable({
   rows: TableRow[];
   totals?: TotalsRow;
 }) {
+  const t = useTranslations("dashboard.table");
+  const tSection = useTranslations("dashboard");
+  const tCommon = useTranslations("common");
+  const locale = useLocale() as AppLocale;
+  const bcp = bcp47(locale);
   const [sort, setSort] = useState<{ key: SortKey; dir: SortDir }>({
     key: "profitCents",
     dir: "desc",
@@ -87,17 +83,28 @@ export function ProductsTable({
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<FilterMode>("all");
 
+  const COLUMNS: { key: SortKey; label: string; align?: "end" }[] = [
+    { key: "name", label: t("product") },
+    { key: "currency", label: t("currency") },
+    { key: "revenueCents", label: t("revenue"), align: "end" },
+    { key: "spendCents", label: t("spend"), align: "end" },
+    { key: "profitCents", label: t("profit"), align: "end" },
+    { key: "margin", label: t("margin"), align: "end" },
+    { key: "roas", label: t("roas"), align: "end" },
+    { key: "deliveryRate", label: t("delivery"), align: "end" },
+  ];
+
   const view = useMemo(() => {
     const q = query.trim().toLowerCase();
     let list = rows;
     if (filter === "with-data") list = list.filter((r) => r.hasEntry);
     if (q) list = list.filter((r) => r.name.toLowerCase().includes(q));
     list = [...list].sort((a, b) => {
-      const cmp = compareValues(a[sort.key], b[sort.key]);
+      const cmp = compareValues(a[sort.key], b[sort.key], bcp);
       return sort.dir === "asc" ? cmp : -cmp;
     });
     return list;
-  }, [rows, query, sort, filter]);
+  }, [rows, query, sort, filter, bcp]);
 
   function onSort(key: SortKey) {
     setSort((cur) =>
@@ -108,13 +115,10 @@ export function ProductsTable({
   }
 
   return (
-    <section
-      aria-label="Détail par produit"
-      className="flex flex-col gap-3"
-    >
+    <section aria-label={tSection("tableSection")} className="flex flex-col gap-3">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-base font-semibold tracking-tight">
-          Détail par produit
+          {tSection("tableSection")}
         </h2>
         <div className="flex items-center gap-2">
           <div
@@ -133,7 +137,7 @@ export function ProductsTable({
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              Tous
+              {t("all")}
             </button>
             <button
               type="button"
@@ -147,7 +151,7 @@ export function ProductsTable({
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              Avec données
+              {t("withData")}
             </button>
           </div>
           <div className="relative w-full sm:w-56">
@@ -157,11 +161,11 @@ export function ProductsTable({
             />
             <Input
               type="text"
-              placeholder="Chercher un produit…"
+              placeholder={t("searchPlaceholder")}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="h-9 ps-8"
-              aria-label="Chercher un produit"
+              aria-label={t("searchAria")}
             />
           </div>
         </div>
@@ -207,25 +211,27 @@ export function ProductsTable({
                   colSpan={COLUMNS.length + 1}
                   className="px-3 py-6 text-center text-xs text-muted-foreground"
                 >
-                  Aucun produit ne correspond.
+                  {t("noMatch")}
                 </td>
               </tr>
             ) : (
-              view.map((r) => <TableRowItem key={r.id} row={r} />)
+              view.map((r) => (
+                <TableRowItem key={r.id} row={r} locale={bcp} />
+              ))
             )}
           </tbody>
           {totals && view.length > 0 && (
             <tfoot className="border-t border-border bg-muted/40 text-sm font-medium">
               <tr>
-                <td className="px-3 py-2">Total</td>
+                <td className="px-3 py-2">{tCommon("total")}</td>
                 <td className="px-3 py-2 text-xs text-muted-foreground">
                   {totals.currency}
                 </td>
                 <td className="px-3 py-2 text-end tabular-nums">
-                  {formatCurrency(totals.revenueCents, totals.currency)}
+                  {formatCurrency(totals.revenueCents, totals.currency, bcp)}
                 </td>
                 <td className="px-3 py-2 text-end tabular-nums">
-                  {formatCurrency(totals.spendCents, totals.currency)}
+                  {formatCurrency(totals.spendCents, totals.currency, bcp)}
                 </td>
                 <td
                   className={cn(
@@ -242,20 +248,23 @@ export function ProductsTable({
                   {formatCurrency(
                     Math.abs(totals.profitCents),
                     totals.currency,
+                    bcp,
                   )}
                 </td>
                 <td className="px-3 py-2 text-end tabular-nums">
-                  {totals.margin === null ? "—" : formatPercent(totals.margin)}
+                  {totals.margin === null
+                    ? "—"
+                    : formatPercent(totals.margin, bcp)}
                 </td>
                 <td className="px-3 py-2 text-end tabular-nums">
                   {totals.roas === null
                     ? "—"
-                    : formatMultiplier(totals.roas)}
+                    : formatMultiplier(totals.roas, bcp)}
                 </td>
                 <td className="px-3 py-2 text-end tabular-nums">
                   {totals.deliveryRate === null
                     ? "—"
-                    : formatPercent(totals.deliveryRate)}
+                    : formatPercent(totals.deliveryRate, bcp)}
                 </td>
                 <td className="px-3 py-2" />
               </tr>
@@ -268,14 +277,14 @@ export function ProductsTable({
       <ul className="flex flex-col gap-2 md:hidden">
         {view.length === 0 ? (
           <li className="rounded-xl border border-border bg-card p-4 text-center text-xs text-muted-foreground">
-            Aucun produit ne correspond.
+            {t("noMatch")}
           </li>
         ) : (
           <>
             {view.map((r) => (
-              <MobileCard key={r.id} row={r} />
+              <MobileCard key={r.id} row={r} locale={bcp} />
             ))}
-            {totals && <MobileTotalsCard totals={totals} />}
+            {totals && <MobileTotalsCard totals={totals} locale={bcp} />}
           </>
         )}
       </ul>
@@ -283,12 +292,20 @@ export function ProductsTable({
   );
 }
 
-function MobileTotalsCard({ totals }: { totals: TotalsRow }) {
+function MobileTotalsCard({
+  totals,
+  locale,
+}: {
+  totals: TotalsRow;
+  locale: string;
+}) {
+  const tCommon = useTranslations("common");
+  const t = useTranslations("dashboard.table");
   const positive = totals.profitCents >= 0;
   return (
     <li className="flex flex-col gap-2 rounded-xl border border-primary/30 bg-card p-4">
       <div className="flex items-center justify-between gap-3">
-        <p className="font-medium">Total</p>
+        <p className="font-medium">{tCommon("total")}</p>
         <span className="text-xs text-muted-foreground">{totals.currency}</span>
       </div>
       <p
@@ -298,27 +315,29 @@ function MobileTotalsCard({ totals }: { totals: TotalsRow }) {
         )}
       >
         {positive ? "▲ " : "▼ "}
-        {formatCurrency(Math.abs(totals.profitCents), totals.currency)}
+        {formatCurrency(Math.abs(totals.profitCents), totals.currency, locale)}
       </p>
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
         <span>
-          Marge{" "}
+          {t("margin")}{" "}
           <span className="text-foreground tabular-nums">
-            {totals.margin === null ? "—" : formatPercent(totals.margin)}
+            {totals.margin === null ? "—" : formatPercent(totals.margin, locale)}
           </span>
         </span>
         <span>
-          ROAS{" "}
+          {t("roas")}{" "}
           <span className="text-foreground tabular-nums">
-            {totals.roas === null ? "—" : formatMultiplier(totals.roas)}
+            {totals.roas === null
+              ? "—"
+              : formatMultiplier(totals.roas, locale)}
           </span>
         </span>
         <span>
-          Livraison{" "}
+          {t("delivery")}{" "}
           <span className="text-foreground tabular-nums">
             {totals.deliveryRate === null
               ? "—"
-              : formatPercent(totals.deliveryRate)}
+              : formatPercent(totals.deliveryRate, locale)}
           </span>
         </span>
       </div>
@@ -326,7 +345,8 @@ function MobileTotalsCard({ totals }: { totals: TotalsRow }) {
   );
 }
 
-function TableRowItem({ row }: { row: TableRow }) {
+function TableRowItem({ row, locale }: { row: TableRow; locale: string }) {
+  const t = useTranslations("dashboard.table");
   const country = getCountry(row.country);
   const profitPositive = row.profitCents >= 0;
   return (
@@ -353,10 +373,14 @@ function TableRowItem({ row }: { row: TableRow }) {
         {row.currency}
       </td>
       <td className="px-3 py-2 text-end tabular-nums">
-        {row.hasEntry ? formatCurrency(row.revenueCents, row.currency) : "—"}
+        {row.hasEntry
+          ? formatCurrency(row.revenueCents, row.currency, locale)
+          : "—"}
       </td>
       <td className="px-3 py-2 text-end tabular-nums">
-        {row.hasEntry ? formatCurrency(row.spendCents, row.currency) : "—"}
+        {row.hasEntry
+          ? formatCurrency(row.spendCents, row.currency, locale)
+          : "—"}
       </td>
       <td
         className={cn(
@@ -368,25 +392,27 @@ function TableRowItem({ row }: { row: TableRow }) {
         {row.hasEntry ? (
           <>
             {profitPositive ? "▲ " : "▼ "}
-            {formatCurrency(Math.abs(row.profitCents), row.currency)}
+            {formatCurrency(Math.abs(row.profitCents), row.currency, locale)}
           </>
         ) : (
           "—"
         )}
       </td>
       <td className="px-3 py-2 text-end tabular-nums">
-        {row.margin === null ? "—" : formatPercent(row.margin)}
+        {row.margin === null ? "—" : formatPercent(row.margin, locale)}
       </td>
       <td className="px-3 py-2 text-end tabular-nums">
-        {row.roas === null ? "—" : formatMultiplier(row.roas)}
+        {row.roas === null ? "—" : formatMultiplier(row.roas, locale)}
       </td>
       <td className="px-3 py-2 text-end tabular-nums">
-        {row.deliveryRate === null ? "—" : formatPercent(row.deliveryRate)}
+        {row.deliveryRate === null
+          ? "—"
+          : formatPercent(row.deliveryRate, locale)}
       </td>
       <td className="px-3 py-2 text-end">
         <Link
           href={`/products/${row.id}`}
-          aria-label={`Ouvrir ${row.name}`}
+          aria-label={t("openProduct", { name: row.name })}
           className="inline-flex text-muted-foreground hover:text-foreground"
         >
           <ChevronRight className="size-4" />
@@ -396,7 +422,8 @@ function TableRowItem({ row }: { row: TableRow }) {
   );
 }
 
-function MobileCard({ row }: { row: TableRow }) {
+function MobileCard({ row, locale }: { row: TableRow; locale: string }) {
+  const t = useTranslations("dashboard.table");
   const country = getCountry(row.country);
   const profitPositive = row.profitCents >= 0;
   return (
@@ -409,7 +436,7 @@ function MobileCard({ row }: { row: TableRow }) {
       <Link
         href={`/products/${row.id}`}
         className="absolute inset-0 z-10 rounded-xl"
-        aria-label={`Ouvrir ${row.name}`}
+        aria-label={t("openProduct", { name: row.name })}
       />
       <div className="relative z-0 flex items-center justify-between gap-3">
         <p className="flex items-center gap-2 truncate">
@@ -431,35 +458,37 @@ function MobileCard({ row }: { row: TableRow }) {
             )}
           >
             {profitPositive ? "▲ " : "▼ "}
-            {formatCurrency(Math.abs(row.profitCents), row.currency)}
+            {formatCurrency(Math.abs(row.profitCents), row.currency, locale)}
           </p>
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
             <span>
-              Marge{" "}
+              {t("margin")}{" "}
               <span className="text-foreground tabular-nums">
-                {row.margin === null ? "—" : formatPercent(row.margin)}
+                {row.margin === null
+                  ? "—"
+                  : formatPercent(row.margin, locale)}
               </span>
             </span>
             <span>
-              ROAS{" "}
+              {t("roas")}{" "}
               <span className="text-foreground tabular-nums">
-                {row.roas === null ? "—" : formatMultiplier(row.roas)}
+                {row.roas === null
+                  ? "—"
+                  : formatMultiplier(row.roas, locale)}
               </span>
             </span>
             <span>
-              Livraison{" "}
+              {t("delivery")}{" "}
               <span className="text-foreground tabular-nums">
                 {row.deliveryRate === null
                   ? "—"
-                  : formatPercent(row.deliveryRate)}
+                  : formatPercent(row.deliveryRate, locale)}
               </span>
             </span>
           </div>
         </>
       ) : (
-        <p className="text-xs text-muted-foreground">
-          Pas de données pour ce mois
-        </p>
+        <p className="text-xs text-muted-foreground">{t("noEntryThisMonth")}</p>
       )}
     </li>
   );

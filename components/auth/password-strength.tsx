@@ -1,15 +1,22 @@
 "use client";
 
-export type Criterion = { key: string; label: string; test: (v: string) => boolean };
+import { useTranslations } from "next-intl";
+
+export type Criterion = {
+  key: string;
+  labelKey: string;
+  test: (v: string) => boolean;
+};
 
 export const passwordCriteria: Criterion[] = [
-  { key: "len", label: "Au moins 8 caractères", test: (v) => v.length >= 8 },
-  { key: "up", label: "Une majuscule", test: (v) => /[A-Z]/.test(v) },
-  { key: "num", label: "Un chiffre", test: (v) => /\d/.test(v) },
-  { key: "sym", label: "Un symbole", test: (v) => /[^A-Za-z0-9]/.test(v) },
+  { key: "len", labelKey: "lenLabel", test: (v) => v.length >= 8 },
+  { key: "up", labelKey: "upperLabel", test: (v) => /[A-Z]/.test(v) },
+  { key: "num", labelKey: "numberLabel", test: (v) => /\d/.test(v) },
+  { key: "sym", labelKey: "symbolLabel", test: (v) => /[^A-Za-z0-9]/.test(v) },
 ];
 
 export function PasswordStrength({ value }: { value: string }) {
+  const t = useTranslations("auth.password");
   const passed = passwordCriteria.filter((c) => c.test(value)).length;
 
   return (
@@ -59,7 +66,7 @@ export function PasswordStrength({ value }: { value: string }) {
                   </svg>
                 )}
               </span>
-              {c.label}
+              {t(c.labelKey)}
             </li>
           );
         })}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import {
@@ -19,18 +20,19 @@ export type SectionProps = {
 };
 
 export function SalesSection({ currency, onFieldChange }: SectionProps) {
+  const t = useTranslations("entries.sales");
   const form = useFormContext<EntryValues>();
 
   return (
     <section className="grid gap-4">
-      <h2 className="text-base font-semibold tracking-tight">Ventes</h2>
+      <h2 className="text-base font-semibold tracking-tight">{t("title")}</h2>
 
       <FormField
         control={form.control}
         name="leads"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Leads</FormLabel>
+            <FormLabel>{t("leads")}</FormLabel>
             <FormControl>
               <IntegerInput
                 value={field.value as number}
@@ -51,7 +53,7 @@ export function SalesSection({ currency, onFieldChange }: SectionProps) {
         name="orders"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Commandes</FormLabel>
+            <FormLabel>{t("orders")}</FormLabel>
             <FormControl>
               <IntegerInput
                 value={field.value as number}
@@ -72,7 +74,7 @@ export function SalesSection({ currency, onFieldChange }: SectionProps) {
         name="delivered"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Livrées</FormLabel>
+            <FormLabel>{t("delivered")}</FormLabel>
             <FormControl>
               <IntegerInput
                 value={field.value as number}
@@ -93,7 +95,7 @@ export function SalesSection({ currency, onFieldChange }: SectionProps) {
         name="revenue_cents"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Chiffre d&apos;affaires ({currency})</FormLabel>
+            <FormLabel>{t("revenue", { currency })}</FormLabel>
             <FormControl>
               <CurrencyInput
                 valueCents={field.value as number}

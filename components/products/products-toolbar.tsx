@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Plus, Search, X } from "lucide-react";
 
@@ -10,11 +11,12 @@ import { Input } from "@/components/ui/input";
 
 export type ProductStatus = "active" | "archived" | "all";
 
-const TABS: { value: ProductStatus; label: string }[] = [
-  { value: "active", label: "Actifs" },
-  { value: "archived", label: "Archivés" },
-  { value: "all", label: "Tous" },
-];
+const TAB_VALUES: ProductStatus[] = ["active", "archived", "all"];
+const TAB_LABEL_KEYS: Record<ProductStatus, string> = {
+  active: "active",
+  archived: "archived",
+  all: "all",
+};
 
 export function ProductsToolbar({
   status,
@@ -27,6 +29,7 @@ export function ProductsToolbar({
   counts: Record<ProductStatus, number>;
   onAdd: () => void;
 }) {
+  const t = useTranslations("products");
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -61,18 +64,18 @@ export function ProductsToolbar({
     <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
       <div
         role="tablist"
-        aria-label="Filtrer par statut"
+        aria-label={t("filterByStatus")}
         className="inline-flex rounded-lg border border-border bg-card p-1 text-sm"
       >
-        {TABS.map((t) => {
-          const active = t.value === status;
+        {TAB_VALUES.map((value) => {
+          const active = value === status;
           return (
             <button
-              key={t.value}
+              key={value}
               type="button"
               role="tab"
               aria-selected={active}
-              onClick={() => pushParams({ status: t.value })}
+              onClick={() => pushParams({ status: value })}
               className={cn(
                 "rounded-md px-3 py-1.5 transition-colors",
                 active
@@ -80,9 +83,9 @@ export function ProductsToolbar({
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              {t.label}
+              {t(TAB_LABEL_KEYS[value])}
               <span className="ms-1.5 text-xs opacity-70">
-                ({counts[t.value]})
+                ({counts[value]})
               </span>
             </button>
           );
@@ -99,15 +102,15 @@ export function ProductsToolbar({
             type="search"
             value={localQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Chercher un produit…"
+            placeholder={t("searchPlaceholder")}
             className="h-10 ps-9 pe-9 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
-            aria-label="Rechercher un produit"
+            aria-label={t("searchAria")}
           />
           {localQuery && (
             <button
               type="button"
               onClick={() => onSearchChange("")}
-              aria-label="Effacer la recherche"
+              aria-label={t("clearSearch")}
               className="absolute end-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground"
             >
               <X className="size-3.5" />
@@ -120,7 +123,7 @@ export function ProductsToolbar({
           className="hidden h-10 gap-2 px-4 sm:inline-flex"
         >
           <Plus className="size-4" />
-          Ajouter
+          {t("addProductShort")}
         </Button>
       </div>
     </div>

@@ -1,8 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
+import { bcp47, type AppLocale } from "@/i18n/routing";
 import { getCountry } from "@/lib/data/countries";
 import { formatCurrency } from "@/lib/format";
 
@@ -22,17 +24,21 @@ export function ProfitLossChart({
   products: ProfitRow[];
   currency: string;
 }) {
+  const t = useTranslations("dashboard");
+  const locale = useLocale() as AppLocale;
+  const bcp = bcp47(locale);
+
   if (products.length === 0) {
     return (
       <section
-        aria-label="Bénéfice par produit"
+        aria-label={t("profitByProductLabel")}
         className="flex flex-col gap-4 rounded-xl border border-border bg-card p-5"
       >
         <h2 className="text-base font-semibold tracking-tight">
-          Bénéfice par produit
+          {t("profitByProduct")}
         </h2>
         <p className="text-xs text-muted-foreground">
-          Aucun produit avec des données pour ce mois.
+          {t("noProductsThisMonth")}
         </p>
       </section>
     );
@@ -47,11 +53,11 @@ export function ProfitLossChart({
 
   return (
     <section
-      aria-label="Bénéfice par produit"
+      aria-label={t("profitByProductLabel")}
       className="flex flex-col gap-4 rounded-xl border border-border bg-card p-5"
     >
       <h2 className="text-base font-semibold tracking-tight">
-        Bénéfice par produit
+        {t("profitByProduct")}
       </h2>
 
       <ul className="flex flex-col gap-3">
@@ -106,7 +112,7 @@ export function ProfitLossChart({
                 )}
               >
                 {positive ? "▲ " : "▼ "}
-                {formatCurrency(Math.abs(p.profitCents), currency)}
+                {formatCurrency(Math.abs(p.profitCents), currency, bcp)}
               </span>
             </li>
           );
@@ -115,7 +121,7 @@ export function ProfitLossChart({
 
       {hidden > 0 && (
         <p className="text-xs text-muted-foreground">
-          + {hidden} autre{hidden > 1 ? "s" : ""} — voir le tableau
+          {t("moreRows", { count: hidden })}
         </p>
       )}
     </section>

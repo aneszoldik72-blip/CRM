@@ -1,17 +1,21 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+import { bcp47, type AppLocale } from "@/i18n/routing";
 import { formatMonthLabel, nextYyyymm, prevYyyymm } from "@/lib/date";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export function GlobalMonthPicker({ selected }: { selected: string }) {
+  const t = useTranslations("dashboard");
+  const locale = useLocale() as AppLocale;
   const router = useRouter();
 
   function go(yyyymm: string) {
-    router.replace(`/dashboard?month=${yyyymm}`, { scroll: false });
+    router.replace(`?month=${yyyymm}`, { scroll: false });
   }
 
   return (
@@ -20,14 +24,14 @@ export function GlobalMonthPicker({ selected }: { selected: string }) {
         type="button"
         variant="ghost"
         size="icon-sm"
-        aria-label="Mois précédent"
+        aria-label={t("prevMonth")}
         onClick={() => go(prevYyyymm(selected))}
       >
         <ChevronLeft className="size-4" />
       </Button>
 
       <label className="flex items-center gap-2">
-        <span className="sr-only">Mois</span>
+        <span className="sr-only">{t("monthLabel")}</span>
         <Input
           type="month"
           value={selected}
@@ -40,14 +44,14 @@ export function GlobalMonthPicker({ selected }: { selected: string }) {
         />
       </label>
       <span className="ms-2 hidden text-sm text-muted-foreground sm:inline">
-        {formatMonthLabel(selected)}
+        {formatMonthLabel(selected, bcp47(locale))}
       </span>
 
       <Button
         type="button"
         variant="ghost"
         size="icon-sm"
-        aria-label="Mois suivant"
+        aria-label={t("nextMonth")}
         onClick={() => go(nextYyyymm(selected))}
       >
         <ChevronRight className="size-4" />

@@ -1,0 +1,399 @@
+{
+  "common": {
+    "appName": "VOIDCRAFT",
+    "appTagline": "نظام إدارة علاقات العملاء لتجار الدفع عند الاستلام.",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "add": "إضافة",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "loading": "جاري التحميل…",
+    "search": "بحث",
+    "showData": "عرض البيانات",
+    "more": "المزيد",
+    "total": "الإجمالي"
+  },
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "products": "المنتجات",
+    "agents": "الوكلاء",
+    "stock": "المخزون",
+    "settings": "الإعدادات",
+    "primary": "التنقل الرئيسي",
+    "appLinks": "الروابط الرئيسية للتطبيق",
+    "openMenu": "فتح القائمة",
+    "expandSidebar": "توسيع الشريط الجانبي",
+    "collapseSidebar": "طي الشريط الجانبي",
+    "collapse": "طي"
+  },
+  "user": {
+    "menu": "قائمة المستخدم",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "theme": "السمة",
+    "help": "المساعدة والدعم",
+    "signOut": "تسجيل الخروج",
+    "fallback": "المستخدم"
+  },
+  "theme": {
+    "toLight": "التبديل إلى السمة الفاتحة",
+    "toDark": "التبديل إلى السمة الداكنة"
+  },
+  "language": {
+    "label": "تغيير اللغة",
+    "fr": "Français",
+    "ar": "العربية",
+    "en": "English"
+  },
+  "auth": {
+    "login": {
+      "title": "مرحبًا بعودتك.",
+      "subtitle": "سجّل الدخول لمتابعة عملك.",
+      "emailLabel": "البريد الإلكتروني",
+      "passwordLabel": "كلمة المرور",
+      "showPassword": "إظهار كلمة المرور",
+      "hidePassword": "إخفاء كلمة المرور",
+      "rememberMe": "إبقاء الجلسة مفتوحة",
+      "forgotPassword": "هل نسيت كلمة المرور؟",
+      "submitting": "جاري تسجيل الدخول…",
+      "submit": "تسجيل الدخول",
+      "noAccount": "ليس لديك حساب بعد؟",
+      "signupCta": "إنشاء حساب"
+    },
+    "signup": {
+      "title": "أنشئ مساحة العمل الخاصة بك.",
+      "subtitle": "لن يستغرق الأمر سوى دقيقة واحدة.",
+      "emailLabel": "البريد الإلكتروني",
+      "emailPlaceholder": "you@example.com",
+      "emailHelp": "سنرسل إليك رابط تأكيد.",
+      "passwordLabel": "كلمة المرور",
+      "passwordHelp": "ما لا يقل عن 8 أحرف.",
+      "fullNameLabel": "الاسم الكامل",
+      "fullNameOptional": "(اختياري)",
+      "fullNameHelp": "كيف تودّ أن نخاطبك.",
+      "localeLabel": "اللغة",
+      "submitting": "جاري الإنشاء…",
+      "submit": "إنشاء حسابي",
+      "termsPrefix": "بمتابعتك، فإنك توافق على",
+      "terms": "الشروط",
+      "termsMiddle": "و",
+      "privacy": "سياسة الخصوصية",
+      "hasAccount": "هل لديك حساب بالفعل؟",
+      "loginCta": "تسجيل الدخول"
+    },
+    "forgot": {
+      "title": "هل نسيت كلمة المرور؟",
+      "subtitle": "لا تقلق. أدخل بريدك الإلكتروني وسنرسل إليك رابطًا.",
+      "emailLabel": "البريد الإلكتروني",
+      "submit": "إرسال الرابط",
+      "submitting": "جاري الإرسال…",
+      "backToLogin": "← رجوع",
+      "sentTitle": "تم إرسال البريد الإلكتروني.",
+      "sentBodyWithEmail": "لقد أرسلنا رابط إعادة التعيين إلى <strong>{email}</strong>. انقر عليه لاختيار كلمة مرور جديدة.",
+      "resend": "إعادة إرسال الرابط",
+      "resendCooldown": "إعادة الإرسال خلال {seconds} ث",
+      "backToLoginLong": "← العودة إلى تسجيل الدخول"
+    },
+    "verify": {
+      "title": "تحقق من صندوق الوارد.",
+      "bodyWithEmail": "لقد أرسلنا رابط تأكيد إلى <strong>{email}</strong>. انقر عليه لتفعيل حسابك. إذا لم تجده، تحقق من مجلد البريد المزعج.",
+      "bodyNoEmail": "لقد أرسلنا رابط تأكيد إلى عنوان بريدك الإلكتروني. انقر عليه لتفعيل حسابك. إذا لم تجده، تحقق من مجلد البريد المزعج.",
+      "resend": "إعادة إرسال الرابط",
+      "resending": "جاري الإرسال…",
+      "resendCooldown": "إعادة الإرسال خلال {seconds} ث",
+      "noEmail": "لا يوجد عنوان بريد إلكتروني للاستخدام.",
+      "resent": "تم إعادة إرسال الرابط إلى {email}",
+      "changeEmail": "تغيير البريد الإلكتروني",
+      "backToLogin": "العودة إلى تسجيل الدخول"
+    },
+    "reset": {
+      "title": "كلمة مرور جديدة.",
+      "subtitle": "اختر كلمة مرور قوية واحتفظ بها في مكان آمن.",
+      "passwordLabel": "كلمة المرور الجديدة",
+      "confirmLabel": "تأكيد كلمة المرور",
+      "submit": "تحديث",
+      "submitting": "جاري التحديث…"
+    },
+    "password": {
+      "lenLabel": "ما لا يقل عن 8 أحرف",
+      "upperLabel": "حرف كبير واحد",
+      "numberLabel": "رقم واحد",
+      "symbolLabel": "رمز واحد"
+    },
+    "errors": {
+      "emailRequired": "البريد الإلكتروني مطلوب.",
+      "emailInvalid": "بريد إلكتروني غير صالح.",
+      "passwordRequired": "كلمة المرور مطلوبة.",
+      "passwordTooShort": "ما لا يقل عن 8 أحرف.",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين.",
+      "fullNameTooLong": "الاسم طويل جدًا.",
+      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة."
+    }
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "monthLabel": "الشهر",
+    "prevMonth": "الشهر السابق",
+    "nextMonth": "الشهر التالي",
+    "totalsOfMonth": "إجماليات الشهر",
+    "currencyTabLabel": "عملة الإجماليات",
+    "netProfitThisMonth": "صافي الربح لهذا الشهر",
+    "noDataForMonth": "لا توجد بيانات لهذا الشهر بعد",
+    "productsActive": "{count, plural, one {# منتج نشط} other {# منتجات نشطة}}",
+    "orders": "{count} طلب",
+    "delivered": "{count} مُسلَّم",
+    "convertedTo": "الإجماليات محوَّلة إلى",
+    "ratesStale": "أسعار الصرف غير متاحة — الإجماليات تقديرية",
+    "ratesUpdatedOn": "أسعار الصرف محدَّثة بتاريخ {date}",
+    "ratesUpdatedDaily": "أسعار الصرف تُحدَّث يوميًا",
+    "noDataFooter": "{count, plural, one {# منتج بدون بيانات لهذا الشهر.} other {# منتجات بدون بيانات لهذا الشهر.}}",
+    "welcome": "مرحبًا.",
+    "addFirstProduct": "أضف منتجك الأول لمتابعة سير عملك.",
+    "addProductCta": "إضافة منتج",
+    "profitByProduct": "الربح حسب المنتج",
+    "profitByProductLabel": "الربح حسب المنتج",
+    "noProductsThisMonth": "لا توجد منتجات تحتوي على بيانات لهذا الشهر.",
+    "moreRows": "+ {count, plural, one {# آخر} other {# أخرى}} — راجع الجدول",
+    "moreInTable": "+ {count, plural, one {# آخر} other {# أخرى}} في الجدول",
+    "funnels": "قمع المبيعات حسب المنتج",
+    "noFunnelData": "لا توجد منتجات تحتوي على عملاء محتملين أو طلبات لهذا الشهر.",
+    "delivery": "التوصيل",
+    "tableSection": "التفاصيل حسب المنتج",
+    "table": {
+      "product": "المنتج",
+      "currency": "العملة",
+      "revenue": "الإيرادات",
+      "spend": "المصروفات",
+      "profit": "الربح",
+      "margin": "الهامش",
+      "roas": "ROAS",
+      "delivery": "التوصيل",
+      "all": "الكل",
+      "withData": "مع البيانات",
+      "searchPlaceholder": "ابحث عن منتج…",
+      "searchAria": "ابحث عن منتج",
+      "noMatch": "لا يوجد منتج مطابق.",
+      "openProduct": "فتح {name}",
+      "noEntryThisMonth": "لا توجد بيانات لهذا الشهر"
+    }
+  },
+  "products": {
+    "title": "المنتجات",
+    "filterByStatus": "تصفية حسب الحالة",
+    "active": "نشطة",
+    "archived": "مؤرشفة",
+    "all": "الكل",
+    "searchPlaceholder": "ابحث عن منتج…",
+    "searchAria": "ابحث عن منتج",
+    "clearSearch": "مسح البحث",
+    "addProduct": "إضافة منتج",
+    "addProductShort": "إضافة",
+    "newProduct": "منتج جديد",
+    "newProductDesc": "امنحه اسمًا وبلدًا وعملة.",
+    "editProduct": "تعديل المنتج",
+    "editProductDesc": "تحديث معلومات هذا المنتج.",
+    "submitAdd": "إضافة",
+    "submitEdit": "تحديث",
+    "submittingCreate": "جاري الإضافة…",
+    "submittingUpdate": "جاري التحديث…",
+    "nameLabel": "اسم المنتج *",
+    "namePlaceholder": "مثال: قميص ضيق",
+    "countryLabel": "البلد *",
+    "countryPlaceholder": "اختر بلدًا…",
+    "countrySearchPlaceholder": "ابحث عن بلد…",
+    "countryEmpty": "لم يُعثر على أي بلد.",
+    "currencyLabel": "العملة *",
+    "currencyPlaceholder": "اختر عملة…",
+    "card": {
+      "statusActive": "نشط",
+      "statusArchived": "مؤرشف",
+      "noData": "لا توجد بيانات بعد",
+      "moreActions": "إجراءات إضافية",
+      "edit": "تعديل",
+      "archive": "أرشفة",
+      "unarchive": "إلغاء الأرشفة",
+      "openAria": "فتح {name}"
+    },
+    "relative": {
+      "today": "اليوم",
+      "yesterday": "أمس",
+      "daysAgo": "قبل {days} يوم",
+      "monthsAgo": "قبل {months} شهر",
+      "yearsAgo": "{years, plural, one {قبل # سنة} other {قبل # سنوات}}"
+    },
+    "toast": {
+      "added": "تمت إضافة المنتج",
+      "updated": "تم تحديث المنتج",
+      "archived": "تمت أرشفة المنتج",
+      "unarchived": "تم إلغاء أرشفة المنتج"
+    },
+    "empty": {
+      "title": "أضف منتجك الأول.",
+      "body": "من هنا تنطلق جميع حملات الدفع عند الاستلام. امنحه اسمًا وبلدًا وعملة، وانطلق.",
+      "importHint": "الاستيراد من ملف CSV",
+      "soon": "(قريبًا)"
+    },
+    "filtered": {
+      "noMatchForQuery": "لا يوجد منتج مطابق لـ «{query}».",
+      "noArchived": "لا توجد منتجات مؤرشفة.",
+      "noForFilter": "لا توجد منتجات لهذه التصفية."
+    },
+    "detail": {
+      "backToList": "المنتجات",
+      "archivedBadge": "مؤرشف",
+      "noMonths": "لا يوجد شهر متاح لهذا المنتج."
+    }
+  },
+  "months": {
+    "tabs": "اختيار الشهر",
+    "prev": "الأشهر السابقة",
+    "next": "الأشهر اللاحقة",
+    "viewAll": "عرض كل الأشهر",
+    "addMonth": "إضافة",
+    "noMonths": "لا توجد أشهر.",
+    "newMonth": "شهر جديد",
+    "newMonthDesc": "أضف شهر متابعة لهذا المنتج.",
+    "monthLabel": "الشهر *",
+    "labelLabel": "التسمية *",
+    "alreadyExists": "هذا الشهر موجود مسبقًا لهذا المنتج.",
+    "copyFromTitle": "البدء من أرقام {label}",
+    "copyFromDesc": "يتم نسخ تكاليف الشهر السابق. تبدأ المبيعات من الصفر.",
+    "submit": "إضافة",
+    "submitting": "جاري الإضافة…",
+    "added": "تمت إضافة الشهر"
+  },
+  "entries": {
+    "save": {
+      "dirty": "تغييرات غير محفوظة…",
+      "saving": "جاري الحفظ…",
+      "saved": "تم الحفظ {ago}",
+      "justNow": "الآن",
+      "secondsAgo": "قبل {seconds} ث",
+      "minutesAgo": "قبل {minutes} د",
+      "hoursAgo": "قبل {hours} س",
+      "offline": "غير متصل — ستتم إعادة المحاولة عند عودة الاتصال.",
+      "error": "فشل الحفظ.",
+      "retry": "إعادة المحاولة",
+      "toastFail": "فشل — أعد المحاولة."
+    },
+    "sales": {
+      "title": "المبيعات",
+      "leads": "العملاء المحتملون",
+      "orders": "الطلبات",
+      "delivered": "المُسلَّمة",
+      "revenue": "الإيرادات ({currency})"
+    },
+    "costs": {
+      "title": "التكاليف",
+      "ads": "الإعلانات",
+      "tests": "الاختبارات",
+      "product": "تكلفة المنتج",
+      "delivery": "التوصيل",
+      "bonus": "مكافآت الوكلاء",
+      "adAccount": "حسابات الإعلانات"
+    },
+    "stock": {
+      "title": "المخزون",
+      "initial": "المخزون الأولي",
+      "current": "المخزون الحالي"
+    }
+  },
+  "metrics": {
+    "netProfit": "صافي الربح",
+    "netProfitFormula": "الإيرادات − التكاليف",
+    "netProfitHint": "الإيرادات − التكاليف",
+    "roas": "ROAS",
+    "roasFormula": "الإيرادات / مصروفات الإعلانات",
+    "roasHint": "الإيرادات / الإعلانات",
+    "margin": "الهامش",
+    "marginFormula": "صافي الربح / الإيرادات",
+    "marginHint": "الربح / الإيرادات",
+    "delivery": "التوصيل",
+    "deliveryFormula": "الطلبات المُسلَّمة / الطلبات",
+    "deliveryHint": "المُسلَّمة / الطلبات",
+    "totalSpend": "إجمالي المصروفات",
+    "totalSpendFormula": "مجموع كل التكاليف الشهرية",
+    "totalSpendDashboardFormula": "مجموع تكاليف المنتجات",
+    "conversion": "التحويل",
+    "conversionFormula": "الطلبات / العملاء المحتملون",
+    "epo": "EPO",
+    "epoFormula": "الربح / الطلبات",
+    "costPerDelivered": "التكلفة لكل مُسلَّم",
+    "costPerDeliveredFormula": "إجمالي التكاليف / الطلبات المُسلَّمة",
+    "avgRevenuePerOrder": "الإيرادات / الطلب",
+    "avgRevenuePerOrderFormula": "الإيرادات / الطلبات",
+    "avgRevenuePerDelivered": "الإيرادات لكل مُسلَّم",
+    "avgRevenuePerDeliveredFormula": "الإيرادات / الطلبات المُسلَّمة",
+    "breakEvenLead": "نقطة التعادل للعميل المحتمل",
+    "breakEvenLeadFormula": "الحد الأقصى لتكلفة العميل المحتمل لتحقيق الربحية",
+    "stockDaysLeft": "المخزون — الأيام المتبقية",
+    "stockDaysLeftFormula": "المخزون الحالي ÷ (المُسلَّمة / الأيام المنقضية)",
+    "revenue": "الإيرادات",
+    "revenueFormula": "مجموع إيرادات المنتجات",
+    "marginShort": "الهامش",
+    "tone": {
+      "good": "إيجابي",
+      "bad": "سلبي",
+      "critical": "حرج"
+    },
+    "outOfStockSoon": "على وشك النفاد"
+  },
+  "charts": {
+    "loading": "جاري تحميل المخطط",
+    "section": "مخططات الشهر",
+    "tabs": {
+      "funnel": "قمع المبيعات",
+      "costs": "التكاليف",
+      "trend": "الاتجاه"
+    },
+    "funnel": {
+      "leads": "العملاء المحتملون",
+      "orders": "الطلبات",
+      "delivered": "المُسلَّمة",
+      "emptyHint": "أدخل العملاء المحتملين والطلبات والمُسلَّمة لعرض القمع.",
+      "stage": "المرحلة",
+      "value": "القيمة",
+      "percentOfLeads": "% من العملاء المحتملين",
+      "dropFromPrev": "الانخفاض مقارنة بالسابقة"
+    },
+    "costs": {
+      "spent": "أُنفِق",
+      "noSpend": "لم يُسجَّل أي إنفاق لهذا الشهر.",
+      "category": "الفئة",
+      "amount": "المبلغ",
+      "share": "الحصة",
+      "other": "أخرى",
+      "ads": "الإعلانات",
+      "tests": "الاختبارات",
+      "adAccount": "حسابات الإعلانات",
+      "product": "تكلفة المنتج",
+      "delivery": "التوصيل",
+      "bonus": "مكافآت الوكلاء"
+    },
+    "trend": {
+      "needSecondMonth": "أضف شهرًا ثانيًا لرؤية التطور.",
+      "monthCol": "الشهر",
+      "netProfitCol": "صافي الربح",
+      "current": "(الحالي)",
+      "vsPrev": "مقارنة بالشهر السابق"
+    }
+  },
+  "settings": {
+    "title": "الإعدادات"
+  },
+  "agents": {
+    "title": "الوكلاء"
+  },
+  "stock": {
+    "title": "المخزون"
+  },
+  "errors": {
+    "unknown": "خطأ غير معروف.",
+    "invalidId": "معرّف غير صالح.",
+    "invalidProductId": "معرّف منتج غير صالح.",
+    "invalidMonthId": "معرّف شهر غير صالح.",
+    "invalidCurrency": "عملة غير صالحة."
+  }
+}

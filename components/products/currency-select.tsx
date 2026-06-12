@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { CURRENCIES, type CurrencyCode } from "@/lib/data/countries";
 import {
   Select,
@@ -20,6 +22,7 @@ export function CurrencySelect({
   invalid?: boolean;
   id?: string;
 }) {
+  const t = useTranslations("products");
   return (
     <Select
       value={value ?? ""}
@@ -30,7 +33,7 @@ export function CurrencySelect({
         aria-invalid={invalid || undefined}
         className="h-11 w-full"
       >
-        <SelectValue placeholder="Sélectionner une devise…" />
+        <SelectValue placeholder={t("currencyPlaceholder")} />
       </SelectTrigger>
       <SelectContent>
         {CURRENCIES.map((c) => (

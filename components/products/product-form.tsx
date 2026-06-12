@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -41,10 +42,12 @@ export function ProductForm({
   mode,
   defaultValues,
   submitLabel,
-  cancelLabel = "Annuler",
+  cancelLabel,
   onCancel,
   onSubmit,
 }: ProductFormProps) {
+  const t = useTranslations("products");
+  const tCommon = useTranslations("common");
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productInputSchema),
     defaultValues: {
@@ -60,6 +63,7 @@ export function ProductForm({
   const userTouchedCurrency = useRef(mode === "edit");
   const [pending, startTransition] = useTransition();
   const serverError = form.formState.errors.root?.serverError?.message;
+  const resolvedCancelLabel = cancelLabel ?? tCommon("cancel");
 
   function submit(values: ProductFormValues) {
     startTransition(async () => {
@@ -89,12 +93,12 @@ export function ProductForm({
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nom du produit *</FormLabel>
+              <FormLabel>{t("nameLabel")}</FormLabel>
               <FormControl>
                 <Input
                   type="text"
                   autoComplete="off"
-                  placeholder="Ex. Slim Fit T-Shirt"
+                  placeholder={t("namePlaceholder")}
                   className="h-11"
                   {...field}
                 />
@@ -109,7 +113,7 @@ export function ProductForm({
           name="country"
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel>Pays *</FormLabel>
+              <FormLabel>{t("countryLabel")}</FormLabel>
               <FormControl>
                 <CountryCombobox
                   value={field.value || null}
@@ -136,7 +140,7 @@ export function ProductForm({
           name="currency"
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel>Devise *</FormLabel>
+              <FormLabel>{t("currencyLabel")}</FormLabel>
               <FormControl>
                 <CurrencySelect
                   value={(field.value as CurrencyCode) || null}
@@ -163,14 +167,16 @@ export function ProductForm({
               disabled={pending}
               className="h-10 px-4"
             >
-              {cancelLabel}
+              {resolvedCancelLabel}
             </Button>
           )}
           <Button type="submit" disabled={pending} className="h-10 px-4">
             {pending ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
-                {mode === "create" ? "Ajout en cours…" : "Mise à jour…"}
+                {mode === "create"
+                  ? t("submittingCreate")
+                  : t("submittingUpdate")}
               </>
             ) : (
               submitLabel

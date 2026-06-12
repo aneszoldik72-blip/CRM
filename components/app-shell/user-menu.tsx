@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import {
   HelpCircle,
   LogOut,
@@ -11,7 +11,8 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 
-import { signOut } from "@/app/(auth)/actions";
+import { signOut } from "@/app/[locale]/(auth)/actions";
+import { Link } from "@/i18n/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,21 +28,23 @@ export type UserMenuUser = {
   name: string | null;
 };
 
-function initialsFrom(user: UserMenuUser) {
-  const source = user.name?.trim() || user.email || "U";
+function initialsFrom(user: UserMenuUser, fallback: string) {
+  const source = user.name?.trim() || user.email || fallback;
   const parts = source
     .split(/[\s@.]+/)
     .filter(Boolean)
     .slice(0, 2)
     .map((s) => s[0]!.toUpperCase());
-  return parts.join("") || "U";
+  return parts.join("") || fallback.charAt(0).toUpperCase();
 }
 
 export function UserMenu({ user }: { user: UserMenuUser }) {
+  const t = useTranslations("user");
   const { resolvedTheme, setTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
+  const fallback = t("fallback");
   const displayName =
-    user.name?.trim() || user.email?.split("@")[0] || "Utilisateur";
+    user.name?.trim() || user.email?.split("@")[0] || fallback;
 
   return (
     <DropdownMenu>
@@ -50,13 +53,13 @@ export function UserMenu({ user }: { user: UserMenuUser }) {
           <Button
             variant="ghost"
             size="icon-sm"
-            aria-label="Menu utilisateur"
+            aria-label={t("menu")}
             className="size-8 rounded-full p-0"
           />
         }
       >
         <Avatar size="sm">
-          <AvatarFallback>{initialsFrom(user)}</AvatarFallback>
+          <AvatarFallback>{initialsFrom(user, fallback)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-60">
@@ -70,20 +73,20 @@ export function UserMenu({ user }: { user: UserMenuUser }) {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem render={<Link href="/settings/profile" />}>
-          <UserIcon /> Profil
+          <UserIcon /> {t("profile")}
         </DropdownMenuItem>
         <DropdownMenuItem render={<Link href="/settings" />}>
-          <SettingsIcon /> Paramètres
+          <SettingsIcon /> {t("settings")}
         </DropdownMenuItem>
         <DropdownMenuItem
           className="md:hidden"
           onClick={() => setTheme(isDark ? "light" : "dark")}
         >
-          {isDark ? <Sun /> : <Moon />} Thème
+          {isDark ? <Sun /> : <Moon />} {t("theme")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem render={<Link href="/help" />}>
-          <HelpCircle /> Aide & support
+          <HelpCircle /> {t("help")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -92,7 +95,7 @@ export function UserMenu({ user }: { user: UserMenuUser }) {
             void signOut();
           }}
         >
-          <LogOut /> Se déconnecter
+          <LogOut /> {t("signOut")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useTransition } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { Check, Globe } from "lucide-react";
 
+import { routing, type AppLocale } from "@/i18n/routing";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,17 +14,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-type Locale = "fr" | "ar" | "en";
-
-const LOCALES: { key: Locale; label: string }[] = [
-  { key: "fr", label: "Français" },
-  { key: "ar", label: "العربية" },
-  { key: "en", label: "English" },
-];
-
 export function LanguageSwitcher() {
-  // Placeholder — real switching lands with next-intl.
-  const [locale, setLocale] = useState<Locale>("fr");
+  const t = useTranslations("language");
+  const current = useLocale() as AppLocale;
+  const router = useRouter();
+  const pathname = usePathname();
+  const [pending, startTransition] = useTransition();
+
+  function switchTo(next: AppLocale) {
+    if (next === current) return;
+    startTransition(() => {
+      router.replace(pathname, { locale: next });
+    });
+  }
 
   return (
     <DropdownMenu>
@@ -30,21 +35,22 @@ export function LanguageSwitcher() {
           <Button
             variant="ghost"
             size="icon-sm"
-            aria-label="Changer la langue"
+            aria-label={t("label")}
+            disabled={pending}
           />
         }
       >
         <Globe className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40">
-        {LOCALES.map((l) => (
+        {routing.locales.map((code) => (
           <DropdownMenuItem
-            key={l.key}
-            onClick={() => setLocale(l.key)}
+            key={code}
+            onClick={() => switchTo(code)}
             className="justify-between"
           >
-            <span>{l.label}</span>
-            {locale === l.key && (
+            <span>{t(code)}</span>
+            {current === code && (
               <Check className="size-3.5 text-primary" aria-hidden />
             )}
           </DropdownMenuItem>

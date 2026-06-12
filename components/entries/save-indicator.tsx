@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   Check,
   CloudOff,
@@ -19,19 +20,23 @@ export type SaveState =
   | { kind: "offline" }
   | { kind: "error"; onRetry?: () => void };
 
-function formatAgo(seconds: number): string {
-  if (seconds < 5) return "à l'instant";
-  if (seconds < 60) return `il y a ${seconds} s`;
-  const m = Math.floor(seconds / 60);
-  if (m < 60) return `il y a ${m} min`;
-  const h = Math.floor(m / 60);
-  return `il y a ${h} h`;
+function useFormatAgo() {
+  const t = useTranslations("entries.save");
+  return (seconds: number): string => {
+    if (seconds < 5) return t("justNow");
+    if (seconds < 60) return t("secondsAgo", { seconds });
+    const m = Math.floor(seconds / 60);
+    if (m < 60) return t("minutesAgo", { minutes: m });
+    const h = Math.floor(m / 60);
+    return t("hoursAgo", { hours: h });
+  };
 }
 
 export function SaveIndicator({ state }: { state: SaveState }) {
+  const t = useTranslations("entries.save");
+  const formatAgo = useFormatAgo();
   const [, force] = useState(0);
 
-  // Re-render every 15s so the "il y a X" timer stays accurate.
   useEffect(() => {
     if (state.kind !== "saved") return;
     const id = setInterval(() => force((n) => n + 1), 15000);
@@ -54,40 +59,42 @@ export function SaveIndicator({ state }: { state: SaveState }) {
       {state.kind === "dirty" && (
         <>
           <span className="size-1.5 rounded-full bg-muted-foreground" />
-          <span>Modifications non enregistrées…</span>
+          <span>{t("dirty")}</span>
         </>
       )}
       {state.kind === "saving" && (
         <>
           <Loader2 className="size-3.5 animate-spin" />
-          <span>Enregistrement…</span>
+          <span>{t("saving")}</span>
         </>
       )}
       {state.kind === "saved" && (
         <>
           <Check className="size-3.5 text-emerald-500" />
           <span>
-            Enregistré {formatAgo(Math.floor((Date.now() - state.at) / 1000))}
+            {t("saved", {
+              ago: formatAgo(Math.floor((Date.now() - state.at) / 1000)),
+            })}
           </span>
         </>
       )}
       {state.kind === "offline" && (
         <>
           <CloudOff className="size-3.5" />
-          <span>Hors ligne — réessai automatique au retour du réseau</span>
+          <span>{t("offline")}</span>
         </>
       )}
       {state.kind === "error" && (
         <>
           <TriangleAlert className="size-3.5" />
-          <span>Échec de l&apos;enregistrement.</span>
+          <span>{t("error")}</span>
           {state.onRetry && (
             <button
               type="button"
               onClick={state.onRetry}
               className="ms-1 inline-flex items-center gap-1 underline-offset-2 hover:underline"
             >
-              <RefreshCcw className="size-3" /> Réessayer
+              <RefreshCcw className="size-3" /> {t("retry")}
             </button>
           )}
         </>

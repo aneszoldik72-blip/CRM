@@ -1,5 +1,6 @@
-// Returns "Janvier 2026" for "2026-01" (French default, capitalized).
-export function formatMonthLabel(yyyymm: string, locale = "fr"): string {
+// Returns "Janvier 2026" for "2026-01" (capitalized; default fr-FR).
+// Callers pass a BCP-47 tag (e.g. "ar-MA") from i18n/routing#bcp47.
+export function formatMonthLabel(yyyymm: string, locale = "fr-FR"): string {
   const [y, m] = yyyymm.split("-").map(Number);
   if (!y || !m) return yyyymm;
   const d = new Date(Date.UTC(y, m - 1, 1));
@@ -7,6 +8,7 @@ export function formatMonthLabel(yyyymm: string, locale = "fr"): string {
     month: "long",
     year: "numeric",
     timeZone: "UTC",
+    numberingSystem: "latn",
   }).format(d);
   return formatted.charAt(0).toUpperCase() + formatted.slice(1);
 }
@@ -14,7 +16,7 @@ export function formatMonthLabel(yyyymm: string, locale = "fr"): string {
 // Returns "1 févr. – 28 févr. 2026".
 export function formatMonthRange(
   yyyymm: string,
-  locale = "fr",
+  locale = "fr-FR",
 ): string {
   const range = monthBounds(yyyymm);
   if (!range) return "";
@@ -22,10 +24,12 @@ export function formatMonthRange(
     day: "numeric",
     month: "short",
     timeZone: "UTC",
+    numberingSystem: "latn",
   });
   const yearFmt = new Intl.DateTimeFormat(locale, {
     year: "numeric",
     timeZone: "UTC",
+    numberingSystem: "latn",
   });
   return `${fmt.format(new Date(range.start))} – ${fmt.format(new Date(range.end))} ${yearFmt.format(new Date(range.end))}`;
 }
@@ -37,7 +41,7 @@ export function monthBounds(
   const [y, m] = yyyymm.split("-").map(Number);
   if (!y || !m || m < 1 || m > 12) return null;
   const start = new Date(Date.UTC(y, m - 1, 1));
-  const end = new Date(Date.UTC(y, m, 0)); // day 0 of next month = last day of this month
+  const end = new Date(Date.UTC(y, m, 0));
   return {
     start: start.toISOString().slice(0, 10),
     end: end.toISOString().slice(0, 10),
@@ -59,7 +63,7 @@ export function currentYyyymm(): string {
 export function nextYyyymm(yyyymm: string): string {
   const [y, m] = yyyymm.split("-").map(Number);
   if (!y || !m) return yyyymm;
-  const date = new Date(Date.UTC(y, m, 1)); // m is 0-indexed elsewhere, so m+1 here = next month's index
+  const date = new Date(Date.UTC(y, m, 1));
   return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
 }
 

@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import type { ProductRow } from "@/lib/db/products";
 import {
   Dialog,
@@ -31,15 +33,14 @@ export function EditProductDialog({
   onOpenChange,
   onSubmit,
 }: EditProductDialogProps) {
+  const t = useTranslations("products");
   const open = product !== null;
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Modifier le produit</DialogTitle>
-          <DialogDescription>
-            Mets à jour les informations de ce produit.
-          </DialogDescription>
+          <DialogTitle>{t("editProduct")}</DialogTitle>
+          <DialogDescription>{t("editProductDesc")}</DialogDescription>
         </DialogHeader>
         {product && (
           <ProductForm
@@ -50,7 +51,7 @@ export function EditProductDialog({
               country: product.country ?? "",
               currency: product.currency as ProductFormValues["currency"],
             }}
-            submitLabel="Mettre à jour"
+            submitLabel={t("submitEdit")}
             onCancel={() => onOpenChange(false)}
             onSubmit={async (values) => {
               const res = await onSubmit(product.id, values);

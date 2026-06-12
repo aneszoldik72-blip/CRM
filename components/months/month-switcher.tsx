@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
@@ -31,12 +32,11 @@ export function MonthSwitcher({
   months,
   selectedMonthId,
 }: MonthSwitcherProps) {
+  const t = useTranslations("months");
   const router = useRouter();
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [addOpen, setAddOpen] = useState(false);
 
-  // Tabs render newest-first; for the year-grouped popover we group by year
-  // (also newest first within each year).
   const groupedByYear = useMemo(() => {
     const groups = new Map<string, MonthRow[]>();
     for (const m of months) {
@@ -48,7 +48,6 @@ export function MonthSwitcher({
     return Array.from(groups.entries());
   }, [months]);
 
-  // Center the active tab on mount and whenever the selection changes.
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -61,7 +60,7 @@ export function MonthSwitcher({
   }, [selectedMonthId]);
 
   function go(monthId: string) {
-    router.replace(`/products/${productId}?month=${monthId}`, { scroll: false });
+    router.replace(`?month=${monthId}`, { scroll: false });
   }
 
   function scrollBy(delta: number) {
@@ -75,7 +74,7 @@ export function MonthSwitcher({
           type="button"
           variant="ghost"
           size="icon-sm"
-          aria-label="Mois précédents"
+          aria-label={t("prev")}
           onClick={() => scrollBy(-240)}
           className="hidden self-center md:inline-flex"
         >
@@ -85,7 +84,7 @@ export function MonthSwitcher({
         <div
           ref={scrollRef}
           role="tablist"
-          aria-label="Sélection du mois"
+          aria-label={t("tabs")}
           className="flex min-w-0 flex-1 snap-x snap-mandatory items-end gap-1 overflow-x-auto scroll-smooth pb-px [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {months.map((m) => {
@@ -121,7 +120,7 @@ export function MonthSwitcher({
           type="button"
           variant="ghost"
           size="icon-sm"
-          aria-label="Mois suivants"
+          aria-label={t("next")}
           onClick={() => scrollBy(240)}
           className="hidden self-center md:inline-flex"
         >
@@ -135,7 +134,7 @@ export function MonthSwitcher({
                 type="button"
                 variant="ghost"
                 size="icon-sm"
-                aria-label="Voir tous les mois"
+                aria-label={t("viewAll")}
                 className="self-center"
               />
             }
@@ -145,7 +144,7 @@ export function MonthSwitcher({
           <PopoverContent align="end" className="max-h-[60vh] w-64 overflow-y-auto p-1">
             {groupedByYear.length === 0 ? (
               <p className="px-3 py-2 text-sm text-muted-foreground">
-                Aucun mois.
+                {t("noMonths")}
               </p>
             ) : (
               groupedByYear.map(([year, list]) => (
@@ -161,7 +160,7 @@ export function MonthSwitcher({
                         type="button"
                         onClick={() => go(m.id)}
                         className={cn(
-                          "flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-sm transition-colors",
+                          "flex w-full items-center justify-between rounded-md px-2 py-1.5 text-start text-sm transition-colors",
                           active
                             ? "bg-primary/10 text-primary"
                             : "hover:bg-muted",
@@ -186,7 +185,7 @@ export function MonthSwitcher({
           className="h-9 shrink-0 gap-1.5 self-center px-3"
         >
           <Plus className="size-4" />
-          <span className="hidden sm:inline">Ajouter</span>
+          <span className="hidden sm:inline">{t("addMonth")}</span>
         </Button>
       </div>
 
@@ -196,10 +195,8 @@ export function MonthSwitcher({
         productId={productId}
         existingMonths={months}
         onCreated={(m) => {
-          toast.success("Mois ajouté");
-          router.replace(`/products/${productId}?month=${m.id}`, {
-            scroll: false,
-          });
+          toast.success(t("added"));
+          router.replace(`?month=${m.id}`, { scroll: false });
         }}
       />
     </>

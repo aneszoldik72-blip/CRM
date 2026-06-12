@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Menu as MenuIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import { ThemeToggle } from "@/components/app-shell/theme-toggle";
 import { UserMenu, type UserMenuUser } from "@/components/app-shell/user-menu";
 
 export function TopBar({ user }: { user: UserMenuUser }) {
+  const t = useTranslations("nav");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
@@ -27,7 +29,7 @@ export function TopBar({ user }: { user: UserMenuUser }) {
             <Button
               variant="ghost"
               size="icon-sm"
-              aria-label="Ouvrir le menu"
+              aria-label={t("openMenu")}
               className="md:hidden"
             />
           }
@@ -35,9 +37,9 @@ export function TopBar({ user }: { user: UserMenuUser }) {
           <MenuIcon className="size-5" />
         </SheetTrigger>
         <SheetContent side="left" className="w-72 p-0">
-          <SheetTitle className="sr-only">Navigation</SheetTitle>
+          <SheetTitle className="sr-only">{t("primary")}</SheetTitle>
           <SheetDescription className="sr-only">
-            Liens principaux de l&apos;application
+            {t("appLinks")}
           </SheetDescription>
           <Sidebar variant="drawer" />
         </SheetContent>

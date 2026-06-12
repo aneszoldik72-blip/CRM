@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -27,6 +28,7 @@ export function CountryCombobox({
   invalid?: boolean;
   id?: string;
 }) {
+  const t = useTranslations("products");
   const [open, setOpen] = useState(false);
   const selected = getCountry(value);
 
@@ -55,15 +57,15 @@ export function CountryCombobox({
             </span>
           </span>
         ) : (
-          <span className="text-muted-foreground">Sélectionner un pays…</span>
+          <span className="text-muted-foreground">{t("countryPlaceholder")}</span>
         )}
         <ChevronsUpDown className="ms-2 size-4 shrink-0 text-muted-foreground" />
       </PopoverTrigger>
       <PopoverContent className="w-[var(--anchor-width)] p-0" align="start">
         <Command>
-          <CommandInput placeholder="Rechercher un pays…" />
+          <CommandInput placeholder={t("countrySearchPlaceholder")} />
           <CommandList>
-            <CommandEmpty>Aucun pays trouvé.</CommandEmpty>
+            <CommandEmpty>{t("countryEmpty")}</CommandEmpty>
             <CommandGroup>
               {COUNTRIES.map((c) => {
                 const isSelected = selected?.code === c.code;

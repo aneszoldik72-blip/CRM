@@ -1,11 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
-import { updateEntryAction } from "@/app/(app)/products/[id]/actions";
+import { updateEntryAction } from "@/app/[locale]/(app)/products/[id]/actions";
 import type { EntryRow } from "@/lib/db/entries";
 import type { MonthRow } from "@/lib/db/months";
 import type { ProductRow } from "@/lib/db/products";
@@ -74,6 +75,7 @@ export function EntryForm({
   daysElapsed: number | null;
   trendData: TrendPoint[];
 }) {
+  const tSave = useTranslations("entries.save");
   const initial = toFormValues(entry);
 
   const form = useForm<EntryValues>({
@@ -146,7 +148,7 @@ export function EntryForm({
               shouldValidate: false,
             });
           }
-          toast.error(res.serverError ?? "Échec — réessayer.");
+          toast.error(res.serverError ?? tSave("toastFail"));
           setSaveState({ kind: "error" });
         }
       } catch {
@@ -156,13 +158,13 @@ export function EntryForm({
             shouldValidate: false,
           });
         }
-        toast.error("Échec — réessayer.");
+        toast.error(tSave("toastFail"));
         setSaveState({ kind: "error" });
       }
 
       settleIndicator();
     },
-    [form, month.id, settleIndicator],
+    [form, month.id, settleIndicator, tSave],
   );
 
   const scheduleSave = useCallback(

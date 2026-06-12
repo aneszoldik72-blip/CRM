@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import {
   Dialog,
   DialogContent,
@@ -27,18 +29,17 @@ export function AddProductDialog({
   onOpenChange,
   onSubmit,
 }: AddProductDialogProps) {
+  const t = useTranslations("products");
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Nouveau produit</DialogTitle>
-          <DialogDescription>
-            Donne-lui un nom, un pays, une devise.
-          </DialogDescription>
+          <DialogTitle>{t("newProduct")}</DialogTitle>
+          <DialogDescription>{t("newProductDesc")}</DialogDescription>
         </DialogHeader>
         <ProductForm
           mode="create"
-          submitLabel="Ajouter"
+          submitLabel={t("submitAdd")}
           onCancel={() => onOpenChange(false)}
           onSubmit={async (values) => {
             const res = await onSubmit(values);

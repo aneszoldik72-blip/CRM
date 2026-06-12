@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useWatch, type Control } from "react-hook-form";
 
 import { computeMetrics, type MetricsInput } from "@/lib/metrics";
@@ -15,6 +16,7 @@ export type KpiGridProps = {
 };
 
 export function KpiGrid({ control, currency, daysElapsed }: KpiGridProps) {
+  const t = useTranslations("metrics");
   const values = useWatch({ control }) as EntryValues;
 
   const metrics = useMemo(() => {
@@ -41,33 +43,33 @@ export function KpiGrid({ control, currency, daysElapsed }: KpiGridProps) {
       <div className="grid grid-cols-1 gap-3 min-[480px]:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           variant="primary"
-          label="Bénéfice net"
-          formula="Chiffre d'affaires − Coûts"
-          hint="CA − Coûts"
+          label={t("netProfit")}
+          formula={t("netProfitFormula")}
+          hint={t("netProfitHint")}
           value={metrics.netProfit}
           currency={currency}
         />
         <KpiCard
           variant="primary"
-          label="ROAS"
-          formula="Chiffre d'affaires / Dépenses pub"
-          hint="CA / Pub"
+          label={t("roas")}
+          formula={t("roasFormula")}
+          hint={t("roasHint")}
           value={metrics.roas}
           currency={currency}
         />
         <KpiCard
           variant="primary"
-          label="Marge"
-          formula="Bénéfice net / Chiffre d'affaires"
-          hint="Bénéfice / CA"
+          label={t("margin")}
+          formula={t("marginFormula")}
+          hint={t("marginHint")}
           value={metrics.margin}
           currency={currency}
         />
         <KpiCard
           variant="primary"
-          label="Livraison"
-          formula="Commandes livrées / Commandes"
-          hint="Livrées / Cmd"
+          label={t("delivery")}
+          formula={t("deliveryFormula")}
+          hint={t("deliveryHint")}
           value={metrics.deliveryRate}
           currency={currency}
         />
@@ -78,57 +80,57 @@ export function KpiGrid({ control, currency, daysElapsed }: KpiGridProps) {
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <KpiCard
           variant="secondary"
-          label="Dépenses totales"
-          formula="Somme de tous les coûts du mois"
+          label={t("totalSpend")}
+          formula={t("totalSpendFormula")}
           value={metrics.totalSpend}
           currency={currency}
         />
         <KpiCard
           variant="secondary"
-          label="Conversion"
-          formula="Commandes / Leads"
+          label={t("conversion")}
+          formula={t("conversionFormula")}
           value={metrics.conversion}
           currency={currency}
         />
         <KpiCard
           variant="secondary"
-          label="EPO"
-          formula="Bénéfice / Commandes"
+          label={t("epo")}
+          formula={t("epoFormula")}
           value={metrics.epo}
           currency={currency}
         />
         <KpiCard
           variant="secondary"
-          label="Coût / livré"
-          formula="Coûts totaux / Commandes livrées"
+          label={t("costPerDelivered")}
+          formula={t("costPerDeliveredFormula")}
           value={metrics.costPerDelivered}
           currency={currency}
         />
         <KpiCard
           variant="secondary"
-          label="Rev / Cmd"
-          formula="Chiffre d'affaires / Commandes"
+          label={t("avgRevenuePerOrder")}
+          formula={t("avgRevenuePerOrderFormula")}
           value={metrics.avgRevenuePerOrder}
           currency={currency}
         />
         <KpiCard
           variant="secondary"
-          label="Rev / livré"
-          formula="Chiffre d'affaires / Commandes livrées"
+          label={t("avgRevenuePerDelivered")}
+          formula={t("avgRevenuePerDeliveredFormula")}
           value={metrics.avgRevenuePerDelivered}
           currency={currency}
         />
         <KpiCard
           variant="secondary"
-          label="Lead break-even"
-          formula="Coût par lead maximum pour rester rentable"
+          label={t("breakEvenLead")}
+          formula={t("breakEvenLeadFormula")}
           value={metrics.breakEvenLead}
           currency={currency}
         />
         <KpiCard
           variant="secondary"
-          label="Stock — jours restants"
-          formula="Stock actuel ÷ (Livrées / Jours écoulés)"
+          label={t("stockDaysLeft")}
+          formula={t("stockDaysLeftFormula")}
           value={metrics.stockDaysLeft}
           currency={currency}
         />

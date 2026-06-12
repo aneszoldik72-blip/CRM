@@ -1,0 +1,399 @@
+{
+  "common": {
+    "appName": "VOIDCRAFT",
+    "appTagline": "Le CRM des dropshippers COD.",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "add": "Ajouter",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "close": "Fermer",
+    "back": "Retour",
+    "loading": "Chargement…",
+    "search": "Rechercher",
+    "showData": "Afficher les données",
+    "more": "Plus",
+    "total": "Total"
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "products": "Produits",
+    "agents": "Agents",
+    "stock": "Stock",
+    "settings": "Paramètres",
+    "primary": "Navigation principale",
+    "appLinks": "Liens principaux de l'application",
+    "openMenu": "Ouvrir le menu",
+    "expandSidebar": "Étendre la barre latérale",
+    "collapseSidebar": "Réduire la barre latérale",
+    "collapse": "Réduire"
+  },
+  "user": {
+    "menu": "Menu utilisateur",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "theme": "Thème",
+    "help": "Aide & support",
+    "signOut": "Se déconnecter",
+    "fallback": "Utilisateur"
+  },
+  "theme": {
+    "toLight": "Activer le thème clair",
+    "toDark": "Activer le thème sombre"
+  },
+  "language": {
+    "label": "Changer la langue",
+    "fr": "Français",
+    "ar": "العربية",
+    "en": "English"
+  },
+  "auth": {
+    "login": {
+      "title": "Bon retour.",
+      "subtitle": "Connectez-vous pour reprendre.",
+      "emailLabel": "Email",
+      "passwordLabel": "Mot de passe",
+      "showPassword": "Afficher le mot de passe",
+      "hidePassword": "Masquer le mot de passe",
+      "rememberMe": "Garder ma session active",
+      "forgotPassword": "Mot de passe oublié ?",
+      "submitting": "Connexion…",
+      "submit": "Se connecter",
+      "noAccount": "Pas encore de compte ?",
+      "signupCta": "S'inscrire"
+    },
+    "signup": {
+      "title": "Créez votre espace.",
+      "subtitle": "Une minute, c'est tout ce qu'il faut.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "vous@exemple.com",
+      "emailHelp": "Nous vous enverrons un lien de confirmation.",
+      "passwordLabel": "Mot de passe",
+      "passwordHelp": "Au moins 8 caractères.",
+      "fullNameLabel": "Nom complet",
+      "fullNameOptional": "(optionnel)",
+      "fullNameHelp": "Comme vous souhaitez qu'on vous appelle.",
+      "localeLabel": "Langue",
+      "submitting": "Création…",
+      "submit": "Créer mon compte",
+      "termsPrefix": "En continuant, vous acceptez nos",
+      "terms": "Conditions",
+      "termsMiddle": "et notre",
+      "privacy": "Politique de confidentialité",
+      "hasAccount": "Déjà un compte ?",
+      "loginCta": "Se connecter"
+    },
+    "forgot": {
+      "title": "Mot de passe oublié ?",
+      "subtitle": "Pas de souci. Donnez-nous votre email, on vous envoie un lien.",
+      "emailLabel": "Email",
+      "submit": "Envoyer le lien",
+      "submitting": "Envoi…",
+      "backToLogin": "← Retour",
+      "sentTitle": "Email envoyé.",
+      "sentBodyWithEmail": "Nous avons envoyé un lien de réinitialisation à <strong>{email}</strong>. Cliquez dessus pour choisir un nouveau mot de passe.",
+      "resend": "Renvoyer le lien",
+      "resendCooldown": "Renvoyer dans {seconds}s",
+      "backToLoginLong": "← Retour à la connexion"
+    },
+    "verify": {
+      "title": "Vérifiez votre boîte de réception.",
+      "bodyWithEmail": "Nous avons envoyé un lien de confirmation à <strong>{email}</strong>. Cliquez dessus pour activer votre compte. Si vous ne le voyez pas, jetez un œil dans les spams.",
+      "bodyNoEmail": "Nous avons envoyé un lien de confirmation à votre adresse email. Cliquez dessus pour activer votre compte. Si vous ne le voyez pas, jetez un œil dans les spams.",
+      "resend": "Renvoyer le lien",
+      "resending": "Envoi…",
+      "resendCooldown": "Renvoyer dans {seconds}s",
+      "noEmail": "Aucune adresse email à utiliser.",
+      "resent": "Lien renvoyé à {email}",
+      "changeEmail": "Changer d'email",
+      "backToLogin": "Retour à la connexion"
+    },
+    "reset": {
+      "title": "Nouveau mot de passe.",
+      "subtitle": "Choisissez-en un solide, et gardez-le en sécurité.",
+      "passwordLabel": "Nouveau mot de passe",
+      "confirmLabel": "Confirmez-le",
+      "submit": "Mettre à jour",
+      "submitting": "Mise à jour…"
+    },
+    "password": {
+      "lenLabel": "Au moins 8 caractères",
+      "upperLabel": "Une majuscule",
+      "numberLabel": "Un chiffre",
+      "symbolLabel": "Un symbole"
+    },
+    "errors": {
+      "emailRequired": "Email requis.",
+      "emailInvalid": "Email invalide.",
+      "passwordRequired": "Mot de passe requis.",
+      "passwordTooShort": "Au moins 8 caractères.",
+      "passwordMismatch": "Les mots de passe ne sont pas identiques.",
+      "fullNameTooLong": "Nom trop long.",
+      "invalidCredentials": "Email ou mot de passe incorrect."
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "monthLabel": "Mois",
+    "prevMonth": "Mois précédent",
+    "nextMonth": "Mois suivant",
+    "totalsOfMonth": "Totaux du mois",
+    "currencyTabLabel": "Devise des totaux",
+    "netProfitThisMonth": "Bénéfice net ce mois",
+    "noDataForMonth": "Pas encore de données pour ce mois",
+    "productsActive": "{count, plural, one {# produit actif} other {# produits actifs}}",
+    "orders": "{count} commandes",
+    "delivered": "{count} livrées",
+    "convertedTo": "Totaux convertis en",
+    "ratesStale": "taux indisponibles — totaux indicatifs",
+    "ratesUpdatedOn": "taux mis à jour le {date}",
+    "ratesUpdatedDaily": "taux mis à jour quotidiennement",
+    "noDataFooter": "{count, plural, one {# produit sans données pour ce mois.} other {# produits sans données pour ce mois.}}",
+    "welcome": "Bienvenue.",
+    "addFirstProduct": "Ajoute ton premier produit pour voir comment ça avance.",
+    "addProductCta": "Ajouter un produit",
+    "profitByProduct": "Bénéfice par produit",
+    "profitByProductLabel": "Bénéfice par produit",
+    "noProductsThisMonth": "Aucun produit avec des données pour ce mois.",
+    "moreRows": "+ {count, plural, one {# autre} other {# autres}} — voir le tableau",
+    "moreInTable": "+ {count, plural, one {# autre} other {# autres}} dans le tableau",
+    "funnels": "Tunnels par produit",
+    "noFunnelData": "Aucun produit avec des leads ou commandes ce mois.",
+    "delivery": "Livraison",
+    "tableSection": "Détail par produit",
+    "table": {
+      "product": "Produit",
+      "currency": "Devise",
+      "revenue": "CA",
+      "spend": "Dépenses",
+      "profit": "Bénéfice",
+      "margin": "Marge",
+      "roas": "ROAS",
+      "delivery": "Livraison",
+      "all": "Tous",
+      "withData": "Avec données",
+      "searchPlaceholder": "Chercher un produit…",
+      "searchAria": "Chercher un produit",
+      "noMatch": "Aucun produit ne correspond.",
+      "openProduct": "Ouvrir {name}",
+      "noEntryThisMonth": "Pas de données pour ce mois"
+    }
+  },
+  "products": {
+    "title": "Produits",
+    "filterByStatus": "Filtrer par statut",
+    "active": "Actifs",
+    "archived": "Archivés",
+    "all": "Tous",
+    "searchPlaceholder": "Chercher un produit…",
+    "searchAria": "Rechercher un produit",
+    "clearSearch": "Effacer la recherche",
+    "addProduct": "Ajouter un produit",
+    "addProductShort": "Ajouter",
+    "newProduct": "Nouveau produit",
+    "newProductDesc": "Donne-lui un nom, un pays, une devise.",
+    "editProduct": "Modifier le produit",
+    "editProductDesc": "Mets à jour les informations de ce produit.",
+    "submitAdd": "Ajouter",
+    "submitEdit": "Mettre à jour",
+    "submittingCreate": "Ajout en cours…",
+    "submittingUpdate": "Mise à jour…",
+    "nameLabel": "Nom du produit *",
+    "namePlaceholder": "Ex. Slim Fit T-Shirt",
+    "countryLabel": "Pays *",
+    "countryPlaceholder": "Sélectionner un pays…",
+    "countrySearchPlaceholder": "Rechercher un pays…",
+    "countryEmpty": "Aucun pays trouvé.",
+    "currencyLabel": "Devise *",
+    "currencyPlaceholder": "Sélectionner une devise…",
+    "card": {
+      "statusActive": "Actif",
+      "statusArchived": "Archivé",
+      "noData": "Pas encore de données",
+      "moreActions": "Plus d'actions",
+      "edit": "Modifier",
+      "archive": "Archiver",
+      "unarchive": "Désarchiver",
+      "openAria": "Ouvrir {name}"
+    },
+    "relative": {
+      "today": "aujourd'hui",
+      "yesterday": "hier",
+      "daysAgo": "il y a {days} j",
+      "monthsAgo": "il y a {months} mois",
+      "yearsAgo": "{years, plural, one {il y a # an} other {il y a # ans}}"
+    },
+    "toast": {
+      "added": "Produit ajouté",
+      "updated": "Produit mis à jour",
+      "archived": "Produit archivé",
+      "unarchived": "Produit désarchivé"
+    },
+    "empty": {
+      "title": "Ajoute ton premier produit.",
+      "body": "C'est d'ici que partent toutes tes campagnes COD. Donne-lui un nom, un pays, une devise — et c'est parti.",
+      "importHint": "Importer depuis un CSV",
+      "soon": "(bientôt)"
+    },
+    "filtered": {
+      "noMatchForQuery": "Aucun produit ne correspond à « {query} ».",
+      "noArchived": "Aucun produit archivé.",
+      "noForFilter": "Aucun produit pour ce filtre."
+    },
+    "detail": {
+      "backToList": "Produits",
+      "archivedBadge": "Archivé",
+      "noMonths": "Aucun mois disponible pour ce produit."
+    }
+  },
+  "months": {
+    "tabs": "Sélection du mois",
+    "prev": "Mois précédents",
+    "next": "Mois suivants",
+    "viewAll": "Voir tous les mois",
+    "addMonth": "Ajouter",
+    "noMonths": "Aucun mois.",
+    "newMonth": "Nouveau mois",
+    "newMonthDesc": "Ajoute un mois de suivi à ce produit.",
+    "monthLabel": "Mois *",
+    "labelLabel": "Étiquette *",
+    "alreadyExists": "Ce mois existe déjà pour ce produit.",
+    "copyFromTitle": "Repartir des chiffres de {label}",
+    "copyFromDesc": "Recopie tes coûts du mois précédent. Tes ventes repartent de zéro.",
+    "submit": "Ajouter",
+    "submitting": "Ajout en cours…",
+    "added": "Mois ajouté"
+  },
+  "entries": {
+    "save": {
+      "dirty": "Modifications non enregistrées…",
+      "saving": "Enregistrement…",
+      "saved": "Enregistré {ago}",
+      "justNow": "à l'instant",
+      "secondsAgo": "il y a {seconds} s",
+      "minutesAgo": "il y a {minutes} min",
+      "hoursAgo": "il y a {hours} h",
+      "offline": "Hors ligne — réessai automatique au retour du réseau",
+      "error": "Échec de l'enregistrement.",
+      "retry": "Réessayer",
+      "toastFail": "Échec — réessayer."
+    },
+    "sales": {
+      "title": "Ventes",
+      "leads": "Leads",
+      "orders": "Commandes",
+      "delivered": "Livrées",
+      "revenue": "Chiffre d'affaires ({currency})"
+    },
+    "costs": {
+      "title": "Coûts",
+      "ads": "Pub",
+      "tests": "Tests",
+      "product": "Coût produit",
+      "delivery": "Livraison",
+      "bonus": "Bonus agents",
+      "adAccount": "Comptes pub"
+    },
+    "stock": {
+      "title": "Stock",
+      "initial": "Stock initial",
+      "current": "Stock actuel"
+    }
+  },
+  "metrics": {
+    "netProfit": "Bénéfice net",
+    "netProfitFormula": "Chiffre d'affaires − Coûts",
+    "netProfitHint": "CA − Coûts",
+    "roas": "ROAS",
+    "roasFormula": "Chiffre d'affaires / Dépenses pub",
+    "roasHint": "CA / Pub",
+    "margin": "Marge",
+    "marginFormula": "Bénéfice net / Chiffre d'affaires",
+    "marginHint": "Bénéfice / CA",
+    "delivery": "Livraison",
+    "deliveryFormula": "Commandes livrées / Commandes",
+    "deliveryHint": "Livrées / Cmd",
+    "totalSpend": "Dépenses totales",
+    "totalSpendFormula": "Somme de tous les coûts du mois",
+    "totalSpendDashboardFormula": "Somme des coûts des produits",
+    "conversion": "Conversion",
+    "conversionFormula": "Commandes / Leads",
+    "epo": "EPO",
+    "epoFormula": "Bénéfice / Commandes",
+    "costPerDelivered": "Coût / livré",
+    "costPerDeliveredFormula": "Coûts totaux / Commandes livrées",
+    "avgRevenuePerOrder": "Rev / Cmd",
+    "avgRevenuePerOrderFormula": "Chiffre d'affaires / Commandes",
+    "avgRevenuePerDelivered": "Rev / livré",
+    "avgRevenuePerDeliveredFormula": "Chiffre d'affaires / Commandes livrées",
+    "breakEvenLead": "Lead break-even",
+    "breakEvenLeadFormula": "Coût par lead maximum pour rester rentable",
+    "stockDaysLeft": "Stock — jours restants",
+    "stockDaysLeftFormula": "Stock actuel ÷ (Livrées / Jours écoulés)",
+    "revenue": "Chiffre d'affaires",
+    "revenueFormula": "Somme du CA des produits",
+    "marginShort": "Marge",
+    "tone": {
+      "good": "positif",
+      "bad": "négatif",
+      "critical": "critique"
+    },
+    "outOfStockSoon": "Rupture proche"
+  },
+  "charts": {
+    "loading": "Chargement du graphique",
+    "section": "Graphiques du mois",
+    "tabs": {
+      "funnel": "Tunnel",
+      "costs": "Coûts",
+      "trend": "Tendance"
+    },
+    "funnel": {
+      "leads": "Leads",
+      "orders": "Commandes",
+      "delivered": "Livrées",
+      "emptyHint": "Saisis tes leads, commandes et livraisons pour voir le tunnel.",
+      "stage": "Étape",
+      "value": "Valeur",
+      "percentOfLeads": "% des leads",
+      "dropFromPrev": "Perte vs précédente"
+    },
+    "costs": {
+      "spent": "Dépensé",
+      "noSpend": "Aucune dépense enregistrée pour ce mois.",
+      "category": "Catégorie",
+      "amount": "Montant",
+      "share": "Part",
+      "other": "Autres",
+      "ads": "Pub",
+      "tests": "Tests",
+      "adAccount": "Comptes pub",
+      "product": "Coût produit",
+      "delivery": "Livraison",
+      "bonus": "Bonus agents"
+    },
+    "trend": {
+      "needSecondMonth": "Ajoute un second mois pour voir l'évolution.",
+      "monthCol": "Mois",
+      "netProfitCol": "Bénéfice net",
+      "current": "(actuel)",
+      "vsPrev": "vs mois précédent"
+    }
+  },
+  "settings": {
+    "title": "Paramètres"
+  },
+  "agents": {
+    "title": "Agents"
+  },
+  "stock": {
+    "title": "Stock"
+  },
+  "errors": {
+    "unknown": "Erreur inconnue.",
+    "invalidId": "Identifiant invalide.",
+    "invalidProductId": "Identifiant produit invalide.",
+    "invalidMonthId": "Identifiant mois invalide.",
+    "invalidCurrency": "Devise invalide."
+  }
+}

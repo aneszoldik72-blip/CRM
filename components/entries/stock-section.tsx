@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import {
@@ -17,18 +18,19 @@ export function StockSection({
 }: {
   onFieldChange: (field: EntryField, value: number | null) => void;
 }) {
+  const t = useTranslations("entries.stock");
   const form = useFormContext<EntryValues>();
 
   return (
     <section className="grid gap-4">
-      <h2 className="text-base font-semibold tracking-tight">Stock</h2>
+      <h2 className="text-base font-semibold tracking-tight">{t("title")}</h2>
 
       <FormField
         control={form.control}
         name="initial_stock"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Stock initial</FormLabel>
+            <FormLabel>{t("initial")}</FormLabel>
             <FormControl>
               <IntegerInput
                 value={field.value ?? null}
@@ -50,7 +52,7 @@ export function StockSection({
         name="current_stock"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Stock actuel</FormLabel>
+            <FormLabel>{t("current")}</FormLabel>
             <FormControl>
               <IntegerInput
                 value={field.value ?? null}

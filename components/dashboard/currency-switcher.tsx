@@ -1,13 +1,15 @@
 "use client";
 
 import { useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { updateDefaultCurrencyAction } from "@/app/(app)/dashboard/actions";
+import { updateDefaultCurrencyAction } from "@/app/[locale]/(app)/dashboard/actions";
 import { BASE_CURRENCIES, type BaseCurrency } from "@/lib/validators/profile";
 
 export function CurrencySwitcher({ selected }: { selected: BaseCurrency }) {
+  const t = useTranslations("dashboard");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -28,7 +30,7 @@ export function CurrencySwitcher({ selected }: { selected: BaseCurrency }) {
   return (
     <div
       role="tablist"
-      aria-label="Devise des totaux"
+      aria-label={t("currencyTabLabel")}
       className={cn(
         "flex items-center gap-1 overflow-x-auto rounded-lg border border-border bg-card p-1 text-xs",
         "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden",

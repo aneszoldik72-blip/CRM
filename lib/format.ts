@@ -1,13 +1,17 @@
 // All formatters are pure and locale-aware. Default locale matches the app
-// default ("fr-FR"); callers can override when i18n lands.
+// default ("fr-FR"); callers pass the current request locale (BCP-47 tag)
+// from i18n/routing#bcp47.
 
 const DEFAULT_LOCALE = "fr-FR";
 
+// Arabic locales render digits as Arabic-Indic by default, which misaligns
+// tabular columns. Force Latin digits in number/currency output to match the
+// rest of the UI.
 function numberFmt(
   locale: string,
   options: Intl.NumberFormatOptions,
 ): Intl.NumberFormat {
-  return new Intl.NumberFormat(locale, options);
+  return new Intl.NumberFormat(locale, { numberingSystem: "latn", ...options });
 }
 
 export function formatCurrency(

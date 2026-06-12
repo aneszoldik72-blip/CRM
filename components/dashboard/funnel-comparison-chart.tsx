@@ -1,7 +1,9 @@
 "use client";
 
-import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 
+import { Link } from "@/i18n/navigation";
+import { bcp47, type AppLocale } from "@/i18n/routing";
 import { getCountry } from "@/lib/data/countries";
 import { formatNumber, formatPercent } from "@/lib/format";
 
@@ -21,21 +23,24 @@ export function FunnelComparisonChart({
 }: {
   products: FunnelRow[];
 }) {
+  const t = useTranslations("dashboard");
+  const tFunnel = useTranslations("charts.funnel");
+  const locale = useLocale() as AppLocale;
+  const bcp = bcp47(locale);
+
   const withTraffic = products.filter(
     (p) => p.leads > 0 || p.orders > 0 || p.delivered > 0,
   );
   if (withTraffic.length === 0) {
     return (
       <section
-        aria-label="Tunnels par produit"
+        aria-label={t("funnels")}
         className="flex flex-col gap-4 rounded-xl border border-border bg-card p-5"
       >
         <h2 className="text-base font-semibold tracking-tight">
-          Tunnels par produit
+          {t("funnels")}
         </h2>
-        <p className="text-xs text-muted-foreground">
-          Aucun produit avec des leads ou commandes ce mois.
-        </p>
+        <p className="text-xs text-muted-foreground">{t("noFunnelData")}</p>
       </section>
     );
   }
@@ -43,14 +48,19 @@ export function FunnelComparisonChart({
   const visible = withTraffic.slice(0, MAX_VISIBLE);
   const hidden = withTraffic.length - visible.length;
   const opacities = [1, 0.7, 0.4] as const;
+  const stageLabels = [
+    tFunnel("leads"),
+    tFunnel("orders"),
+    tFunnel("delivered"),
+  ];
 
   return (
     <section
-      aria-label="Tunnels par produit"
+      aria-label={t("funnels")}
       className="flex flex-col gap-5 rounded-xl border border-border bg-card p-5"
     >
       <h2 className="text-base font-semibold tracking-tight">
-        Tunnels par produit
+        {t("funnels")}
       </h2>
 
       <ul className="flex flex-col gap-5">
@@ -76,9 +86,9 @@ export function FunnelComparisonChart({
                 </Link>
                 {deliveryRate !== null && (
                   <span className="text-xs text-muted-foreground">
-                    Livraison{" "}
+                    {t("delivery")}{" "}
                     <span className="text-foreground">
-                      {formatPercent(deliveryRate)}
+                      {formatPercent(deliveryRate, bcp)}
                     </span>
                   </span>
                 )}
@@ -87,7 +97,7 @@ export function FunnelComparisonChart({
                 {stages.map((value, i) => {
                   const widthPct =
                     value > 0 ? Math.max((value / max) * 100, 6) : 0;
-                  const label = ["Leads", "Commandes", "Livrées"][i];
+                  const label = stageLabels[i]!;
                   return (
                     <div
                       key={label}
@@ -108,7 +118,7 @@ export function FunnelComparisonChart({
                         />
                       </div>
                       <span className="text-end text-xs font-medium tabular-nums text-foreground">
-                        {formatNumber(value)}
+                        {formatNumber(value, bcp)}
                       </span>
                     </div>
                   );
@@ -121,7 +131,7 @@ export function FunnelComparisonChart({
 
       {hidden > 0 && (
         <p className="text-xs text-muted-foreground">
-          + {hidden} autre{hidden > 1 ? "s" : ""} dans le tableau
+          {t("moreInTable", { count: hidden })}
         </p>
       )}
     </section>

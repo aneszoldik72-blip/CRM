@@ -1,0 +1,399 @@
+{
+  "common": {
+    "appName": "VOIDCRAFT",
+    "appTagline": "The CRM for COD dropshippers.",
+    "cancel": "Cancel",
+    "save": "Save",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "close": "Close",
+    "back": "Back",
+    "loading": "Loading…",
+    "search": "Search",
+    "showData": "Show data",
+    "more": "More",
+    "total": "Total"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "agents": "Agents",
+    "stock": "Stock",
+    "settings": "Settings",
+    "primary": "Primary navigation",
+    "appLinks": "Main application links",
+    "openMenu": "Open menu",
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar",
+    "collapse": "Collapse"
+  },
+  "user": {
+    "menu": "User menu",
+    "profile": "Profile",
+    "settings": "Settings",
+    "theme": "Theme",
+    "help": "Help & support",
+    "signOut": "Sign out",
+    "fallback": "User"
+  },
+  "theme": {
+    "toLight": "Switch to light theme",
+    "toDark": "Switch to dark theme"
+  },
+  "language": {
+    "label": "Change language",
+    "fr": "Français",
+    "ar": "العربية",
+    "en": "English"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back.",
+      "subtitle": "Sign in to pick up where you left off.",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "rememberMe": "Keep me signed in",
+      "forgotPassword": "Forgot password?",
+      "submitting": "Signing in…",
+      "submit": "Sign in",
+      "noAccount": "No account yet?",
+      "signupCta": "Sign up"
+    },
+    "signup": {
+      "title": "Create your workspace.",
+      "subtitle": "A minute is all it takes.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "emailHelp": "We'll send you a confirmation link.",
+      "passwordLabel": "Password",
+      "passwordHelp": "At least 8 characters.",
+      "fullNameLabel": "Full name",
+      "fullNameOptional": "(optional)",
+      "fullNameHelp": "How you'd like us to address you.",
+      "localeLabel": "Language",
+      "submitting": "Creating…",
+      "submit": "Create my account",
+      "termsPrefix": "By continuing, you agree to our",
+      "terms": "Terms",
+      "termsMiddle": "and our",
+      "privacy": "Privacy policy",
+      "hasAccount": "Already have an account?",
+      "loginCta": "Sign in"
+    },
+    "forgot": {
+      "title": "Forgot your password?",
+      "subtitle": "No worries. Give us your email and we'll send you a link.",
+      "emailLabel": "Email",
+      "submit": "Send the link",
+      "submitting": "Sending…",
+      "backToLogin": "← Back",
+      "sentTitle": "Email sent.",
+      "sentBodyWithEmail": "We sent a reset link to <strong>{email}</strong>. Click it to choose a new password.",
+      "resend": "Resend the link",
+      "resendCooldown": "Resend in {seconds}s",
+      "backToLoginLong": "← Back to sign in"
+    },
+    "verify": {
+      "title": "Check your inbox.",
+      "bodyWithEmail": "We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account. If you don't see it, check your spam.",
+      "bodyNoEmail": "We sent a confirmation link to your email address. Click it to activate your account. If you don't see it, check your spam.",
+      "resend": "Resend the link",
+      "resending": "Sending…",
+      "resendCooldown": "Resend in {seconds}s",
+      "noEmail": "No email address to use.",
+      "resent": "Link resent to {email}",
+      "changeEmail": "Change email",
+      "backToLogin": "Back to sign in"
+    },
+    "reset": {
+      "title": "New password.",
+      "subtitle": "Pick a strong one and keep it safe.",
+      "passwordLabel": "New password",
+      "confirmLabel": "Confirm it",
+      "submit": "Update",
+      "submitting": "Updating…"
+    },
+    "password": {
+      "lenLabel": "At least 8 characters",
+      "upperLabel": "One uppercase letter",
+      "numberLabel": "One number",
+      "symbolLabel": "One symbol"
+    },
+    "errors": {
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Invalid email.",
+      "passwordRequired": "Password is required.",
+      "passwordTooShort": "At least 8 characters.",
+      "passwordMismatch": "Passwords do not match.",
+      "fullNameTooLong": "Name too long.",
+      "invalidCredentials": "Wrong email or password."
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "monthLabel": "Month",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "totalsOfMonth": "Monthly totals",
+    "currencyTabLabel": "Totals currency",
+    "netProfitThisMonth": "Net profit this month",
+    "noDataForMonth": "No data yet for this month",
+    "productsActive": "{count, plural, one {# active product} other {# active products}}",
+    "orders": "{count} orders",
+    "delivered": "{count} delivered",
+    "convertedTo": "Totals converted to",
+    "ratesStale": "rates unavailable — totals are indicative",
+    "ratesUpdatedOn": "rates updated on {date}",
+    "ratesUpdatedDaily": "rates updated daily",
+    "noDataFooter": "{count, plural, one {# product without data this month.} other {# products without data this month.}}",
+    "welcome": "Welcome.",
+    "addFirstProduct": "Add your first product to see how it's going.",
+    "addProductCta": "Add a product",
+    "profitByProduct": "Profit by product",
+    "profitByProductLabel": "Profit by product",
+    "noProductsThisMonth": "No products with data for this month.",
+    "moreRows": "+ {count, plural, one {# more} other {# more}} — see the table",
+    "moreInTable": "+ {count, plural, one {# more} other {# more}} in the table",
+    "funnels": "Funnels by product",
+    "noFunnelData": "No products with leads or orders this month.",
+    "delivery": "Delivery",
+    "tableSection": "Per-product detail",
+    "table": {
+      "product": "Product",
+      "currency": "Currency",
+      "revenue": "Revenue",
+      "spend": "Spend",
+      "profit": "Profit",
+      "margin": "Margin",
+      "roas": "ROAS",
+      "delivery": "Delivery",
+      "all": "All",
+      "withData": "With data",
+      "searchPlaceholder": "Search a product…",
+      "searchAria": "Search a product",
+      "noMatch": "No product matches.",
+      "openProduct": "Open {name}",
+      "noEntryThisMonth": "No data for this month"
+    }
+  },
+  "products": {
+    "title": "Products",
+    "filterByStatus": "Filter by status",
+    "active": "Active",
+    "archived": "Archived",
+    "all": "All",
+    "searchPlaceholder": "Search a product…",
+    "searchAria": "Search a product",
+    "clearSearch": "Clear search",
+    "addProduct": "Add a product",
+    "addProductShort": "Add",
+    "newProduct": "New product",
+    "newProductDesc": "Give it a name, a country, a currency.",
+    "editProduct": "Edit product",
+    "editProductDesc": "Update this product's information.",
+    "submitAdd": "Add",
+    "submitEdit": "Update",
+    "submittingCreate": "Adding…",
+    "submittingUpdate": "Updating…",
+    "nameLabel": "Product name *",
+    "namePlaceholder": "e.g. Slim Fit T-Shirt",
+    "countryLabel": "Country *",
+    "countryPlaceholder": "Select a country…",
+    "countrySearchPlaceholder": "Search a country…",
+    "countryEmpty": "No country found.",
+    "currencyLabel": "Currency *",
+    "currencyPlaceholder": "Select a currency…",
+    "card": {
+      "statusActive": "Active",
+      "statusArchived": "Archived",
+      "noData": "No data yet",
+      "moreActions": "More actions",
+      "edit": "Edit",
+      "archive": "Archive",
+      "unarchive": "Unarchive",
+      "openAria": "Open {name}"
+    },
+    "relative": {
+      "today": "today",
+      "yesterday": "yesterday",
+      "daysAgo": "{days}d ago",
+      "monthsAgo": "{months} months ago",
+      "yearsAgo": "{years, plural, one {# year ago} other {# years ago}}"
+    },
+    "toast": {
+      "added": "Product added",
+      "updated": "Product updated",
+      "archived": "Product archived",
+      "unarchived": "Product unarchived"
+    },
+    "empty": {
+      "title": "Add your first product.",
+      "body": "This is where every COD campaign starts. Give it a name, a country, a currency — and you're off.",
+      "importHint": "Import from a CSV",
+      "soon": "(soon)"
+    },
+    "filtered": {
+      "noMatchForQuery": "No product matches « {query} ».",
+      "noArchived": "No archived products.",
+      "noForFilter": "No product for this filter."
+    },
+    "detail": {
+      "backToList": "Products",
+      "archivedBadge": "Archived",
+      "noMonths": "No month available for this product."
+    }
+  },
+  "months": {
+    "tabs": "Month selector",
+    "prev": "Earlier months",
+    "next": "Later months",
+    "viewAll": "View all months",
+    "addMonth": "Add",
+    "noMonths": "No months.",
+    "newMonth": "New month",
+    "newMonthDesc": "Add a tracking month for this product.",
+    "monthLabel": "Month *",
+    "labelLabel": "Label *",
+    "alreadyExists": "This month already exists for this product.",
+    "copyFromTitle": "Start from {label}'s numbers",
+    "copyFromDesc": "Copies the previous month's costs. Sales start from zero.",
+    "submit": "Add",
+    "submitting": "Adding…",
+    "added": "Month added"
+  },
+  "entries": {
+    "save": {
+      "dirty": "Unsaved changes…",
+      "saving": "Saving…",
+      "saved": "Saved {ago}",
+      "justNow": "just now",
+      "secondsAgo": "{seconds}s ago",
+      "minutesAgo": "{minutes} min ago",
+      "hoursAgo": "{hours}h ago",
+      "offline": "Offline — will retry when the network is back",
+      "error": "Save failed.",
+      "retry": "Retry",
+      "toastFail": "Failed — try again."
+    },
+    "sales": {
+      "title": "Sales",
+      "leads": "Leads",
+      "orders": "Orders",
+      "delivered": "Delivered",
+      "revenue": "Revenue ({currency})"
+    },
+    "costs": {
+      "title": "Costs",
+      "ads": "Ads",
+      "tests": "Tests",
+      "product": "Product cost",
+      "delivery": "Delivery",
+      "bonus": "Agent bonus",
+      "adAccount": "Ad accounts"
+    },
+    "stock": {
+      "title": "Stock",
+      "initial": "Initial stock",
+      "current": "Current stock"
+    }
+  },
+  "metrics": {
+    "netProfit": "Net profit",
+    "netProfitFormula": "Revenue − Costs",
+    "netProfitHint": "Rev − Costs",
+    "roas": "ROAS",
+    "roasFormula": "Revenue / Ad spend",
+    "roasHint": "Rev / Ads",
+    "margin": "Margin",
+    "marginFormula": "Net profit / Revenue",
+    "marginHint": "Profit / Rev",
+    "delivery": "Delivery",
+    "deliveryFormula": "Delivered orders / Orders",
+    "deliveryHint": "Delivered / Orders",
+    "totalSpend": "Total spend",
+    "totalSpendFormula": "Sum of all monthly costs",
+    "totalSpendDashboardFormula": "Sum of product costs",
+    "conversion": "Conversion",
+    "conversionFormula": "Orders / Leads",
+    "epo": "EPO",
+    "epoFormula": "Profit / Orders",
+    "costPerDelivered": "Cost / delivered",
+    "costPerDeliveredFormula": "Total costs / Delivered orders",
+    "avgRevenuePerOrder": "Rev / Order",
+    "avgRevenuePerOrderFormula": "Revenue / Orders",
+    "avgRevenuePerDelivered": "Rev / delivered",
+    "avgRevenuePerDeliveredFormula": "Revenue / Delivered orders",
+    "breakEvenLead": "Break-even lead",
+    "breakEvenLeadFormula": "Maximum cost per lead to remain profitable",
+    "stockDaysLeft": "Stock — days left",
+    "stockDaysLeftFormula": "Current stock ÷ (Delivered / Days elapsed)",
+    "revenue": "Revenue",
+    "revenueFormula": "Sum of product revenue",
+    "marginShort": "Margin",
+    "tone": {
+      "good": "positive",
+      "bad": "negative",
+      "critical": "critical"
+    },
+    "outOfStockSoon": "Running out"
+  },
+  "charts": {
+    "loading": "Loading chart",
+    "section": "Monthly charts",
+    "tabs": {
+      "funnel": "Funnel",
+      "costs": "Costs",
+      "trend": "Trend"
+    },
+    "funnel": {
+      "leads": "Leads",
+      "orders": "Orders",
+      "delivered": "Delivered",
+      "emptyHint": "Enter your leads, orders and deliveries to see the funnel.",
+      "stage": "Stage",
+      "value": "Value",
+      "percentOfLeads": "% of leads",
+      "dropFromPrev": "Drop vs previous"
+    },
+    "costs": {
+      "spent": "Spent",
+      "noSpend": "No spend recorded for this month.",
+      "category": "Category",
+      "amount": "Amount",
+      "share": "Share",
+      "other": "Other",
+      "ads": "Ads",
+      "tests": "Tests",
+      "adAccount": "Ad accounts",
+      "product": "Product cost",
+      "delivery": "Delivery",
+      "bonus": "Agent bonus"
+    },
+    "trend": {
+      "needSecondMonth": "Add a second month to see the change.",
+      "monthCol": "Month",
+      "netProfitCol": "Net profit",
+      "current": "(current)",
+      "vsPrev": "vs previous month"
+    }
+  },
+  "settings": {
+    "title": "Settings"
+  },
+  "agents": {
+    "title": "Agents"
+  },
+  "stock": {
+    "title": "Stock"
+  },
+  "errors": {
+    "unknown": "Unknown error.",
+    "invalidId": "Invalid identifier.",
+    "invalidProductId": "Invalid product identifier.",
+    "invalidMonthId": "Invalid month identifier.",
+    "invalidCurrency": "Invalid currency."
+  }
+}

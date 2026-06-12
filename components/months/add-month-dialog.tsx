@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { Loader2 } from "lucide-react";
 
+import { bcp47, type AppLocale } from "@/i18n/routing";
 import {
   currentYyyymm,
   formatMonthLabel,
@@ -11,7 +13,7 @@ import {
   yyyymmFromDate,
 } from "@/lib/date";
 import type { MonthRow } from "@/lib/db/months";
-import { createMonthAction } from "@/app/(app)/products/[id]/actions";
+import { createMonthAction } from "@/app/[locale]/(app)/products/[id]/actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -39,6 +41,11 @@ export function AddMonthDialog({
   existingMonths,
   onCreated,
 }: AddMonthDialogProps) {
+  const t = useTranslations("months");
+  const tCommon = useTranslations("common");
+  const locale = useLocale() as AppLocale;
+  const bcp = bcp47(locale);
+
   const latest = existingMonths[0] ?? null;
   const usedYyyymm = useMemo(
     () => new Set(existingMonths.map((m) => yyyymmFromDate(m.start_date))),
@@ -48,7 +55,6 @@ export function AddMonthDialog({
   const defaultMonth = useMemo(() => {
     if (latest) {
       const candidate = nextYyyymm(yyyymmFromDate(latest.start_date));
-      // Skip forward until we find a slot that isn't already taken.
       let cursor = candidate;
       for (let i = 0; i < 24 && usedYyyymm.has(cursor); i++) {
         cursor = nextYyyymm(cursor);
@@ -59,30 +65,28 @@ export function AddMonthDialog({
   }, [latest, usedYyyymm]);
 
   const [month, setMonth] = useState(defaultMonth);
-  const [label, setLabel] = useState(formatMonthLabel(defaultMonth));
+  const [label, setLabel] = useState(formatMonthLabel(defaultMonth, bcp));
   const [copyFromPrevious, setCopyFromPrevious] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [pending, startTransition] = useTransition();
   const userTouchedLabel = useRef(false);
 
-  // Reset form whenever the dialog is opened so the defaults reflect the
-  // latest month list (e.g., after a previous create).
   useEffect(() => {
     if (open) {
       setMonth(defaultMonth);
-      setLabel(formatMonthLabel(defaultMonth));
+      setLabel(formatMonthLabel(defaultMonth, bcp));
       setCopyFromPrevious(false);
       setServerError(null);
       setFieldErrors({});
       userTouchedLabel.current = false;
     }
-  }, [open, defaultMonth]);
+  }, [open, defaultMonth, bcp]);
 
   function onMonthChange(value: string) {
     setMonth(value);
     if (!userTouchedLabel.current && /^\d{4}-\d{2}$/.test(value)) {
-      setLabel(formatMonthLabel(value));
+      setLabel(formatMonthLabel(value, bcp));
     }
   }
 
@@ -99,7 +103,7 @@ export function AddMonthDialog({
     setFieldErrors({});
 
     if (alreadyExists) {
-      setFieldErrors({ month: "Ce mois existe déjà pour ce produit." });
+      setFieldErrors({ month: t("alreadyExists") });
       return;
     }
 
@@ -119,20 +123,18 @@ export function AddMonthDialog({
     });
   }
 
-  const range = formatMonthRange(month);
+  const range = formatMonthRange(month, bcp);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Nouveau mois</DialogTitle>
-          <DialogDescription>
-            Ajoute un mois de suivi à ce produit.
-          </DialogDescription>
+          <DialogTitle>{t("newMonth")}</DialogTitle>
+          <DialogDescription>{t("newMonthDesc")}</DialogDescription>
         </DialogHeader>
         <form onSubmit={submit} className="grid gap-5" noValidate>
           <div className="grid gap-2">
-            <Label htmlFor="month-input">Mois *</Label>
+            <Label htmlFor="month-input">{t("monthLabel")}</Label>
             <Input
               id="month-input"
               type="month"
@@ -153,7 +155,7 @@ export function AddMonthDialog({
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="label-input">Étiquette *</Label>
+            <Label htmlFor="label-input">{t("labelLabel")}</Label>
             <Input
               id="label-input"
               type="text"
@@ -181,11 +183,10 @@ export function AddMonthDialog({
               />
               <span className="flex flex-col gap-0.5">
                 <span className="font-medium">
-                  Repartir des chiffres de {latest.label}
+                  {t("copyFromTitle", { label: latest.label })}
                 </span>
                 <span className="text-xs text-muted-foreground">
-                  Recopie tes coûts du mois précédent. Tes ventes repartent
-                  de zéro.
+                  {t("copyFromDesc")}
                 </span>
               </span>
             </label>
@@ -201,7 +202,7 @@ export function AddMonthDialog({
               disabled={pending}
               className="h-10 px-4"
             >
-              Annuler
+              {tCommon("cancel")}
             </Button>
             <Button
               type="submit"
@@ -210,10 +211,10 @@ export function AddMonthDialog({
             >
               {pending ? (
                 <>
-                  <Loader2 className="size-4 animate-spin" /> Ajout en cours…
+                  <Loader2 className="size-4 animate-spin" /> {t("submitting")}
                 </>
               ) : (
-                "Ajouter"
+                t("submit")
               )}
             </Button>
           </div>

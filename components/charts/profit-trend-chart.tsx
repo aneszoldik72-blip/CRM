@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Bar,
   BarChart,
@@ -13,6 +14,7 @@ import {
 } from "recharts";
 import { useWatch, type Control } from "react-hook-form";
 
+import { bcp47, type AppLocale } from "@/i18n/routing";
 import { formatCurrency, formatCurrencyShort } from "@/lib/format";
 import { computeNetProfitCents } from "@/lib/metrics";
 import type { EntryValues } from "@/lib/validators/entry";
@@ -31,11 +33,12 @@ type TooltipProps = {
   }[];
 };
 
-function shortMonth(startDate: string): string {
+function shortMonth(startDate: string, locale: string): string {
   const d = new Date(`${startDate}T00:00:00Z`);
-  return new Intl.DateTimeFormat("fr-FR", {
+  return new Intl.DateTimeFormat(locale, {
     month: "short",
     timeZone: "UTC",
+    numberingSystem: "latn",
   }).format(d);
 }
 
@@ -50,6 +53,11 @@ export default function ProfitTrendChart({
   serverTrend: TrendPoint[];
   currentMonthId: string;
 }) {
+  const t = useTranslations("charts.trend");
+  const tCommon = useTranslations("common");
+  const locale = useLocale() as AppLocale;
+  const bcp = bcp47(locale);
+
   const values = useWatch({ control }) as EntryValues;
   const liveCurrentProfit = computeNetProfitCents({
     revenue_cents: values.revenue_cents ?? 0,
@@ -72,10 +80,10 @@ export default function ProfitTrendChart({
         profitCents,
         isCurrent: d.id === currentMonthId,
         delta,
-        x: shortMonth(d.startDate),
+        x: shortMonth(d.startDate, bcp),
       };
     });
-  }, [serverTrend, liveCurrentProfit, currentMonthId]);
+  }, [serverTrend, liveCurrentProfit, currentMonthId, bcp]);
 
   const [animated, setAnimated] = useState(false);
   useEffect(() => {
@@ -101,14 +109,16 @@ export default function ProfitTrendChart({
             tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
             axisLine={false}
             tickLine={false}
-            tickFormatter={(v: number) => formatCurrencyShort(v, currency)}
+            tickFormatter={(v: number) => formatCurrencyShort(v, currency, bcp)}
             width={56}
           />
           {hasNegative && (
             <ReferenceLine y={0} stroke="var(--border)" strokeWidth={1} />
           )}
           <Tooltip
-            content={<TrendTooltip currency={currency} />}
+            content={
+              <TrendTooltip currency={currency} locale={bcp} vsPrev={t("vsPrev")} />
+            }
             cursor={{ fill: "var(--muted)", opacity: 0.5 }}
           />
           <Bar
@@ -133,11 +143,36 @@ export default function ProfitTrendChart({
 
       {data.length === 1 && (
         <p className="text-center text-xs text-muted-foreground">
-          Ajoute un second mois pour voir l&apos;évolution.
+          {t("needSecondMonth")}
         </p>
       )}
 
-      <TrendDataTable data={data} currency={currency} />
+      <details className="text-xs text-muted-foreground">
+        <summary className="cursor-pointer">{tCommon("showData")}</summary>
+        <table className="mt-2 w-full">
+          <thead>
+            <tr>
+              <th className="py-1 text-start font-medium">{t("monthCol")}</th>
+              <th className="py-1 text-end font-medium">{t("netProfitCol")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((d) => (
+              <tr key={d.id}>
+                <td className="py-1">
+                  {d.label}
+                  {d.isCurrent && (
+                    <span className="ms-1 text-primary">{t("current")}</span>
+                  )}
+                </td>
+                <td className="py-1 text-end tabular-nums">
+                  {formatCurrency(d.profitCents, currency, bcp)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </details>
     </div>
   );
 }
@@ -146,7 +181,9 @@ function TrendTooltip({
   active,
   payload,
   currency,
-}: TooltipProps & { currency: string }) {
+  locale,
+  vsPrev,
+}: TooltipProps & { currency: string; locale: string; vsPrev: string }) {
   if (!active || !payload?.length) return null;
   const item = payload[0]?.payload;
   if (!item) return null;
@@ -154,7 +191,7 @@ function TrendTooltip({
     <div className="rounded-lg border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-md">
       <p className="font-medium">{item.label}</p>
       <p className="tabular-nums">
-        {formatCurrency(item.profitCents, currency)}
+        {formatCurrency(item.profitCents, currency, locale)}
       </p>
       {item.delta !== null && item.delta !== undefined && (
         <p
@@ -167,46 +204,9 @@ function TrendTooltip({
           }
         >
           {item.delta > 0 ? "▲ +" : item.delta < 0 ? "▼ " : ""}
-          {formatCurrency(Math.abs(item.delta), currency)} vs mois précédent
+          {formatCurrency(Math.abs(item.delta), currency, locale)} {vsPrev}
         </p>
       )}
     </div>
-  );
-}
-
-function TrendDataTable({
-  data,
-  currency,
-}: {
-  data: (TrendPoint & { isCurrent?: boolean })[];
-  currency: string;
-}) {
-  return (
-    <details className="text-xs text-muted-foreground">
-      <summary className="cursor-pointer">Afficher les données</summary>
-      <table className="mt-2 w-full">
-        <thead>
-          <tr>
-            <th className="py-1 text-start font-medium">Mois</th>
-            <th className="py-1 text-end font-medium">Bénéfice net</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((d) => (
-            <tr key={d.id}>
-              <td className="py-1">
-                {d.label}
-                {d.isCurrent && (
-                  <span className="ms-1 text-primary">(actuel)</span>
-                )}
-              </td>
-              <td className="py-1 text-end tabular-nums">
-                {formatCurrency(d.profitCents, currency)}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </details>
   );
 }

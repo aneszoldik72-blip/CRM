@@ -1,15 +1,24 @@
-// Maps stable validator error keys (e.g. "auth.password.tooShort") to French
-// strings shown in the UI. Replace with next-intl lookups when i18n lands.
-const MESSAGES: Record<string, string> = {
-  "auth.email.required": "Email requis.",
-  "auth.email.invalid": "Email invalide.",
-  "auth.password.required": "Mot de passe requis.",
-  "auth.password.tooShort": "Au moins 8 caractères.",
-  "auth.password.mismatch": "Les mots de passe ne sont pas identiques.",
-  "auth.fullName.tooLong": "Nom trop long.",
-  "auth.signin.invalidCredentials": "Email ou mot de passe incorrect.",
+"use client";
+
+import { useTranslations } from "next-intl";
+
+// Server-side validators emit stable error keys (e.g. "auth.password.tooShort").
+// Map them to localized strings via the auth.errors namespace.
+const KEY_MAP: Record<string, string> = {
+  "auth.email.required": "emailRequired",
+  "auth.email.invalid": "emailInvalid",
+  "auth.password.required": "passwordRequired",
+  "auth.password.tooShort": "passwordTooShort",
+  "auth.password.mismatch": "passwordMismatch",
+  "auth.fullName.tooLong": "fullNameTooLong",
+  "auth.signin.invalidCredentials": "invalidCredentials",
 };
 
-export function resolveAuthError(key: string): string {
-  return MESSAGES[key] ?? key;
+export function useResolveAuthError(): (key: string) => string {
+  const t = useTranslations("auth.errors");
+  return (key: string) => {
+    const sub = KEY_MAP[key];
+    if (sub) return t(sub);
+    return key;
+  };
 }

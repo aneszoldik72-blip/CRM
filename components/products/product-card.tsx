@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Archive, ArchiveRestore, MoreVertical, Pencil } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
 import { getCountry } from "@/lib/data/countries";
 import type { ProductRow } from "@/lib/db/products";
 import { Badge } from "@/components/ui/badge";
@@ -33,17 +34,20 @@ function initialsFromName(name: string) {
   );
 }
 
-function formatRelativeDate(iso: string): string {
-  const then = new Date(iso).getTime();
-  const now = Date.now();
-  const days = Math.floor((now - then) / (1000 * 60 * 60 * 24));
-  if (days < 1) return "aujourd'hui";
-  if (days === 1) return "hier";
-  if (days < 30) return `il y a ${days} j`;
-  const months = Math.floor(days / 30);
-  if (months < 12) return `il y a ${months} mois`;
-  const years = Math.floor(months / 12);
-  return `il y a ${years} an${years > 1 ? "s" : ""}`;
+function useRelativeDate(): (iso: string) => string {
+  const t = useTranslations("products.relative");
+  return (iso: string) => {
+    const then = new Date(iso).getTime();
+    const now = Date.now();
+    const days = Math.floor((now - then) / (1000 * 60 * 60 * 24));
+    if (days < 1) return t("today");
+    if (days === 1) return t("yesterday");
+    if (days < 30) return t("daysAgo", { days });
+    const months = Math.floor(days / 30);
+    if (months < 12) return t("monthsAgo", { months });
+    const years = Math.floor(months / 12);
+    return t("yearsAgo", { years });
+  };
 }
 
 export function ProductCard({
@@ -52,6 +56,8 @@ export function ProductCard({
   onEdit,
   onArchiveToggle,
 }: ProductCardProps) {
+  const t = useTranslations("products.card");
+  const formatRelativeDate = useRelativeDate();
   const country = getCountry(product.country);
   const archived = product.archived;
 
@@ -91,7 +97,7 @@ export function ProductCard({
                 archived ? "bg-muted-foreground" : "bg-emerald-500",
               )}
             />
-            {archived ? "Archivé" : "Actif"}
+            {archived ? t("statusArchived") : t("statusActive")}
           </Badge>
         </div>
       </div>
@@ -110,9 +116,7 @@ export function ProductCard({
             </>
           )}
         </p>
-        <p className="mt-2 text-xs text-muted-foreground">
-          Pas encore de données
-        </p>
+        <p className="mt-2 text-xs text-muted-foreground">{t("noData")}</p>
 
         <div className="absolute end-2 top-2 z-30">
           <DropdownMenu>
@@ -121,7 +125,7 @@ export function ProductCard({
                 <Button
                   variant="ghost"
                   size="icon-sm"
-                  aria-label="Plus d'actions"
+                  aria-label={t("moreActions")}
                 />
               }
               onClick={(e) => {
@@ -138,7 +142,7 @@ export function ProductCard({
                   onEdit(product);
                 }}
               >
-                <Pencil /> Modifier
+                <Pencil /> {t("edit")}
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={(e) => {
@@ -148,11 +152,11 @@ export function ProductCard({
               >
                 {archived ? (
                   <>
-                    <ArchiveRestore /> Désarchiver
+                    <ArchiveRestore /> {t("unarchive")}
                   </>
                 ) : (
                   <>
-                    <Archive /> Archiver
+                    <Archive /> {t("archive")}
                   </>
                 )}
               </DropdownMenuItem>
@@ -163,7 +167,7 @@ export function ProductCard({
 
       <Link
         href={`/products/${product.id}`}
-        aria-label={`Ouvrir ${product.name}`}
+        aria-label={t("openAria", { name: product.name })}
         className="absolute inset-0 z-20 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       />
     </article>

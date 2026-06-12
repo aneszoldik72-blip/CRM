@@ -1,17 +1,18 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
+import { Link, usePathname } from "@/i18n/navigation";
 import { ALL_NAV } from "@/lib/nav-items";
 
 export function MobileNav() {
+  const t = useTranslations("nav");
   const pathname = usePathname();
 
   return (
     <nav
-      aria-label="Navigation principale"
+      aria-label={t("primary")}
       className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card pb-[env(safe-area-inset-bottom)] md:hidden"
     >
       <ul className="grid grid-cols-5">
@@ -38,7 +39,7 @@ export function MobileNav() {
                   />
                 )}
                 <Icon className="size-5" />
-                <span className="truncate">{item.label}</span>
+                <span className="truncate">{t(item.labelKey)}</span>
               </Link>
             </li>
           );

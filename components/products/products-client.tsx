@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useOptimistic, useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
@@ -11,7 +12,7 @@ import {
   createProductAction,
   unarchiveProductAction,
   updateProductAction,
-} from "@/app/(app)/products/actions";
+} from "@/app/[locale]/(app)/products/actions";
 import { AddProductDialog } from "@/components/products/add-product-dialog";
 import { EditProductDialog } from "@/components/products/edit-product-dialog";
 import { ProductCard } from "@/components/products/product-card";
@@ -34,6 +35,7 @@ export function ProductsClient({
 }: {
   initialProducts: ProductRow[];
 }) {
+  const t = useTranslations("products");
   const searchParams = useSearchParams();
   const statusParam = searchParams.get("status");
   const status: ProductStatus =
@@ -102,7 +104,7 @@ export function ProductsClient({
 
         const res = await createProductAction(values);
         if (res.ok) {
-          toast.success("Produit ajouté");
+          toast.success(t("toast.added"));
         } else if (res.serverError) {
           toast.error(res.serverError);
         }
@@ -119,7 +121,7 @@ export function ProductsClient({
       startTransition(async () => {
         const res = await updateProductAction(id, values);
         if (res.ok) {
-          toast.success("Produit mis à jour");
+          toast.success(t("toast.updated"));
         } else if (res.serverError) {
           toast.error(res.serverError);
         }
@@ -137,7 +139,7 @@ export function ProductsClient({
       const res = await action(product.id);
       if (res.ok) {
         toast.success(
-          product.archived ? "Produit désarchivé" : "Produit archivé",
+          product.archived ? t("toast.unarchived") : t("toast.archived"),
         );
       } else if (res.serverError) {
         toast.error(res.serverError);
@@ -164,10 +166,10 @@ export function ProductsClient({
       ) : isFilteredEmpty ? (
         <div className="rounded-xl border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
           {query
-            ? `Aucun produit ne correspond à « ${query} ».`
+            ? t("filtered.noMatchForQuery", { query })
             : status === "archived"
-              ? "Aucun produit archivé."
-              : "Aucun produit pour ce filtre."}
+              ? t("filtered.noArchived")
+              : t("filtered.noForFilter")}
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
@@ -187,7 +189,7 @@ export function ProductsClient({
       <button
         type="button"
         onClick={() => setAddOpen(true)}
-        aria-label="Ajouter un produit"
+        aria-label={t("addProduct")}
         className="fixed bottom-20 end-4 z-30 flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95 sm:hidden"
       >
         <Plus className="size-6" />

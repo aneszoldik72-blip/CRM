@@ -1,8 +1,10 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
+import { bcp47, type AppLocale } from "@/i18n/routing";
 import {
   formatCurrency,
   formatDays,
@@ -42,35 +44,22 @@ function placeholder(kind: MetricValue["kind"]): string {
   }
 }
 
-function format(value: MetricValue, currency: string): string {
+function format(value: MetricValue, currency: string, locale: string): string {
   if (value.value === null) {
     const body = placeholder(value.kind);
     return value.kind === "currency" ? `${body}${currency}` : body;
   }
   switch (value.kind) {
     case "currency":
-      return formatCurrency(value.value, currency);
+      return formatCurrency(value.value, currency, locale);
     case "percent":
-      return formatPercent(value.value);
+      return formatPercent(value.value, locale);
     case "multiplier":
-      return formatMultiplier(value.value);
+      return formatMultiplier(value.value, locale);
     case "days":
-      return formatDays(Math.round(value.value));
+      return formatDays(Math.round(value.value), locale);
     case "count":
-      return formatNumber(value.value);
-  }
-}
-
-function ariaState(tone: MetricValue["tone"]): string {
-  switch (tone) {
-    case "good":
-      return "positif";
-    case "bad":
-      return "négatif";
-    case "critical":
-      return "critique";
-    case "neutral":
-      return "";
+      return formatNumber(value.value, locale);
   }
 }
 
@@ -100,14 +89,26 @@ export function KpiCard({
   currency,
   hint,
 }: KpiCardProps) {
+  const tTone = useTranslations("metrics.tone");
+  const tMetrics = useTranslations("metrics");
+  const locale = useLocale() as AppLocale;
+  const bcp = bcp47(locale);
+
   const isPrimary = variant === "primary";
   const isCritical = value.tone === "critical";
   const toneClass = cn(
     value.tone === "good" && "text-emerald-500",
     (value.tone === "bad" || value.tone === "critical") && "text-destructive",
   );
-  const formatted = format(value, currency);
-  const ariaTone = ariaState(value.tone);
+  const formatted = format(value, currency, bcp);
+  const ariaTone =
+    value.tone === "good"
+      ? tTone("good")
+      : value.tone === "bad"
+        ? tTone("bad")
+        : value.tone === "critical"
+          ? tTone("critical")
+          : "";
   const ariaLabel = `${label} : ${formatted}${ariaTone ? `, ${ariaTone}` : ""}`;
 
   const valueClasses = cn(
@@ -151,13 +152,11 @@ export function KpiCard({
       </Tooltip>
 
       {isPrimary && (
-        <p className="text-[11px] text-muted-foreground">
-          {hint ?? formula}
-        </p>
+        <p className="text-[11px] text-muted-foreground">{hint ?? formula}</p>
       )}
       {isCritical && !isPrimary && (
         <p className="text-[10px] font-medium text-destructive">
-          Rupture proche
+          {tMetrics("outOfStockSoon")}
         </p>
       )}
     </article>

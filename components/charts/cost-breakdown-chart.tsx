@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { useWatch, type Control } from "react-hook-form";
 
+import { bcp47, type AppLocale } from "@/i18n/routing";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import type { EntryValues } from "@/lib/validators/entry";
 
@@ -14,13 +16,13 @@ type Slice = {
   color: string;
 };
 
-const CATEGORIES: { key: keyof EntryValues; name: string; color: string }[] = [
-  { key: "ads_spend_cents", name: "Pub", color: "var(--chart-1)" },
-  { key: "test_spend_cents", name: "Tests", color: "var(--chart-2)" },
-  { key: "ad_account_cents", name: "Comptes pub", color: "var(--chart-3)" },
-  { key: "product_cost_cents", name: "Coût produit", color: "var(--chart-4)" },
-  { key: "service_cost_cents", name: "Livraison", color: "var(--chart-5)" },
-  { key: "bonus_cents", name: "Bonus agents", color: "var(--chart-6)" },
+const CATEGORIES: { key: keyof EntryValues; labelKey: string; color: string }[] = [
+  { key: "ads_spend_cents", labelKey: "ads", color: "var(--chart-1)" },
+  { key: "test_spend_cents", labelKey: "tests", color: "var(--chart-2)" },
+  { key: "ad_account_cents", labelKey: "adAccount", color: "var(--chart-3)" },
+  { key: "product_cost_cents", labelKey: "product", color: "var(--chart-4)" },
+  { key: "service_cost_cents", labelKey: "delivery", color: "var(--chart-5)" },
+  { key: "bonus_cents", labelKey: "bonus", color: "var(--chart-6)" },
 ];
 
 const SMALL_SLICE_THRESHOLD = 0.05;
@@ -37,23 +39,26 @@ export default function CostBreakdownChart({
   control: Control<EntryValues>;
   currency: string;
 }) {
+  const t = useTranslations("charts.costs");
+  const tCommon = useTranslations("common");
+  const locale = useLocale() as AppLocale;
+  const bcp = bcp47(locale);
+
   const values = useWatch({ control }) as EntryValues;
 
   const slices: Slice[] = useMemo(
     () =>
       CATEGORIES.map((c) => ({
         key: c.key,
-        name: c.name,
+        name: t(c.labelKey),
         cents: (values[c.key] as number | null) ?? 0,
         color: c.color,
       })),
-    [values],
+    [values, t],
   );
 
   const total = slices.reduce((sum, s) => sum + s.cents, 0);
 
-  // Collapse small slices into "Autres" for the donut only; legend keeps full
-  // breakdown.
   const donutData = useMemo(() => {
     if (total === 0) return [];
     const big: { name: string; cents: number; share: number; color: string }[] = [];
@@ -67,14 +72,14 @@ export default function CostBreakdownChart({
     if (small.length > 0) {
       const cents = small.reduce((a, s) => a + s.cents, 0);
       big.push({
-        name: "Autres",
+        name: t("other"),
         cents,
         share: cents / total,
         color: "var(--muted-foreground)",
       });
     }
     return big;
-  }, [slices, total]);
+  }, [slices, total, t]);
 
   const [animated, setAnimated] = useState(false);
   useEffect(() => {
@@ -85,7 +90,7 @@ export default function CostBreakdownChart({
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
   if (total === 0) {
-    return <EmptyDonut />;
+    return <EmptyDonut hint={t("noSpend")} />;
   }
 
   return (
@@ -93,7 +98,10 @@ export default function CostBreakdownChart({
       <div className="relative mx-auto h-[200px] w-full">
         <ResponsiveContainer width="100%" height={200}>
           <PieChart>
-            <Tooltip content={<DonutTooltip currency={currency} />} cursor={false} />
+            <Tooltip
+              content={<DonutTooltip currency={currency} locale={bcp} />}
+              cursor={false}
+            />
             <Pie
               data={donutData}
               dataKey="cents"
@@ -112,10 +120,10 @@ export default function CostBreakdownChart({
         </ResponsiveContainer>
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
           <p className="text-base font-semibold tabular-nums">
-            {formatCurrency(total, currency)}
+            {formatCurrency(total, currency, bcp)}
           </p>
           <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-            Dépensé
+            {t("spent")}
           </p>
         </div>
       </div>
@@ -139,9 +147,9 @@ export default function CostBreakdownChart({
                 {s.name}
               </span>
               <span className="tabular-nums">
-                {formatCurrency(s.cents, currency)}
+                {formatCurrency(s.cents, currency, bcp)}
                 <span className="ms-2 text-muted-foreground">
-                  {formatPercent(share)}
+                  {formatPercent(share, bcp)}
                 </span>
               </span>
             </li>
@@ -149,7 +157,31 @@ export default function CostBreakdownChart({
         })}
       </ul>
 
-      <CostDataTable slices={slices} currency={currency} total={total} />
+      <details className="text-xs text-muted-foreground">
+        <summary className="cursor-pointer">{tCommon("showData")}</summary>
+        <table className="mt-2 w-full">
+          <thead>
+            <tr>
+              <th className="py-1 text-start font-medium">{t("category")}</th>
+              <th className="py-1 text-end font-medium">{t("amount")}</th>
+              <th className="py-1 text-end font-medium">{t("share")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {slices.map((s) => (
+              <tr key={s.key}>
+                <td className="py-1">{s.name}</td>
+                <td className="py-1 text-end tabular-nums">
+                  {formatCurrency(s.cents, currency, bcp)}
+                </td>
+                <td className="py-1 text-end tabular-nums">
+                  {total > 0 ? formatPercent(s.cents / total, bcp) : "—"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </details>
     </div>
   );
 }
@@ -158,67 +190,32 @@ function DonutTooltip({
   active,
   payload,
   currency,
-}: TooltipProps & { currency: string }) {
+  locale,
+}: TooltipProps & { currency: string; locale: string }) {
   if (!active || !payload?.length) return null;
   const item = payload[0]?.payload;
   if (!item) return null;
   return (
     <div className="rounded-lg border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-md">
       <p className="font-medium">{item.name}</p>
-      <p className="tabular-nums">{formatCurrency(item.cents, currency)}</p>
-      <p className="text-muted-foreground">{formatPercent(item.share)}</p>
+      <p className="tabular-nums">
+        {formatCurrency(item.cents, currency, locale)}
+      </p>
+      <p className="text-muted-foreground">
+        {formatPercent(item.share, locale)}
+      </p>
     </div>
   );
 }
 
-function EmptyDonut() {
+function EmptyDonut({ hint }: { hint: string }) {
   return (
     <div className="flex h-[200px] flex-col items-center justify-center gap-3 text-center">
       <div className="relative size-28">
         <div className="absolute inset-0 rounded-full bg-muted" />
         <div className="absolute inset-[22%] rounded-full bg-card" />
       </div>
-      <p className="text-xs text-muted-foreground">
-        Aucune dépense enregistrée pour ce mois.
-      </p>
+      <p className="text-xs text-muted-foreground">{hint}</p>
     </div>
-  );
-}
-
-function CostDataTable({
-  slices,
-  currency,
-  total,
-}: {
-  slices: Slice[];
-  currency: string;
-  total: number;
-}) {
-  return (
-    <details className="text-xs text-muted-foreground">
-      <summary className="cursor-pointer">Afficher les données</summary>
-      <table className="mt-2 w-full">
-        <thead>
-          <tr>
-            <th className="py-1 text-start font-medium">Catégorie</th>
-            <th className="py-1 text-end font-medium">Montant</th>
-            <th className="py-1 text-end font-medium">Part</th>
-          </tr>
-        </thead>
-        <tbody>
-          {slices.map((s) => (
-            <tr key={s.key}>
-              <td className="py-1">{s.name}</td>
-              <td className="py-1 text-end tabular-nums">
-                {formatCurrency(s.cents, currency)}
-              </td>
-              <td className="py-1 text-end tabular-nums">
-                {total > 0 ? formatPercent(s.cents / total) : "—"}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </details>
   );
 }

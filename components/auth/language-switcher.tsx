@@ -1,25 +1,46 @@
-// Stateless for now. Will be wired to next-intl in a later session.
-const locales = [
-  { code: "fr", label: "FR" },
-  { code: "en", label: "EN" },
-  { code: "ar", label: "ع" },
-] as const;
+"use client";
 
-export function LanguageSwitcher({ active = "fr" as const }: { active?: "fr" | "en" | "ar" }) {
+import { useTransition } from "react";
+import { useLocale } from "next-intl";
+
+import { routing, type AppLocale } from "@/i18n/routing";
+import { usePathname, useRouter } from "@/i18n/navigation";
+
+const SHORT_LABELS: Record<AppLocale, string> = {
+  fr: "FR",
+  ar: "ع",
+  en: "EN",
+};
+
+export function LanguageSwitcher() {
+  const current = useLocale() as AppLocale;
+  const router = useRouter();
+  const pathname = usePathname();
+  const [pending, startTransition] = useTransition();
+
+  function switchTo(next: AppLocale) {
+    if (next === current) return;
+    startTransition(() => {
+      router.replace(pathname, { locale: next });
+    });
+  }
+
   return (
     <div className="flex items-center gap-3 text-[12px] text-muted-foreground">
-      {locales.map((l, i) => (
-        <span key={l.code} className="flex items-center gap-3">
+      {routing.locales.map((code, i) => (
+        <span key={code} className="flex items-center gap-3">
           {i > 0 && <span className="opacity-40">·</span>}
           <button
             type="button"
-            aria-current={active === l.code ? "true" : undefined}
+            disabled={pending}
+            onClick={() => switchTo(code)}
+            aria-current={current === code ? "true" : undefined}
             className={
               "transition-colors hover:text-foreground " +
-              (active === l.code ? "text-foreground" : "")
+              (current === code ? "text-foreground" : "")
             }
           >
-            {l.label}
+            {SHORT_LABELS[code]}
           </button>
         </span>
       ))}

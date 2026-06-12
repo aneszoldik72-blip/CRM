@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Link, usePathname } from "@/i18n/navigation";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
@@ -21,6 +21,7 @@ type SidebarProps = {
 };
 
 export function Sidebar({ variant = "docked" }: SidebarProps) {
+  const t = useTranslations("nav");
   const isDrawer = variant === "drawer";
   const [collapsed, setCollapsed] = useState(false);
 
@@ -74,7 +75,7 @@ export function Sidebar({ variant = "docked" }: SidebarProps) {
         )}
       </div>
 
-      <nav aria-label="Navigation principale" className="flex-1 px-2 py-3">
+      <nav aria-label={t("primary")} className="flex-1 px-2 py-3">
         <ul className="flex flex-col gap-1">
           {PRIMARY_NAV.map((item) => (
             <SidebarItem key={item.key} item={item} showLabel={showLabels} />
@@ -93,11 +94,7 @@ export function Sidebar({ variant = "docked" }: SidebarProps) {
           <button
             type="button"
             onClick={toggle}
-            aria-label={
-              collapsed
-                ? "Étendre la barre latérale"
-                : "Réduire la barre latérale"
-            }
+            aria-label={collapsed ? t("expandSidebar") : t("collapseSidebar")}
             className="flex w-full items-center justify-center gap-2 rounded-md py-2 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
             {collapsed ? (
@@ -105,7 +102,7 @@ export function Sidebar({ variant = "docked" }: SidebarProps) {
             ) : (
               <ChevronsLeft className="size-4" />
             )}
-            {showLabels && <span>Réduire</span>}
+            {showLabels && <span>{t("collapse")}</span>}
           </button>
         </div>
       )}
@@ -120,10 +117,12 @@ function SidebarItem({
   item: NavItem;
   showLabel: boolean;
 }) {
+  const t = useTranslations("nav");
   const pathname = usePathname();
   const active =
     pathname === item.href || pathname.startsWith(`${item.href}/`);
   const Icon = item.icon;
+  const label = t(item.labelKey);
 
   const link = (
     <Link
@@ -144,7 +143,7 @@ function SidebarItem({
         />
       )}
       <Icon className="size-4 shrink-0" />
-      {showLabel && <span className="truncate">{item.label}</span>}
+      {showLabel && <span className="truncate">{label}</span>}
     </Link>
   );
 
@@ -154,7 +153,7 @@ function SidebarItem({
     <li>
       <Tooltip>
         <TooltipTrigger render={link} />
-        <TooltipContent side="right">{item.label}</TooltipContent>
+        <TooltipContent side="right">{label}</TooltipContent>
       </Tooltip>
     </li>
   );

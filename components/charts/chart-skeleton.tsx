@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { cn } from "@/lib/utils";
 
 export type ChartSkeletonProps = {
@@ -8,10 +10,11 @@ export type ChartSkeletonProps = {
 };
 
 export function ChartSkeleton({ variant, className }: ChartSkeletonProps) {
+  const t = useTranslations("charts");
   return (
     <div
       role="status"
-      aria-label="Chargement du graphique"
+      aria-label={t("loading")}
       className={cn(
         "relative flex h-[200px] w-full items-center justify-center",
         className,
@@ -25,7 +28,6 @@ export function ChartSkeleton({ variant, className }: ChartSkeletonProps) {
 }
 
 function FunnelSkeleton() {
-  // Three stacked trapezoids that shrink, mirroring the live funnel.
   return (
     <div className="flex h-full w-full max-w-xs flex-col items-center justify-center gap-1.5 py-2">
       <div className="h-9 w-full animate-pulse rounded-sm bg-muted" />

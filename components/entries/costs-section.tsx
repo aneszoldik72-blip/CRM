@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 
 import {
@@ -15,20 +16,21 @@ import type { EntryValues } from "@/lib/validators/entry";
 import type { SectionProps } from "./sales-section";
 
 const FIELDS = [
-  { name: "ads_spend_cents", label: "Pub" },
-  { name: "test_spend_cents", label: "Tests" },
-  { name: "product_cost_cents", label: "Coût produit" },
-  { name: "service_cost_cents", label: "Livraison" },
-  { name: "bonus_cents", label: "Bonus agents" },
-  { name: "ad_account_cents", label: "Comptes pub" },
+  { name: "ads_spend_cents", labelKey: "ads" },
+  { name: "test_spend_cents", labelKey: "tests" },
+  { name: "product_cost_cents", labelKey: "product" },
+  { name: "service_cost_cents", labelKey: "delivery" },
+  { name: "bonus_cents", labelKey: "bonus" },
+  { name: "ad_account_cents", labelKey: "adAccount" },
 ] as const;
 
 export function CostsSection({ currency, onFieldChange }: SectionProps) {
+  const t = useTranslations("entries.costs");
   const form = useFormContext<EntryValues>();
 
   return (
     <section className="grid gap-4">
-      <h2 className="text-base font-semibold tracking-tight">Coûts</h2>
+      <h2 className="text-base font-semibold tracking-tight">{t("title")}</h2>
 
       {FIELDS.map((f) => (
         <FormField
@@ -38,7 +40,7 @@ export function CostsSection({ currency, onFieldChange }: SectionProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                {f.label} ({currency})
+                {t(f.labelKey)} ({currency})
               </FormLabel>
               <FormControl>
                 <CurrencyInput

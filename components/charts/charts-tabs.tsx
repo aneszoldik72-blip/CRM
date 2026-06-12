@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import type { Control } from "react-hook-form";
 
@@ -46,6 +47,7 @@ export function ChartsTabs({
   serverTrend: TrendPoint[];
   currentMonthId: string;
 }) {
+  const t = useTranslations("charts");
   const [active, setActive] = useState<TabKey>("funnel");
   const [activated, setActivated] = useState<Set<TabKey>>(
     new Set<TabKey>(["funnel"]),
@@ -64,14 +66,14 @@ export function ChartsTabs({
 
   return (
     <section
-      aria-label="Graphiques du mois"
+      aria-label={t("section")}
       className="rounded-xl border border-border bg-card p-4"
     >
       <Tabs value={active} onValueChange={handleChange}>
         <TabsList className="w-full">
-          <TabsTrigger value="funnel">Tunnel</TabsTrigger>
-          <TabsTrigger value="costs">Coûts</TabsTrigger>
-          <TabsTrigger value="trend">Tendance</TabsTrigger>
+          <TabsTrigger value="funnel">{t("tabs.funnel")}</TabsTrigger>
+          <TabsTrigger value="costs">{t("tabs.costs")}</TabsTrigger>
+          <TabsTrigger value="trend">{t("tabs.trend")}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="funnel" className="pt-3">
