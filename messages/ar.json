@@ -388,6 +388,37 @@
       "vsPrev": "مقارنة بالشهر السابق"
     }
   },
+  "export": {
+    "trigger": "TODO: Export",
+    "dialogTitle": "TODO: Export to CSV",
+    "dialogDesc": "TODO: Pick the period, products and level of detail.",
+    "period": {
+      "label": "TODO: Period",
+      "thisMonth": "TODO: This month",
+      "lastMonth": "TODO: Last month",
+      "last3": "TODO: Last 3 months",
+      "all": "TODO: All time",
+      "custom": "TODO: Custom",
+      "fromLabel": "TODO: From",
+      "toLabel": "TODO: To"
+    },
+    "scope": {
+      "label": "TODO: Products",
+      "all": "TODO: All",
+      "specific": "TODO: Selection",
+      "noProducts": "TODO: No products available."
+    },
+    "include": {
+      "label": "TODO: Detail",
+      "kpis": "TODO: KPIs only",
+      "full": "TODO: Full"
+    },
+    "currencyLine": "TODO: Amounts exported in {code}.",
+    "download": "TODO: Download",
+    "toast": {
+      "failed": "TODO: Export failed."
+    }
+  },
   "settings": {
     "title": "الإعدادات"
   },

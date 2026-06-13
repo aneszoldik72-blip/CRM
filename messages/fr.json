@@ -388,6 +388,37 @@
       "vsPrev": "vs mois précédent"
     }
   },
+  "export": {
+    "trigger": "Exporter",
+    "dialogTitle": "Exporter en CSV",
+    "dialogDesc": "Choisis la période, les produits et le niveau de détail.",
+    "period": {
+      "label": "Période",
+      "thisMonth": "Ce mois",
+      "lastMonth": "Mois dernier",
+      "last3": "3 derniers mois",
+      "all": "Tout",
+      "custom": "Personnalisé",
+      "fromLabel": "De",
+      "toLabel": "À"
+    },
+    "scope": {
+      "label": "Produits",
+      "all": "Tous",
+      "specific": "Sélection",
+      "noProducts": "Aucun produit disponible."
+    },
+    "include": {
+      "label": "Détail",
+      "kpis": "KPIs uniquement",
+      "full": "Complet"
+    },
+    "currencyLine": "Montants exportés en {code}.",
+    "download": "Télécharger",
+    "toast": {
+      "failed": "Échec de l'export."
+    }
+  },
   "settings": {
     "title": "Paramètres"
   },

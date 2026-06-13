@@ -16,6 +16,7 @@ import {
 import { isBaseCurrency, type BaseCurrency } from "@/lib/validators/profile";
 import { CurrencySwitcher } from "@/components/dashboard/currency-switcher";
 import { DashboardEmptyState } from "@/components/dashboard/empty-state";
+import { ExportDialog } from "@/components/dashboard/export-dialog";
 import {
   FunnelComparisonChart,
   type FunnelRow,
@@ -167,7 +168,9 @@ export default async function DashboardPage({
           <h1 className="text-2xl font-semibold tracking-tight">
             {t("title")}
           </h1>
-          <GlobalMonthPicker selected={yyyymm} />
+          <div className="flex items-center gap-2">
+            <GlobalMonthPicker selected={yyyymm} />
+          </div>
         </header>
         <div className="flex justify-center">
           <CurrencySwitcher selected={baseCurrency} />
@@ -176,6 +179,18 @@ export default async function DashboardPage({
       </main>
     );
   }
+
+  // Strip the joined month/entry to satisfy ExportDialog's ProductRow prop.
+  const productsForExport = snapshot.map((p) => ({
+    id: p.id,
+    user_id: p.user_id,
+    name: p.name,
+    country: p.country,
+    currency: p.currency,
+    image_url: p.image_url,
+    archived: p.archived,
+    created_at: p.created_at,
+  }));
 
   const allWithData = snapshot.filter((p) => p.entry);
   const noDataCount = snapshot.filter((p) => !p.entry).length;
@@ -249,7 +264,13 @@ export default async function DashboardPage({
     <main className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-6 md:px-8">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
-        <GlobalMonthPicker selected={yyyymm} />
+        <div className="flex items-center gap-2">
+          <GlobalMonthPicker selected={yyyymm} />
+          <ExportDialog
+            products={productsForExport}
+            baseCurrency={baseCurrency}
+          />
+        </div>
       </header>
       <div className="flex justify-center">
         <CurrencySwitcher selected={baseCurrency} />
