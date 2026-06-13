@@ -5,6 +5,11 @@ import { ArrowLeft } from "lucide-react";
 import { Link, redirect } from "@/i18n/navigation";
 
 import { getCountry } from "@/lib/data/countries";
+import { listAgents } from "@/lib/db/agents";
+import {
+  listConfirmationsForProductOnDate,
+  listConfirmationsForProductRange,
+} from "@/lib/db/confirmations";
 import { getEntry } from "@/lib/db/entries";
 import {
   getMonthsWithEntries,
@@ -13,9 +18,13 @@ import {
   type MonthRow,
 } from "@/lib/db/months";
 import { getProduct } from "@/lib/db/products";
+import { buildSnapshots, rankAgents } from "@/lib/agent-metrics";
+import { monthBounds } from "@/lib/date";
 import { computeNetProfitCents } from "@/lib/metrics";
 import { Badge } from "@/components/ui/badge";
 import { EntryForm } from "@/components/entries/entry-form";
+import { ConfirmationEntryForm } from "@/components/agents/confirmation-entry-form";
+import { TopPerformersWidget } from "@/components/agents/top-performers-widget";
 import type { TrendPoint } from "@/components/charts/profit-trend-chart";
 import { MonthSwitcher } from "@/components/months/month-switcher";
 
@@ -24,10 +33,10 @@ export default async function ProductDetailPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ month?: string }>;
+  searchParams: Promise<{ month?: string; logDate?: string }>;
 }) {
   const { id } = await params;
-  const { month: monthParam } = await searchParams;
+  const { month: monthParam, logDate: logDateParam } = await searchParams;
   const t = await getTranslations("products.detail");
 
   const product = await getProduct(id);
@@ -57,6 +66,60 @@ export default async function ProductDetailPage({
   }
 
   const country = getCountry(product.country);
+
+  // Agent confirmation data for THIS product:
+  //  - top performers over the calendar month containing the active log date
+  //    (the day the form is editing — defaults to today). Deliberately not
+  //    tied to the MonthSwitcher selection — that's a separate axis and
+  //    coupling them caused empty widgets for products whose MonthSwitcher
+  //    month didn't overlap the day the operator actually logged on.
+  //  - per-day rows for the chosen log date → daily entry form
+  const logDate = isIsoDate(logDateParam) ? logDateParam : todayIso();
+  const widgetRange = (() => {
+    const b = monthBounds(logDate.slice(0, 7));
+    return b ?? { start: logDate, end: logDate };
+  })();
+
+  const activeAgents = await listAgents("active");
+  const allAgents = await listAgents("all");
+
+  // listConfirmationsForProductRange runs:
+  //   SELECT * FROM confirmations
+  //   WHERE product_id = $1            ← always the current page product
+  //     AND date >= $2 AND date <= $3
+  // (RLS additionally scopes to the current user's agents.)
+  const [monthConfirmations, todayConfirmations] = await Promise.all([
+    listConfirmationsForProductRange(product.id, {
+      from: widgetRange.start,
+      to: widgetRange.end,
+    }),
+    listConfirmationsForProductOnDate(product.id, logDate),
+  ]);
+
+  const snapshotByAgent = buildSnapshots(
+    activeAgents.map((a) => a.id),
+    monthConfirmations,
+    {
+      currentFrom: widgetRange.start,
+      currentTo: widgetRange.end,
+      // Previous period not used by the compact widget — pass an
+      // out-of-range window so all data lands in `current`.
+      previousFrom: "0001-01-01",
+      previousTo: "0001-01-02",
+    },
+  );
+
+  const rankedForWidget = rankAgents(
+    activeAgents.map((a) => ({
+      agentId: a.id,
+      current: snapshotByAgent[a.id]!.current,
+      agent: a,
+      snapshot: snapshotByAgent[a.id]!,
+    })),
+  )
+    .slice(0, 3)
+    .filter((r) => r.current.called > 0)
+    .map((r) => ({ agent: r.agent, snapshot: r.snapshot }));
 
   return (
     <div className="flex flex-col gap-6">
@@ -96,6 +159,12 @@ export default async function ProductDetailPage({
         selectedMonthId={selected.id}
       />
 
+      <TopPerformersWidget
+        productId={product.id}
+        topAgents={rankedForWidget}
+        hasAnyAgents={allAgents.length > 0}
+      />
+
       <EntryForm
         key={selected.id}
         entry={await getEntry(selected.id)}
@@ -104,8 +173,27 @@ export default async function ProductDetailPage({
         daysElapsed={daysElapsedFor(selected, new Date())}
         trendData={await buildTrendData(product.id)}
       />
+
+      <ConfirmationEntryForm
+        key={logDate}
+        productId={product.id}
+        agents={activeAgents}
+        initialDate={logDate}
+        initialConfirmations={todayConfirmations}
+      />
     </div>
   );
+}
+
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+function isIsoDate(s: string | undefined): s is string {
+  return typeof s === "string" && ISO_DATE.test(s);
+}
+function todayIso(): string {
+  const d = new Date();
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(
+    d.getUTCDate(),
+  ).padStart(2, "0")}`;
 }
 
 async function buildTrendData(productId: string): Promise<TrendPoint[]> {

@@ -243,7 +243,15 @@
     "detail": {
       "backToList": "Products",
       "archivedBadge": "Archived",
-      "noMonths": "No month available for this product."
+      "noMonths": "No month available for this product.",
+      "topAgents": {
+        "title": "Top agents for this product",
+        "seeAll": "See all agents",
+        "emptyTitle": "Know who closes your leads.",
+        "emptyBody": "Add agents to track confirmation rate per person.",
+        "emptyCta": "Add an agent",
+        "noDataYet": "No data this month yet — log today's calls below."
+      }
     }
   },
   "months": {
@@ -384,7 +392,122 @@
     "title": "Settings"
   },
   "agents": {
-    "title": "Agents"
+    "title": "Agents",
+    "addAgent": "Add an agent",
+    "addAgentShort": "Add",
+    "newAgent": "New agent",
+    "newAgentDesc": "A name is all we need. You can fill the rest later.",
+    "editAgent": "Edit agent",
+    "editAgentDesc": "Update this agent's information.",
+    "submitAdd": "Add",
+    "submitEdit": "Update",
+    "submittingCreate": "Adding…",
+    "submittingUpdate": "Updating…",
+    "nameLabel": "Name *",
+    "namePlaceholder": "e.g. Mahmoud Karim",
+    "phoneLabel": "Phone",
+    "phoneOptional": "(optional)",
+    "photoLabel": "Photo URL",
+    "photoOptional": "(optional)",
+    "moreDetails": "More details",
+    "filter": {
+      "active": "Active",
+      "archived": "Archived",
+      "all": "All"
+    },
+    "card": {
+      "rate": "Confirmation rate",
+      "calls": "calls",
+      "trendNone": "—",
+      "tier": {
+        "top": "Top",
+        "standard": "Standard",
+        "review": "Needs review"
+      },
+      "moreActions": "More actions",
+      "edit": "Edit",
+      "archive": "Archive",
+      "unarchive": "Unarchive",
+      "openAria": "Open {name}"
+    },
+    "toast": {
+      "added": "Agent added",
+      "updated": "Agent updated",
+      "archived": "Agent archived",
+      "unarchived": "Agent unarchived"
+    },
+    "empty": {
+      "title": "Know who closes your leads.",
+      "body": "Confirmation rate per agent is the difference between a profitable campaign and a budget that evaporates. Track it per day, per product, per person.",
+      "bullet1": "Real-time confirmation rate",
+      "bullet2": "Automatic top-performer ranking",
+      "bullet3": "Bonus-per-confirm calculation",
+      "cta": "Add your first agent",
+      "hint": "You can always add more later."
+    },
+    "filtered": {
+      "noArchived": "No archived agents.",
+      "noForFilter": "No agents for this filter."
+    },
+    "leaderboard": {
+      "title": "Top agents",
+      "seeAll": "See all",
+      "thisMonth": "This month",
+      "podium": {
+        "first": "1st",
+        "second": "2nd",
+        "third": "3rd"
+      }
+    },
+    "detail": {
+      "backToList": "Agents",
+      "archivedBadge": "Archived",
+      "noPhone": "No phone",
+      "thisMonth": "This month",
+      "kpi": {
+        "rate": "Confirmation rate",
+        "calls": "Calls",
+        "confirmed": "Confirmed",
+        "trend": "Trend"
+      },
+      "perProduct": {
+        "title": "Performance by product",
+        "product": "Product",
+        "calls": "Calls",
+        "confirmed": "Confirmed",
+        "rate": "Rate"
+      },
+      "recent": {
+        "title": "Recent activity",
+        "date": "Date",
+        "product": "Product",
+        "called": "Called",
+        "confirmed": "Confirmed",
+        "rejected": "Rejected",
+        "noAnswer": "No answer",
+        "rate": "Rate",
+        "empty": "No activity logged yet."
+      }
+    }
+  },
+  "confirmations": {
+    "entry": {
+      "title": "Today's confirmations",
+      "subtitle": "Type the numbers. Everything saves automatically.",
+      "dateLabel": "Date",
+      "prevDay": "Previous day",
+      "nextDay": "Next day",
+      "called": "Called",
+      "confirmed": "Confirmed",
+      "rejected": "Rejected",
+      "noAnswer": "No answer",
+      "noAnswerCount": "{count} no answer",
+      "rate": "Rate",
+      "teamTotals": "{calls} calls · {confirmed} confirmed",
+      "teamRate": "Team rate",
+      "overCalled": "Confirmed + rejected can't exceed called.",
+      "emptyAgents": "Add agents to track daily confirmations."
+    }
   },
   "stock": {
     "title": "Stock"
@@ -394,6 +517,22 @@
     "invalidId": "Invalid identifier.",
     "invalidProductId": "Invalid product identifier.",
     "invalidMonthId": "Invalid month identifier.",
-    "invalidCurrency": "Invalid currency."
+    "invalidCurrency": "Invalid currency.",
+    "agent": {
+      "nameRequired": "Name required.",
+      "nameTooLong": "80 characters maximum.",
+      "phoneTooLong": "Phone number too long.",
+      "photoUrlInvalid": "Invalid URL.",
+      "idInvalid": "Invalid identifier."
+    },
+    "confirmation": {
+      "agentIdInvalid": "Invalid agent identifier.",
+      "productIdInvalid": "Invalid product identifier.",
+      "dateInvalid": "Invalid date.",
+      "fieldInteger": "Must be an integer.",
+      "fieldNonNeg": "Must be zero or positive.",
+      "fieldTooLarge": "Value too large.",
+      "patchEmpty": "Nothing to save."
+    }
   }
 }

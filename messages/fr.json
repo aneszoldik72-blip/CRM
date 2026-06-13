@@ -243,7 +243,15 @@
     "detail": {
       "backToList": "Produits",
       "archivedBadge": "Archivé",
-      "noMonths": "Aucun mois disponible pour ce produit."
+      "noMonths": "Aucun mois disponible pour ce produit.",
+      "topAgents": {
+        "title": "Top agents pour ce produit",
+        "seeAll": "Voir tous les agents",
+        "emptyTitle": "Sache qui ferme tes leads.",
+        "emptyBody": "Ajoute des agents pour suivre le taux de confirmation par personne.",
+        "emptyCta": "Ajouter un agent",
+        "noDataYet": "Pas encore de données ce mois — saisis les appels du jour ci-dessous."
+      }
     }
   },
   "months": {
@@ -384,7 +392,122 @@
     "title": "Paramètres"
   },
   "agents": {
-    "title": "Agents"
+    "title": "Agents",
+    "addAgent": "Ajouter un agent",
+    "addAgentShort": "Ajouter",
+    "newAgent": "Nouvel agent",
+    "newAgentDesc": "Un nom suffit. Tu pourras compléter plus tard.",
+    "editAgent": "Modifier l'agent",
+    "editAgentDesc": "Mets à jour les informations de cet agent.",
+    "submitAdd": "Ajouter",
+    "submitEdit": "Mettre à jour",
+    "submittingCreate": "Ajout en cours…",
+    "submittingUpdate": "Mise à jour…",
+    "nameLabel": "Nom *",
+    "namePlaceholder": "Ex. Mahmoud Karim",
+    "phoneLabel": "Téléphone",
+    "phoneOptional": "(optionnel)",
+    "photoLabel": "URL de photo",
+    "photoOptional": "(optionnel)",
+    "moreDetails": "Plus de détails",
+    "filter": {
+      "active": "Actifs",
+      "archived": "Archivés",
+      "all": "Tous"
+    },
+    "card": {
+      "rate": "Taux de confirmation",
+      "calls": "appels",
+      "trendNone": "—",
+      "tier": {
+        "top": "Top",
+        "standard": "Standard",
+        "review": "À surveiller"
+      },
+      "moreActions": "Plus d'actions",
+      "edit": "Modifier",
+      "archive": "Archiver",
+      "unarchive": "Désarchiver",
+      "openAria": "Ouvrir {name}"
+    },
+    "toast": {
+      "added": "Agent ajouté",
+      "updated": "Agent mis à jour",
+      "archived": "Agent archivé",
+      "unarchived": "Agent désarchivé"
+    },
+    "empty": {
+      "title": "Sache qui ferme tes leads.",
+      "body": "Le taux de confirmation par agent fait la différence entre une campagne rentable et un budget qui s'évapore. Suis-le par jour, par produit, par personne.",
+      "bullet1": "Taux de confirmation en temps réel",
+      "bullet2": "Classement automatique des meilleurs performeurs",
+      "bullet3": "Calcul du bonus par confirmation",
+      "cta": "Ajouter ton premier agent",
+      "hint": "Tu peux toujours en ajouter plus tard."
+    },
+    "filtered": {
+      "noArchived": "Aucun agent archivé.",
+      "noForFilter": "Aucun agent pour ce filtre."
+    },
+    "leaderboard": {
+      "title": "Top agents",
+      "seeAll": "Voir tous",
+      "thisMonth": "Ce mois",
+      "podium": {
+        "first": "1ʳᵉ place",
+        "second": "2ᵉ place",
+        "third": "3ᵉ place"
+      }
+    },
+    "detail": {
+      "backToList": "Agents",
+      "archivedBadge": "Archivé",
+      "noPhone": "Sans téléphone",
+      "thisMonth": "Ce mois",
+      "kpi": {
+        "rate": "Taux de confirmation",
+        "calls": "Appels",
+        "confirmed": "Confirmés",
+        "trend": "Évolution"
+      },
+      "perProduct": {
+        "title": "Performance par produit",
+        "product": "Produit",
+        "calls": "Appels",
+        "confirmed": "Confirmés",
+        "rate": "Taux"
+      },
+      "recent": {
+        "title": "Activité récente",
+        "date": "Date",
+        "product": "Produit",
+        "called": "Appelés",
+        "confirmed": "Confirmés",
+        "rejected": "Rejetés",
+        "noAnswer": "Sans réponse",
+        "rate": "Taux",
+        "empty": "Pas encore d'activité enregistrée."
+      }
+    }
+  },
+  "confirmations": {
+    "entry": {
+      "title": "Confirmations du jour",
+      "subtitle": "Tape les chiffres. Tout s'enregistre automatiquement.",
+      "dateLabel": "Date",
+      "prevDay": "Jour précédent",
+      "nextDay": "Jour suivant",
+      "called": "Appelés",
+      "confirmed": "Confirmés",
+      "rejected": "Rejetés",
+      "noAnswer": "Sans réponse",
+      "noAnswerCount": "{count} sans réponse",
+      "rate": "Taux",
+      "teamTotals": "{calls} appels · {confirmed} confirmés",
+      "teamRate": "Taux d'équipe",
+      "overCalled": "Confirmés + rejetés ne peuvent pas dépasser les appelés.",
+      "emptyAgents": "Ajoute des agents pour suivre les confirmations quotidiennes."
+    }
   },
   "stock": {
     "title": "Stock"
@@ -394,6 +517,22 @@
     "invalidId": "Identifiant invalide.",
     "invalidProductId": "Identifiant produit invalide.",
     "invalidMonthId": "Identifiant mois invalide.",
-    "invalidCurrency": "Devise invalide."
+    "invalidCurrency": "Devise invalide.",
+    "agent": {
+      "nameRequired": "Nom requis.",
+      "nameTooLong": "80 caractères maximum.",
+      "phoneTooLong": "Téléphone trop long.",
+      "photoUrlInvalid": "URL invalide.",
+      "idInvalid": "Identifiant invalide."
+    },
+    "confirmation": {
+      "agentIdInvalid": "Identifiant agent invalide.",
+      "productIdInvalid": "Identifiant produit invalide.",
+      "dateInvalid": "Date invalide.",
+      "fieldInteger": "Doit être un entier.",
+      "fieldNonNeg": "Doit être positif ou zéro.",
+      "fieldTooLarge": "Valeur trop élevée.",
+      "patchEmpty": "Aucun changement à enregistrer."
+    }
   }
 }

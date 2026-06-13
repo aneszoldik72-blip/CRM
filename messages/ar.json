@@ -243,7 +243,15 @@
     "detail": {
       "backToList": "المنتجات",
       "archivedBadge": "مؤرشف",
-      "noMonths": "لا يوجد شهر متاح لهذا المنتج."
+      "noMonths": "لا يوجد شهر متاح لهذا المنتج.",
+      "topAgents": {
+        "title": "TODO: Top agents for this product",
+        "seeAll": "TODO: See all agents",
+        "emptyTitle": "TODO: Know who closes your leads.",
+        "emptyBody": "TODO: Add agents to track confirmation rate per person.",
+        "emptyCta": "TODO: Add an agent",
+        "noDataYet": "TODO: No data this month yet."
+      }
     }
   },
   "months": {
@@ -384,7 +392,122 @@
     "title": "الإعدادات"
   },
   "agents": {
-    "title": "الوكلاء"
+    "title": "الوكلاء",
+    "addAgent": "TODO: Add an agent",
+    "addAgentShort": "TODO: Add",
+    "newAgent": "TODO: New agent",
+    "newAgentDesc": "TODO: A name is all we need.",
+    "editAgent": "TODO: Edit agent",
+    "editAgentDesc": "TODO: Update this agent's information.",
+    "submitAdd": "TODO: Add",
+    "submitEdit": "TODO: Update",
+    "submittingCreate": "TODO: Adding…",
+    "submittingUpdate": "TODO: Updating…",
+    "nameLabel": "TODO: Name *",
+    "namePlaceholder": "TODO: e.g. Mahmoud Karim",
+    "phoneLabel": "TODO: Phone",
+    "phoneOptional": "TODO: (optional)",
+    "photoLabel": "TODO: Photo URL",
+    "photoOptional": "TODO: (optional)",
+    "moreDetails": "TODO: More details",
+    "filter": {
+      "active": "TODO: Active",
+      "archived": "TODO: Archived",
+      "all": "TODO: All"
+    },
+    "card": {
+      "rate": "TODO: Confirmation rate",
+      "calls": "TODO: calls",
+      "trendNone": "—",
+      "tier": {
+        "top": "TODO: Top",
+        "standard": "TODO: Standard",
+        "review": "TODO: Needs review"
+      },
+      "moreActions": "TODO: More actions",
+      "edit": "TODO: Edit",
+      "archive": "TODO: Archive",
+      "unarchive": "TODO: Unarchive",
+      "openAria": "TODO: Open {name}"
+    },
+    "toast": {
+      "added": "TODO: Agent added",
+      "updated": "TODO: Agent updated",
+      "archived": "TODO: Agent archived",
+      "unarchived": "TODO: Agent unarchived"
+    },
+    "empty": {
+      "title": "TODO: Know who closes your leads.",
+      "body": "TODO: Confirmation rate per agent matters.",
+      "bullet1": "TODO: Real-time confirmation rate",
+      "bullet2": "TODO: Automatic top-performer ranking",
+      "bullet3": "TODO: Bonus-per-confirm calculation",
+      "cta": "TODO: Add your first agent",
+      "hint": "TODO: You can always add more later."
+    },
+    "filtered": {
+      "noArchived": "TODO: No archived agents.",
+      "noForFilter": "TODO: No agents for this filter."
+    },
+    "leaderboard": {
+      "title": "TODO: Top agents",
+      "seeAll": "TODO: See all",
+      "thisMonth": "TODO: This month",
+      "podium": {
+        "first": "TODO: 1st",
+        "second": "TODO: 2nd",
+        "third": "TODO: 3rd"
+      }
+    },
+    "detail": {
+      "backToList": "TODO: Agents",
+      "archivedBadge": "TODO: Archived",
+      "noPhone": "TODO: No phone",
+      "thisMonth": "TODO: This month",
+      "kpi": {
+        "rate": "TODO: Confirmation rate",
+        "calls": "TODO: Calls",
+        "confirmed": "TODO: Confirmed",
+        "trend": "TODO: Trend"
+      },
+      "perProduct": {
+        "title": "TODO: Performance by product",
+        "product": "TODO: Product",
+        "calls": "TODO: Calls",
+        "confirmed": "TODO: Confirmed",
+        "rate": "TODO: Rate"
+      },
+      "recent": {
+        "title": "TODO: Recent activity",
+        "date": "TODO: Date",
+        "product": "TODO: Product",
+        "called": "TODO: Called",
+        "confirmed": "TODO: Confirmed",
+        "rejected": "TODO: Rejected",
+        "noAnswer": "TODO: No answer",
+        "rate": "TODO: Rate",
+        "empty": "TODO: No activity logged yet."
+      }
+    }
+  },
+  "confirmations": {
+    "entry": {
+      "title": "TODO: Today's confirmations",
+      "subtitle": "TODO: Type the numbers.",
+      "dateLabel": "TODO: Date",
+      "prevDay": "TODO: Previous day",
+      "nextDay": "TODO: Next day",
+      "called": "TODO: Called",
+      "confirmed": "TODO: Confirmed",
+      "rejected": "TODO: Rejected",
+      "noAnswer": "TODO: No answer",
+      "noAnswerCount": "TODO: {count} no answer",
+      "rate": "TODO: Rate",
+      "teamTotals": "TODO: {calls} calls · {confirmed} confirmed",
+      "teamRate": "TODO: Team rate",
+      "overCalled": "TODO: Confirmed + rejected can't exceed called.",
+      "emptyAgents": "TODO: Add agents to track daily confirmations."
+    }
   },
   "stock": {
     "title": "المخزون"
@@ -394,6 +517,22 @@
     "invalidId": "معرّف غير صالح.",
     "invalidProductId": "معرّف منتج غير صالح.",
     "invalidMonthId": "معرّف شهر غير صالح.",
-    "invalidCurrency": "عملة غير صالحة."
+    "invalidCurrency": "عملة غير صالحة.",
+    "agent": {
+      "nameRequired": "TODO: Name required.",
+      "nameTooLong": "TODO: 80 characters maximum.",
+      "phoneTooLong": "TODO: Phone number too long.",
+      "photoUrlInvalid": "TODO: Invalid URL.",
+      "idInvalid": "TODO: Invalid identifier."
+    },
+    "confirmation": {
+      "agentIdInvalid": "TODO: Invalid agent identifier.",
+      "productIdInvalid": "TODO: Invalid product identifier.",
+      "dateInvalid": "TODO: Invalid date.",
+      "fieldInteger": "TODO: Must be an integer.",
+      "fieldNonNeg": "TODO: Must be zero or positive.",
+      "fieldTooLarge": "TODO: Value too large.",
+      "patchEmpty": "TODO: Nothing to save."
+    }
   }
 }

@@ -195,6 +195,92 @@ export type Database = {
           },
         ];
       };
+      agents: {
+        Row: {
+          id: string;
+          user_id: string;
+          name: string;
+          phone: string | null;
+          photo_url: string | null;
+          active: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          name: string;
+          phone?: string | null;
+          photo_url?: string | null;
+          active?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          name?: string;
+          phone?: string | null;
+          photo_url?: string | null;
+          active?: boolean;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "agents_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      confirmations: {
+        Row: {
+          id: string;
+          agent_id: string;
+          product_id: string;
+          date: string;
+          called: number;
+          confirmed: number;
+          rejected: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          agent_id: string;
+          product_id: string;
+          date: string;
+          called?: number;
+          confirmed?: number;
+          rejected?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          agent_id?: string;
+          product_id?: string;
+          date?: string;
+          called?: number;
+          confirmed?: number;
+          rejected?: number;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "confirmations_agent_id_fkey";
+            columns: ["agent_id"];
+            isOneToOne: false;
+            referencedRelation: "agents";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "confirmations_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       subscriptions: {
         Row: {
           id: string;
