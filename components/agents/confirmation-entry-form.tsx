@@ -62,6 +62,10 @@ export type ConfirmationEntryFormProps = {
   agents: AgentRow[];                  // active agents only
   initialDate: string;                  // YYYY-MM-DD
   initialConfirmations: ConfirmationRow[];
+  /** Inclusive lower bound — the selected month's first day. */
+  minDate: string;
+  /** Inclusive upper bound — the selected month's last day. */
+  maxDate: string;
 };
 
 export function ConfirmationEntryForm({
@@ -69,6 +73,8 @@ export function ConfirmationEntryForm({
   agents,
   initialDate,
   initialConfirmations,
+  minDate,
+  maxDate,
 }: ConfirmationEntryFormProps) {
   const t = useTranslations("confirmations.entry");
   const tSave = useTranslations("entries.save");
@@ -205,6 +211,9 @@ export function ConfirmationEntryForm({
   // form with fresh data.
   function goToDate(next: string) {
     if (!ISO.test(next) || next === date) return;
+    // Stay inside the selected MonthSwitcher month — the page-side filter
+    // would silently drop logs outside the window anyway.
+    if (next < minDate || next > maxDate) return;
     const params = new URLSearchParams(searchParams.toString());
     params.set("logDate", next);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
@@ -213,6 +222,9 @@ export function ConfirmationEntryForm({
   function shiftDay(delta: number) {
     goToDate(shiftDate(date, delta));
   }
+
+  const atMinDate = date <= minDate;
+  const atMaxDate = date >= maxDate;
 
   if (agents.length === 0) {
     return (
@@ -244,11 +256,14 @@ export function ConfirmationEntryForm({
             size="icon-sm"
             aria-label={t("prevDay")}
             onClick={() => shiftDay(-1)}
+            disabled={atMinDate}
           >
             <ChevronLeft className="size-4" />
           </Button>
           <Input
             type="date"
+            min={minDate}
+            max={maxDate}
             value={date}
             onChange={(e) => goToDate(e.target.value)}
             className="h-9 w-[10.5rem] tabular-nums"
@@ -259,6 +274,7 @@ export function ConfirmationEntryForm({
             size="icon-sm"
             aria-label={t("nextDay")}
             onClick={() => shiftDay(1)}
+            disabled={atMaxDate}
           >
             <ChevronRight className="size-4" />
           </Button>

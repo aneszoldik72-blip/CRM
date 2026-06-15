@@ -245,12 +245,12 @@
       "archivedBadge": "مؤرشف",
       "noMonths": "لا يوجد شهر متاح لهذا المنتج.",
       "topAgents": {
-        "title": "TODO: Top agents for this product",
-        "seeAll": "TODO: See all agents",
-        "emptyTitle": "TODO: Know who closes your leads.",
-        "emptyBody": "TODO: Add agents to track confirmation rate per person.",
-        "emptyCta": "TODO: Add an agent",
-        "noDataYet": "TODO: No data this month yet."
+        "title": "أفضل الوكلاء لهذا المنتج",
+        "seeAll": "عرض جميع الوكلاء",
+        "emptyTitle": "اعرف من يُغلق صفقاتك.",
+        "emptyBody": "أضف وكلاء لتتبّع معدّل التأكيد لكل شخص.",
+        "emptyCta": "إضافة وكيل",
+        "noDataYet": "لا توجد بيانات لهذا الشهر بعد — سجّل المكالمات اليوم في الأسفل."
       }
     }
   },
@@ -389,155 +389,279 @@
     }
   },
   "export": {
-    "trigger": "TODO: Export",
-    "dialogTitle": "TODO: Export to CSV",
-    "dialogDesc": "TODO: Pick the period, products and level of detail.",
+    "trigger": "تصدير",
+    "dialogTitle": "التصدير إلى CSV",
+    "dialogDesc": "اختر الفترة والمنتجات ومستوى التفاصيل.",
     "period": {
-      "label": "TODO: Period",
-      "thisMonth": "TODO: This month",
-      "lastMonth": "TODO: Last month",
-      "last3": "TODO: Last 3 months",
-      "all": "TODO: All time",
-      "custom": "TODO: Custom",
-      "fromLabel": "TODO: From",
-      "toLabel": "TODO: To"
+      "label": "الفترة",
+      "thisMonth": "هذا الشهر",
+      "lastMonth": "الشهر الماضي",
+      "last3": "آخر 3 أشهر",
+      "all": "كل الفترات",
+      "custom": "مخصّص",
+      "fromLabel": "من",
+      "toLabel": "إلى"
     },
     "scope": {
-      "label": "TODO: Products",
-      "all": "TODO: All",
-      "specific": "TODO: Selection",
-      "noProducts": "TODO: No products available."
+      "label": "المنتجات",
+      "all": "الكل",
+      "specific": "مختارة",
+      "noProducts": "لا توجد منتجات متاحة."
     },
     "include": {
-      "label": "TODO: Detail",
-      "kpis": "TODO: KPIs only",
-      "full": "TODO: Full"
+      "label": "التفاصيل",
+      "kpis": "المؤشرات الرئيسية فقط",
+      "full": "كامل"
     },
-    "currencyLine": "TODO: Amounts exported in {code}.",
-    "download": "TODO: Download",
+    "currencyLine": "المبالغ مُصدَّرة بعملة {code}.",
+    "download": "تحميل",
     "toast": {
-      "failed": "TODO: Export failed."
+      "failed": "فشل التصدير."
     }
   },
   "settings": {
-    "title": "الإعدادات"
+    "title": "الإعدادات",
+    "pickSection": "اختر قسمًا من اليمين.",
+    "nav": {
+      "profile": "الملف الشخصي",
+      "preferences": "التفضيلات",
+      "security": "الأمان",
+      "danger": "المنطقة الخطرة"
+    },
+    "profile": {
+      "title": "الملف الشخصي",
+      "subtitle": "كيف تظهر وما يُحمَّل افتراضيًا.",
+      "fullNameLabel": "الاسم الكامل",
+      "countryLabel": "البلد",
+      "defaultCurrencyLabel": "العملة الافتراضية",
+      "defaultCurrencyHint": "تُستخدم في لوحة التحكم وفي التصدير.",
+      "emailRow": "البريد الإلكتروني",
+      "changeEmailLink": "التغيير من قسم الأمان",
+      "avatar": {
+        "title": "الصورة",
+        "dropHint": "اسحب صورة أو انقر لاختيار ملف.",
+        "change": "تغيير الصورة",
+        "remove": "حذف الصورة",
+        "tooLarge": "الصورة كبيرة جدًا (2 ميغابايت كحد أقصى).",
+        "badType": "صيغة غير مدعومة (PNG أو JPG أو WebP).",
+        "uploadFailed": "فشل الرفع.",
+        "uploadedToast": "تم تحديث الصورة.",
+        "removedToast": "تم حذف الصورة."
+      }
+    },
+    "preferences": {
+      "title": "التفضيلات",
+      "subtitle": "الواجهة واللغة والإشعارات.",
+      "theme": {
+        "label": "السمة",
+        "sub": "كيف تظهر الواجهة.",
+        "auto": "تلقائي",
+        "light": "فاتح",
+        "dark": "داكن"
+      },
+      "language": {
+        "label": "اللغة",
+        "sub": "تُغيِّر اللغة في كامل التطبيق."
+      },
+      "currency": {
+        "label": "العملة الافتراضية",
+        "sub": "تُستخدم في لوحة التحكم وفي التصدير.",
+        "savedToast": "تم تعيين العملة الافتراضية إلى {code}.",
+        "saveFailedToast": "تعذّر تحديث العملة الافتراضية."
+      },
+      "notificationsHeader": "الإشعارات",
+      "paymentFailed": {
+        "label": "فشل الدفع",
+        "sub": "عند فشل عملية دفع عبر Stripe."
+      },
+      "trialEnding": {
+        "label": "اقتراب انتهاء الفترة التجريبية",
+        "sub": "قبل ثلاثة أيام من انتهاء الفترة التجريبية."
+      },
+      "weeklySummary": {
+        "label": "الملخّص الأسبوعي",
+        "sub": "خلاصة أرقامك صباح كل اثنين."
+      },
+      "comingSoon": "قريبًا"
+    },
+    "security": {
+      "title": "الأمان",
+      "subtitle": "البريد الإلكتروني وكلمة المرور.",
+      "email": {
+        "title": "البريد الإلكتروني",
+        "sub": "العنوان المستخدم لتسجيل الدخول.",
+        "verified": "مُتحقَّق منه",
+        "change": "تغيير",
+        "newEmailLabel": "البريد الإلكتروني الجديد",
+        "submit": "إرسال الرابط",
+        "submitting": "جاري الإرسال…",
+        "cancelEdit": "إلغاء",
+        "submittedToast": "تم إرسال بريد التحقق.",
+        "resentToast": "تم إعادة إرسال الرابط.",
+        "cancelledToast": "تم إلغاء التغيير.",
+        "resendFailedToast": "فشل إعادة الإرسال.",
+        "cancelFailedToast": "فشل الإلغاء.",
+        "pending": {
+          "title": "في الانتظار: {email}",
+          "body": "انقر على الرابط في صندوق الوارد. حتى ذلك الحين، تابع تسجيل الدخول بـ {current}.",
+          "resend": "إعادة إرسال الرابط",
+          "cancelChange": "إلغاء التغيير المُعلَّق"
+        }
+      },
+      "password": {
+        "title": "كلمة المرور",
+        "sub": "كلمة المرور الحالية مطلوبة لتعيين كلمة جديدة.",
+        "current": "كلمة المرور الحالية",
+        "new": "كلمة المرور الجديدة",
+        "confirm": "تأكيد كلمة المرور الجديدة",
+        "submit": "تحديث كلمة المرور",
+        "submitting": "جاري التحديث…",
+        "updatedToast": "تم تحديث كلمة المرور.",
+        "signOutOthersTitle": "تسجيل الخروج من الأجهزة الأخرى؟",
+        "signOutOthersBody": "يُوصى بذلك بعد تغيير كلمة المرور.",
+        "signOutOthersCta": "تسجيل الخروج من الأخرى",
+        "signedOutOthersToast": "تم تسجيل الخروج من الجلسات الأخرى.",
+        "signOutOthersFailedToast": "تعذّر تسجيل الخروج من الجلسات الأخرى."
+      }
+    },
+    "danger": {
+      "title": "المنطقة الخطرة",
+      "subtitle": "إجراءات لا يمكن التراجع عنها.",
+      "deleteAccountTitle": "حذف الحساب",
+      "irreversible": "بمجرد التأكيد، يتم تسجيل خروجك وتُحذف البيانات نهائيًا. لا يمكن استرجاعها.",
+      "impactLeader": "سيُحذف نهائيًا ما يلي:",
+      "impactProfile": "ملفك الشخصي وصورتك",
+      "impactProducts": "{count, plural, one {# منتج} other {# منتجات}}",
+      "impactAgents": "{count, plural, one {# وكيل} other {# وكلاء}}",
+      "impactEntries": "{count, plural, one {# إدخال شهري} other {# إدخالات شهرية}}",
+      "impactConfirmations": "{count, plural, one {# تأكيد وكيل} other {# تأكيدات وكلاء}}",
+      "impactPendingEmail": "أيّ تغيير بريد إلكتروني مُعلَّق",
+      "typeToConfirmLabel": "اكتب {phrase} بالضبط للتأكيد",
+      "emailHint": "الحساب: {email}",
+      "deleteCta": "حذف حسابي",
+      "finalConfirmTitle": "هل أنت متأكد؟",
+      "finalConfirmBody": "هذا الإجراء نهائي ولا يمكن التراجع عنه.",
+      "finalConfirmCta": "حذف الحساب",
+      "cancel": "إلغاء",
+      "deleteFailedToast": "فشل الحذف."
+    }
   },
   "agents": {
     "title": "الوكلاء",
-    "addAgent": "TODO: Add an agent",
-    "addAgentShort": "TODO: Add",
-    "newAgent": "TODO: New agent",
-    "newAgentDesc": "TODO: A name is all we need.",
-    "editAgent": "TODO: Edit agent",
-    "editAgentDesc": "TODO: Update this agent's information.",
-    "submitAdd": "TODO: Add",
-    "submitEdit": "TODO: Update",
-    "submittingCreate": "TODO: Adding…",
-    "submittingUpdate": "TODO: Updating…",
-    "nameLabel": "TODO: Name *",
-    "namePlaceholder": "TODO: e.g. Mahmoud Karim",
-    "phoneLabel": "TODO: Phone",
-    "phoneOptional": "TODO: (optional)",
-    "photoLabel": "TODO: Photo URL",
-    "photoOptional": "TODO: (optional)",
-    "moreDetails": "TODO: More details",
+    "addAgent": "إضافة وكيل",
+    "addAgentShort": "إضافة",
+    "newAgent": "وكيل جديد",
+    "newAgentDesc": "الاسم يكفي. يمكنك إكمال التفاصيل لاحقًا.",
+    "editAgent": "تعديل الوكيل",
+    "editAgentDesc": "تحديث معلومات هذا الوكيل.",
+    "submitAdd": "إضافة",
+    "submitEdit": "تحديث",
+    "submittingCreate": "جاري الإضافة…",
+    "submittingUpdate": "جاري التحديث…",
+    "nameLabel": "الاسم *",
+    "namePlaceholder": "مثال: محمود كريم",
+    "phoneLabel": "الهاتف",
+    "phoneOptional": "(اختياري)",
+    "photoLabel": "رابط الصورة",
+    "photoOptional": "(اختياري)",
+    "moreDetails": "تفاصيل إضافية",
     "filter": {
-      "active": "TODO: Active",
-      "archived": "TODO: Archived",
-      "all": "TODO: All"
+      "active": "نشطون",
+      "archived": "مؤرشفون",
+      "all": "الكل"
     },
     "card": {
-      "rate": "TODO: Confirmation rate",
-      "calls": "TODO: calls",
+      "rate": "معدّل التأكيد",
+      "calls": "مكالمة",
       "trendNone": "—",
       "tier": {
-        "top": "TODO: Top",
-        "standard": "TODO: Standard",
-        "review": "TODO: Needs review"
+        "top": "الأفضل",
+        "standard": "عادي",
+        "review": "يحتاج إلى مراجعة"
       },
-      "moreActions": "TODO: More actions",
-      "edit": "TODO: Edit",
-      "archive": "TODO: Archive",
-      "unarchive": "TODO: Unarchive",
-      "openAria": "TODO: Open {name}"
+      "moreActions": "إجراءات إضافية",
+      "edit": "تعديل",
+      "archive": "أرشفة",
+      "unarchive": "إلغاء الأرشفة",
+      "openAria": "فتح {name}"
     },
     "toast": {
-      "added": "TODO: Agent added",
-      "updated": "TODO: Agent updated",
-      "archived": "TODO: Agent archived",
-      "unarchived": "TODO: Agent unarchived"
+      "added": "تمت إضافة الوكيل",
+      "updated": "تم تحديث الوكيل",
+      "archived": "تمت أرشفة الوكيل",
+      "unarchived": "تم إلغاء أرشفة الوكيل"
     },
     "empty": {
-      "title": "TODO: Know who closes your leads.",
-      "body": "TODO: Confirmation rate per agent matters.",
-      "bullet1": "TODO: Real-time confirmation rate",
-      "bullet2": "TODO: Automatic top-performer ranking",
-      "bullet3": "TODO: Bonus-per-confirm calculation",
-      "cta": "TODO: Add your first agent",
-      "hint": "TODO: You can always add more later."
+      "title": "اعرف من يُغلق صفقاتك.",
+      "body": "معدّل التأكيد لكل وكيل هو الفرق بين حملة مربحة وميزانية تتبخّر. تتبّعه يوميًا، لكل منتج، ولكل شخص.",
+      "bullet1": "معدّل التأكيد في الوقت الفعلي",
+      "bullet2": "ترتيب تلقائي لأفضل الوكلاء",
+      "bullet3": "حساب المكافأة لكل عملية تأكيد",
+      "cta": "أضف أول وكيل لك",
+      "hint": "يمكنك إضافة المزيد لاحقًا."
     },
     "filtered": {
-      "noArchived": "TODO: No archived agents.",
-      "noForFilter": "TODO: No agents for this filter."
+      "noArchived": "لا يوجد وكلاء مؤرشفون.",
+      "noForFilter": "لا يوجد وكلاء لهذه التصفية."
     },
     "leaderboard": {
-      "title": "TODO: Top agents",
-      "seeAll": "TODO: See all",
-      "thisMonth": "TODO: This month",
+      "title": "أفضل الوكلاء",
+      "seeAll": "عرض الكل",
+      "thisMonth": "هذا الشهر",
       "podium": {
-        "first": "TODO: 1st",
-        "second": "TODO: 2nd",
-        "third": "TODO: 3rd"
+        "first": "المركز الأول",
+        "second": "المركز الثاني",
+        "third": "المركز الثالث"
       }
     },
     "detail": {
-      "backToList": "TODO: Agents",
-      "archivedBadge": "TODO: Archived",
-      "noPhone": "TODO: No phone",
-      "thisMonth": "TODO: This month",
+      "backToList": "الوكلاء",
+      "archivedBadge": "مؤرشف",
+      "noPhone": "بدون هاتف",
+      "thisMonth": "هذا الشهر",
       "kpi": {
-        "rate": "TODO: Confirmation rate",
-        "calls": "TODO: Calls",
-        "confirmed": "TODO: Confirmed",
-        "trend": "TODO: Trend"
+        "rate": "معدّل التأكيد",
+        "calls": "المكالمات",
+        "confirmed": "المؤكَّدة",
+        "trend": "الاتجاه"
       },
       "perProduct": {
-        "title": "TODO: Performance by product",
-        "product": "TODO: Product",
-        "calls": "TODO: Calls",
-        "confirmed": "TODO: Confirmed",
-        "rate": "TODO: Rate"
+        "title": "الأداء حسب المنتج",
+        "product": "المنتج",
+        "calls": "المكالمات",
+        "confirmed": "المؤكَّدة",
+        "rate": "المعدّل"
       },
       "recent": {
-        "title": "TODO: Recent activity",
-        "date": "TODO: Date",
-        "product": "TODO: Product",
-        "called": "TODO: Called",
-        "confirmed": "TODO: Confirmed",
-        "rejected": "TODO: Rejected",
-        "noAnswer": "TODO: No answer",
-        "rate": "TODO: Rate",
-        "empty": "TODO: No activity logged yet."
+        "title": "النشاط الأخير",
+        "date": "التاريخ",
+        "product": "المنتج",
+        "called": "تم الاتصال",
+        "confirmed": "مؤكَّدة",
+        "rejected": "مرفوضة",
+        "noAnswer": "بدون رد",
+        "rate": "المعدّل",
+        "empty": "لم يُسجَّل أي نشاط بعد."
       }
     }
   },
   "confirmations": {
     "entry": {
-      "title": "TODO: Today's confirmations",
-      "subtitle": "TODO: Type the numbers.",
-      "dateLabel": "TODO: Date",
-      "prevDay": "TODO: Previous day",
-      "nextDay": "TODO: Next day",
-      "called": "TODO: Called",
-      "confirmed": "TODO: Confirmed",
-      "rejected": "TODO: Rejected",
-      "noAnswer": "TODO: No answer",
-      "noAnswerCount": "TODO: {count} no answer",
-      "rate": "TODO: Rate",
-      "teamTotals": "TODO: {calls} calls · {confirmed} confirmed",
-      "teamRate": "TODO: Team rate",
-      "overCalled": "TODO: Confirmed + rejected can't exceed called.",
-      "emptyAgents": "TODO: Add agents to track daily confirmations."
+      "title": "تأكيدات اليوم",
+      "subtitle": "أدخل الأرقام. يتم الحفظ تلقائيًا.",
+      "dateLabel": "التاريخ",
+      "prevDay": "اليوم السابق",
+      "nextDay": "اليوم التالي",
+      "called": "تم الاتصال",
+      "confirmed": "مؤكَّدة",
+      "rejected": "مرفوضة",
+      "noAnswer": "بدون رد",
+      "noAnswerCount": "{count} بدون رد",
+      "rate": "المعدّل",
+      "teamTotals": "{calls} مكالمة · {confirmed} مؤكَّدة",
+      "teamRate": "معدّل الفريق",
+      "overCalled": "مجموع المؤكَّدة والمرفوضة لا يمكن أن يتجاوز عدد المكالمات.",
+      "emptyAgents": "أضف وكلاء لتتبّع التأكيدات اليومية."
     }
   },
   "stock": {
@@ -550,20 +674,34 @@
     "invalidMonthId": "معرّف شهر غير صالح.",
     "invalidCurrency": "عملة غير صالحة.",
     "agent": {
-      "nameRequired": "TODO: Name required.",
-      "nameTooLong": "TODO: 80 characters maximum.",
-      "phoneTooLong": "TODO: Phone number too long.",
-      "photoUrlInvalid": "TODO: Invalid URL.",
-      "idInvalid": "TODO: Invalid identifier."
+      "nameRequired": "الاسم مطلوب.",
+      "nameTooLong": "80 حرفًا كحد أقصى.",
+      "phoneTooLong": "رقم الهاتف طويل جدًا.",
+      "photoUrlInvalid": "رابط غير صالح.",
+      "idInvalid": "معرّف غير صالح."
     },
     "confirmation": {
-      "agentIdInvalid": "TODO: Invalid agent identifier.",
-      "productIdInvalid": "TODO: Invalid product identifier.",
-      "dateInvalid": "TODO: Invalid date.",
-      "fieldInteger": "TODO: Must be an integer.",
-      "fieldNonNeg": "TODO: Must be zero or positive.",
-      "fieldTooLarge": "TODO: Value too large.",
-      "patchEmpty": "TODO: Nothing to save."
+      "agentIdInvalid": "معرّف وكيل غير صالح.",
+      "productIdInvalid": "معرّف منتج غير صالح.",
+      "dateInvalid": "تاريخ غير صالح.",
+      "fieldInteger": "يجب أن يكون عددًا صحيحًا.",
+      "fieldNonNeg": "يجب أن يكون صفرًا أو أكبر.",
+      "fieldTooLarge": "القيمة كبيرة جدًا.",
+      "patchEmpty": "لا يوجد ما يُحفظ."
+    },
+    "settings": {
+      "fullNameTooLong": "120 حرفًا كحد أقصى.",
+      "countryInvalid": "بلد غير معروف.",
+      "patchEmpty": "لا يوجد ما يُحفظ.",
+      "emailRequired": "البريد الإلكتروني مطلوب.",
+      "emailInvalid": "بريد إلكتروني غير صالح.",
+      "emailSameAsCurrent": "هذا بريدك الإلكتروني الحالي بالفعل.",
+      "passwordCurrentRequired": "كلمة المرور الحالية مطلوبة.",
+      "passwordCurrentWrong": "كلمة المرور الحالية غير صحيحة.",
+      "passwordTooShort": "ما لا يقل عن 8 أحرف.",
+      "passwordConfirmRequired": "التأكيد مطلوب.",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين.",
+      "deleteConfirmationMismatch": "عبارة التأكيد غير مطابقة."
     }
   }
 }

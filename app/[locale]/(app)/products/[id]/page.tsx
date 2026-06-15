@@ -19,7 +19,6 @@ import {
 } from "@/lib/db/months";
 import { getProduct } from "@/lib/db/products";
 import { buildSnapshots, rankAgents } from "@/lib/agent-metrics";
-import { monthBounds } from "@/lib/date";
 import { computeNetProfitCents } from "@/lib/metrics";
 import { Badge } from "@/components/ui/badge";
 import { EntryForm } from "@/components/entries/entry-form";
@@ -67,27 +66,43 @@ export default async function ProductDetailPage({
 
   const country = getCountry(product.country);
 
-  // Agent confirmation data for THIS product:
-  //  - top performers over the calendar month containing the active log date
-  //    (the day the form is editing — defaults to today). Deliberately not
-  //    tied to the MonthSwitcher selection — that's a separate axis and
-  //    coupling them caused empty widgets for products whose MonthSwitcher
-  //    month didn't overlap the day the operator actually logged on.
-  //  - per-day rows for the chosen log date → daily entry form
-  const logDate = isIsoDate(logDateParam) ? logDateParam : todayIso();
-  const widgetRange = (() => {
-    const b = monthBounds(logDate.slice(0, 7));
-    return b ?? { start: logDate, end: logDate };
-  })();
+  // Agent confirmation data for THIS product, scoped to the SELECTED
+  // MonthSwitcher month. A brand-new month (no logs yet) renders an empty
+  // widget and an empty entry form — there's no time-window in which old
+  // confirmations from a previous month can leak in.
+  const widgetRange = {
+    start: selected.start_date,
+    end: selected.end_date,
+  };
+
+  // Pick the day the entry form opens on. Prefer the URL param if it's
+  // inside the selected month; else today if today is inside the selected
+  // month; else the first day of the selected month.
+  function pickLogDate(): string {
+    if (
+      logDateParam &&
+      isIsoDate(logDateParam) &&
+      logDateParam >= widgetRange.start &&
+      logDateParam <= widgetRange.end
+    ) {
+      return logDateParam;
+    }
+    const today = todayIso();
+    if (today >= widgetRange.start && today <= widgetRange.end) {
+      return today;
+    }
+    return widgetRange.start;
+  }
+  const logDate = pickLogDate();
 
   const activeAgents = await listAgents("active");
   const allAgents = await listAgents("all");
 
   // listConfirmationsForProductRange runs:
   //   SELECT * FROM confirmations
-  //   WHERE product_id = $1            ← always the current page product
+  //   WHERE product_id = $1
   //     AND date >= $2 AND date <= $3
-  // (RLS additionally scopes to the current user's agents.)
+  // Both filters are required; RLS additionally scopes by user.
   const [monthConfirmations, todayConfirmations] = await Promise.all([
     listConfirmationsForProductRange(product.id, {
       from: widgetRange.start,
@@ -180,6 +195,8 @@ export default async function ProductDetailPage({
         agents={activeAgents}
         initialDate={logDate}
         initialConfirmations={todayConfirmations}
+        minDate={widgetRange.start}
+        maxDate={widgetRange.end}
       />
     </div>
   );

@@ -45,6 +45,16 @@
 - Stripe webhooks: always verify signature
 - Server-side validation on every mutation
 
+## Storage
+- Bucket `avatars` is created by `0005_settings.sql`. Public read; writes/updates/deletes are
+  scoped via storage RLS to `(storage.foldername(name))[1] = auth.uid()::text`.
+- Path convention: `{user_id}/avatar.png`. The uploader resizes to 512×512 PNG client-side.
+
+## Env vars (server-only)
+- `SUPABASE_SERVICE_ROLE_KEY` — required for `/api/account/delete`. Source: Supabase project
+  Settings → API → service_role key. Never imported from client or component code; the only
+  caller is `lib/supabase/admin.ts`.
+
 ## Workflow with me
 - Before implementing any feature, write a short plan: files to change, data flow, edge cases
 - Wait for my approval on the plan before coding

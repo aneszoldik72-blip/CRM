@@ -22,6 +22,10 @@ export type Database = {
           country: string | null;
           default_currency: string;
           onboarding_complete: boolean;
+          image_url: string | null;
+          notification_payment_failed: boolean;
+          notification_trial_ending: boolean;
+          notification_weekly_summary: boolean;
           created_at: string;
         };
         Insert: {
@@ -32,6 +36,10 @@ export type Database = {
           country?: string | null;
           default_currency?: string;
           onboarding_complete?: boolean;
+          image_url?: string | null;
+          notification_payment_failed?: boolean;
+          notification_trial_ending?: boolean;
+          notification_weekly_summary?: boolean;
           created_at?: string;
         };
         Update: {
@@ -42,6 +50,10 @@ export type Database = {
           country?: string | null;
           default_currency?: string;
           onboarding_complete?: boolean;
+          image_url?: string | null;
+          notification_payment_failed?: boolean;
+          notification_trial_ending?: boolean;
+          notification_weekly_summary?: boolean;
           created_at?: string;
         };
         Relationships: [

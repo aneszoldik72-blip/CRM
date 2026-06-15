@@ -420,7 +420,131 @@
     }
   },
   "settings": {
-    "title": "Settings"
+    "title": "Settings",
+    "pickSection": "Pick a section on the left.",
+    "nav": {
+      "profile": "Profile",
+      "preferences": "Preferences",
+      "security": "Security",
+      "danger": "Danger zone"
+    },
+    "profile": {
+      "title": "Profile",
+      "subtitle": "How you appear and what loads by default.",
+      "fullNameLabel": "Full name",
+      "countryLabel": "Country",
+      "defaultCurrencyLabel": "Default currency",
+      "defaultCurrencyHint": "Used on the dashboard and in exports.",
+      "emailRow": "Email",
+      "changeEmailLink": "Change in Security",
+      "avatar": {
+        "title": "Photo",
+        "dropHint": "Drop an image or click to pick a file.",
+        "change": "Change photo",
+        "remove": "Remove photo",
+        "tooLarge": "Image too large (2 MB max).",
+        "badType": "Unsupported format (PNG, JPG or WebP).",
+        "uploadFailed": "Upload failed.",
+        "uploadedToast": "Photo updated.",
+        "removedToast": "Photo removed."
+      }
+    },
+    "preferences": {
+      "title": "Preferences",
+      "subtitle": "How the interface looks, your language, your notifications.",
+      "theme": {
+        "label": "Theme",
+        "sub": "How the interface looks.",
+        "auto": "Auto",
+        "light": "Light",
+        "dark": "Dark"
+      },
+      "language": {
+        "label": "Language",
+        "sub": "Switches the whole app."
+      },
+      "currency": {
+        "label": "Default currency",
+        "sub": "Used on the dashboard and in exports.",
+        "savedToast": "Default currency set to {code}.",
+        "saveFailedToast": "Could not update default currency."
+      },
+      "notificationsHeader": "Notifications",
+      "paymentFailed": {
+        "label": "Payment failed",
+        "sub": "When a Stripe payment fails."
+      },
+      "trialEnding": {
+        "label": "Trial ending soon",
+        "sub": "Three days before your trial ends."
+      },
+      "weeklySummary": {
+        "label": "Weekly summary",
+        "sub": "A digest of your numbers, Monday morning."
+      },
+      "comingSoon": "Soon"
+    },
+    "security": {
+      "title": "Security",
+      "subtitle": "Email and password.",
+      "email": {
+        "title": "Email",
+        "sub": "The address used to sign in.",
+        "verified": "Verified",
+        "change": "Change",
+        "newEmailLabel": "New email",
+        "submit": "Send the link",
+        "submitting": "Sending…",
+        "cancelEdit": "Cancel",
+        "submittedToast": "Verification email sent.",
+        "resentToast": "Link resent.",
+        "cancelledToast": "Change cancelled.",
+        "resendFailedToast": "Resend failed.",
+        "cancelFailedToast": "Cancel failed.",
+        "pending": {
+          "title": "Pending: {email}",
+          "body": "Click the link in your inbox. Until then, keep signing in with {current}.",
+          "resend": "Resend the link",
+          "cancelChange": "Cancel pending change"
+        }
+      },
+      "password": {
+        "title": "Password",
+        "sub": "Your current password is required to set a new one.",
+        "current": "Current password",
+        "new": "New password",
+        "confirm": "Confirm new password",
+        "submit": "Update password",
+        "submitting": "Updating…",
+        "updatedToast": "Password updated.",
+        "signOutOthersTitle": "Sign out other devices?",
+        "signOutOthersBody": "Recommended after a password change.",
+        "signOutOthersCta": "Sign out others",
+        "signedOutOthersToast": "Other sessions signed out.",
+        "signOutOthersFailedToast": "Could not sign out other sessions."
+      }
+    },
+    "danger": {
+      "title": "Danger zone",
+      "subtitle": "Irreversible actions.",
+      "deleteAccountTitle": "Delete account",
+      "irreversible": "Once you confirm, we sign you out and the data is gone. We cannot recover it.",
+      "impactLeader": "This permanently removes:",
+      "impactProfile": "Your profile and photo",
+      "impactProducts": "{count, plural, one {# product} other {# products}}",
+      "impactAgents": "{count, plural, one {# agent} other {# agents}}",
+      "impactEntries": "{count, plural, one {# monthly entry} other {# monthly entries}}",
+      "impactConfirmations": "{count, plural, one {# agent confirmation} other {# agent confirmations}}",
+      "impactPendingEmail": "Any pending email change",
+      "typeToConfirmLabel": "Type exactly {phrase} to confirm",
+      "emailHint": "Account: {email}",
+      "deleteCta": "Delete my account",
+      "finalConfirmTitle": "Are you sure?",
+      "finalConfirmBody": "This action is permanent and cannot be undone.",
+      "finalConfirmCta": "Delete account",
+      "cancel": "Cancel",
+      "deleteFailedToast": "Delete failed."
+    }
   },
   "agents": {
     "title": "Agents",
@@ -564,6 +688,20 @@
       "fieldNonNeg": "Must be zero or positive.",
       "fieldTooLarge": "Value too large.",
       "patchEmpty": "Nothing to save."
+    },
+    "settings": {
+      "fullNameTooLong": "120 characters maximum.",
+      "countryInvalid": "Unknown country.",
+      "patchEmpty": "Nothing to save.",
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Invalid email.",
+      "emailSameAsCurrent": "That's already your current email.",
+      "passwordCurrentRequired": "Current password is required.",
+      "passwordCurrentWrong": "Current password is incorrect.",
+      "passwordTooShort": "At least 8 characters.",
+      "passwordConfirmRequired": "Confirmation required.",
+      "passwordMismatch": "Passwords do not match.",
+      "deleteConfirmationMismatch": "Confirmation phrase doesn't match."
     }
   }
 }

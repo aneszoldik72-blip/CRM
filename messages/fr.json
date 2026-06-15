@@ -420,7 +420,131 @@
     }
   },
   "settings": {
-    "title": "Paramètres"
+    "title": "Paramètres",
+    "pickSection": "Choisis une section à gauche.",
+    "nav": {
+      "profile": "Profil",
+      "preferences": "Préférences",
+      "security": "Sécurité",
+      "danger": "Zone dangereuse"
+    },
+    "profile": {
+      "title": "Profil",
+      "subtitle": "Comment tu apparais et ce qui s'affiche par défaut.",
+      "fullNameLabel": "Nom complet",
+      "countryLabel": "Pays",
+      "defaultCurrencyLabel": "Devise par défaut",
+      "defaultCurrencyHint": "Utilisée sur le tableau de bord et dans les exports.",
+      "emailRow": "Email",
+      "changeEmailLink": "Changer dans Sécurité",
+      "avatar": {
+        "title": "Photo",
+        "dropHint": "Glisse une image ou clique pour choisir un fichier.",
+        "change": "Changer la photo",
+        "remove": "Supprimer la photo",
+        "tooLarge": "Image trop lourde (2 Mo max).",
+        "badType": "Format non supporté (PNG, JPG ou WebP).",
+        "uploadFailed": "Échec de l'envoi.",
+        "uploadedToast": "Photo mise à jour.",
+        "removedToast": "Photo supprimée."
+      }
+    },
+    "preferences": {
+      "title": "Préférences",
+      "subtitle": "L'interface, ta langue, tes notifications.",
+      "theme": {
+        "label": "Thème",
+        "sub": "Comment l'interface apparaît.",
+        "auto": "Automatique",
+        "light": "Clair",
+        "dark": "Sombre"
+      },
+      "language": {
+        "label": "Langue",
+        "sub": "Change toute l'application."
+      },
+      "currency": {
+        "label": "Devise par défaut",
+        "sub": "Utilisée sur le tableau de bord et dans les exports.",
+        "savedToast": "Devise mise à jour : {code}.",
+        "saveFailedToast": "Échec de la mise à jour de la devise."
+      },
+      "notificationsHeader": "Notifications",
+      "paymentFailed": {
+        "label": "Paiement échoué",
+        "sub": "Quand un paiement Stripe échoue."
+      },
+      "trialEnding": {
+        "label": "Fin d'essai imminente",
+        "sub": "Trois jours avant la fin de ta période d'essai."
+      },
+      "weeklySummary": {
+        "label": "Récapitulatif hebdomadaire",
+        "sub": "Synthèse de tes chiffres tous les lundis matin."
+      },
+      "comingSoon": "Bientôt"
+    },
+    "security": {
+      "title": "Sécurité",
+      "subtitle": "Email et mot de passe.",
+      "email": {
+        "title": "Email",
+        "sub": "L'adresse utilisée pour te connecter.",
+        "verified": "Vérifié",
+        "change": "Changer",
+        "newEmailLabel": "Nouvel email",
+        "submit": "Envoyer le lien",
+        "submitting": "Envoi…",
+        "cancelEdit": "Annuler",
+        "submittedToast": "Email de vérification envoyé.",
+        "resentToast": "Lien renvoyé.",
+        "cancelledToast": "Changement annulé.",
+        "resendFailedToast": "Échec du renvoi.",
+        "cancelFailedToast": "Échec de l'annulation.",
+        "pending": {
+          "title": "En attente : {email}",
+          "body": "Clique sur le lien dans ta boîte mail. En attendant, continue de te connecter avec {current}.",
+          "resend": "Renvoyer le lien",
+          "cancelChange": "Annuler le changement"
+        }
+      },
+      "password": {
+        "title": "Mot de passe",
+        "sub": "Ton mot de passe actuel est requis pour en définir un nouveau.",
+        "current": "Mot de passe actuel",
+        "new": "Nouveau mot de passe",
+        "confirm": "Confirme le nouveau mot de passe",
+        "submit": "Mettre à jour",
+        "submitting": "Mise à jour…",
+        "updatedToast": "Mot de passe mis à jour.",
+        "signOutOthersTitle": "Te déconnecter des autres appareils ?",
+        "signOutOthersBody": "Recommandé après une mise à jour de mot de passe.",
+        "signOutOthersCta": "Déconnecter les autres",
+        "signedOutOthersToast": "Autres sessions déconnectées.",
+        "signOutOthersFailedToast": "Échec de la déconnexion des autres sessions."
+      }
+    },
+    "danger": {
+      "title": "Zone dangereuse",
+      "subtitle": "Actions irréversibles.",
+      "deleteAccountTitle": "Supprimer le compte",
+      "irreversible": "Une fois confirmé, on te déconnecte et les données partent. On ne peut pas les récupérer.",
+      "impactLeader": "Supprime définitivement :",
+      "impactProfile": "Ton profil et ta photo",
+      "impactProducts": "{count, plural, one {# produit} other {# produits}}",
+      "impactAgents": "{count, plural, one {# agent} other {# agents}}",
+      "impactEntries": "{count, plural, one {# saisie mensuelle} other {# saisies mensuelles}}",
+      "impactConfirmations": "{count, plural, one {# confirmation d'agent} other {# confirmations d'agents}}",
+      "impactPendingEmail": "Tout changement d'email en attente",
+      "typeToConfirmLabel": "Tape exactement {phrase} pour confirmer",
+      "emailHint": "Compte associé : {email}",
+      "deleteCta": "Supprimer mon compte",
+      "finalConfirmTitle": "Tu es sûr ?",
+      "finalConfirmBody": "Cette action est définitive et ne peut pas être annulée.",
+      "finalConfirmCta": "Supprimer le compte",
+      "cancel": "Annuler",
+      "deleteFailedToast": "Échec de la suppression."
+    }
   },
   "agents": {
     "title": "Agents",
@@ -564,6 +688,20 @@
       "fieldNonNeg": "Doit être positif ou zéro.",
       "fieldTooLarge": "Valeur trop élevée.",
       "patchEmpty": "Aucun changement à enregistrer."
+    },
+    "settings": {
+      "fullNameTooLong": "120 caractères maximum.",
+      "countryInvalid": "Pays inconnu.",
+      "patchEmpty": "Aucun changement à enregistrer.",
+      "emailRequired": "Email requis.",
+      "emailInvalid": "Email invalide.",
+      "emailSameAsCurrent": "C'est déjà ton email actuel.",
+      "passwordCurrentRequired": "Mot de passe actuel requis.",
+      "passwordCurrentWrong": "Mot de passe actuel incorrect.",
+      "passwordTooShort": "Au moins 8 caractères.",
+      "passwordConfirmRequired": "Confirmation requise.",
+      "passwordMismatch": "Les mots de passe ne sont pas identiques.",
+      "deleteConfirmationMismatch": "Phrase de confirmation incorrecte."
     }
   }
 }

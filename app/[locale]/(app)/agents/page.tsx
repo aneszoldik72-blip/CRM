@@ -3,24 +3,30 @@ import { listConfirmationsRange } from "@/lib/db/confirmations";
 import { buildSnapshots } from "@/lib/agent-metrics";
 import { AgentsClient } from "@/components/agents/agents-client";
 
-// Current period = last 30 days; previous period = the 30 before that. Used
-// to compute the trend chip on each card.
+// Current period = this calendar month (1st through today).
+// Previous period = the entire previous calendar month.
+// The widget compares the two; agents that haven't logged this month show
+// "—" until they do.
 function periodBounds(today = new Date()) {
   const day = (d: Date) =>
     `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(
       d.getUTCDate(),
     ).padStart(2, "0")}`;
-  const t = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
-  const ago = (n: number) => {
-    const d = new Date(t);
-    d.setUTCDate(d.getUTCDate() - n);
-    return d;
-  };
+  const t = new Date(
+    Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()),
+  );
+  const monthStart = new Date(Date.UTC(t.getUTCFullYear(), t.getUTCMonth(), 1));
+  const prevMonthStart = new Date(
+    Date.UTC(t.getUTCFullYear(), t.getUTCMonth() - 1, 1),
+  );
+  const prevMonthEnd = new Date(
+    Date.UTC(t.getUTCFullYear(), t.getUTCMonth(), 0),
+  );
   return {
-    currentFrom: day(ago(29)),
+    currentFrom: day(monthStart),
     currentTo: day(t),
-    previousFrom: day(ago(59)),
-    previousTo: day(ago(30)),
+    previousFrom: day(prevMonthStart),
+    previousTo: day(prevMonthEnd),
   };
 }
 
