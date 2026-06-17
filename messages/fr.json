@@ -419,6 +419,67 @@
       "failed": "Échec de l'export."
     }
   },
+  "onboarding": {
+    "stepOf": "Étape {n} sur {total}",
+    "back": "Retour",
+    "continue": "Je continue",
+    "skip": "Je le ferai plus tard",
+    "submitting": "Préparation de ton tableau de bord…",
+    "errorToast": "On n'a pas pu enregistrer. Réessaie.",
+    "welcome": {
+      "title": "Génial, on y est.",
+      "body": "Trois minutes et tu vois tes premiers chiffres. Tu peux tout modifier après — rien n'est gravé dans le marbre.",
+      "cta": "On y va"
+    },
+    "profile": {
+      "title": "On commence par toi.",
+      "sub": "Pour adapter le tableau de bord à ton activité.",
+      "fullNameLabel": "Comment t'appelles-tu ?",
+      "fullNamePlaceholder": "Ton nom",
+      "countryLabel": "Où tu opères principalement",
+      "currencyLabel": "Devise par défaut",
+      "currencyHint": "On la pré-remplit depuis ton pays. Modifiable."
+    },
+    "product": {
+      "title": "Quel produit veux-tu suivre en premier ?",
+      "sub": "Tu pourras en ajouter d'autres ensuite.",
+      "nameLabel": "Nom du produit",
+      "namePlaceholder": "Ex. Slim Fit T-Shirt",
+      "countryLabel": "Pays cible",
+      "currencyLabel": "Devise du produit"
+    },
+    "entry": {
+      "title": "Tes premiers chiffres.",
+      "sub": "On les transforme en métriques tout de suite.",
+      "leadsLabel": "Leads",
+      "leadsHelp": "Personnes qui ont cliqué ou rempli ton formulaire.",
+      "ordersLabel": "Commandes",
+      "ordersHelp": "Combien ont confirmé l'achat.",
+      "deliveredLabel": "Livrées",
+      "deliveredHelp": "Combien ont reçu le produit.",
+      "revenueLabel": "Chiffre d'affaires ({currency})",
+      "revenueHelp": "Total encaissé.",
+      "adsSpendLabel": "Dépenses publicité ({currency})",
+      "adsSpendHelp": "Ce que tu as payé en ads.",
+      "moreCosts": "+ Coûts supplémentaires (optionnel)",
+      "testSpendLabel": "Tests ({currency})",
+      "adAccountLabel": "Comptes pub ({currency})",
+      "productCostLabel": "Coût produit ({currency})",
+      "serviceCostLabel": "Livraison ({currency})",
+      "bonusLabel": "Bonus agents ({currency})",
+      "preview": "Aperçu en direct",
+      "kpiNetProfit": "Bénéfice net",
+      "kpiMargin": "Marge",
+      "kpiRoas": "ROAS",
+      "kpiDelivery": "Livraison"
+    },
+    "reveal": {
+      "titlePositive": "Pas mal pour un début.",
+      "titleNegative": "Tu commences ici — voyons où ça va.",
+      "body": "Voilà ce que disent tes chiffres. Tu peux les modifier et en ajouter quand tu veux.",
+      "cta": "Voir mon tableau de bord"
+    }
+  },
   "settings": {
     "title": "Paramètres",
     "pickSection": "Choisis une section à gauche.",

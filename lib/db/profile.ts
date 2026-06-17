@@ -19,7 +19,27 @@ export async function getProfile(): Promise<ProfileRow | null> {
     .eq("id", user.id)
     .maybeSingle();
   if (error) throw error;
-  return data;
+  if (data) return data;
+
+  // Defensive: handle_new_user (migration 0001) should have created a
+  // profile row when this user signed up. If it didn't — trigger missing,
+  // migration not applied, or it silently failed — create the row now so
+  // the rest of the app has something to work with. onboarding_complete
+  // defaults to false in the schema, so the layout guard will route the
+  // user to /onboarding on their next request.
+  const { data: created, error: insertError } = await supabase
+    .from("profiles")
+    .insert({
+      id: user.id,
+      email: user.email ?? "",
+    })
+    .select("*")
+    .single();
+  if (insertError) {
+    console.error("[getProfile] lazy-create failed", insertError);
+    throw insertError;
+  }
+  return created;
 }
 
 export async function updateDefaultCurrency(currency: string): Promise<void> {

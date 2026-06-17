@@ -419,6 +419,67 @@
       "failed": "فشل التصدير."
     }
   },
+  "onboarding": {
+    "stepOf": "الخطوة {n} من {total}",
+    "back": "رجوع",
+    "continue": "متابعة",
+    "skip": "سأفعل ذلك لاحقًا",
+    "submitting": "جاري إعداد لوحة التحكم…",
+    "errorToast": "تعذّر الحفظ. أعد المحاولة.",
+    "welcome": {
+      "title": "هيا بنا.",
+      "body": "ثلاث دقائق وسترى أرقامك الأولى. يمكنك تعديل كل شيء لاحقًا — لا شيء نهائي.",
+      "cta": "لنبدأ"
+    },
+    "profile": {
+      "title": "لنبدأ بك.",
+      "sub": "حتى نُكيِّف لوحة التحكم مع نشاطك.",
+      "fullNameLabel": "ما اسمك؟",
+      "fullNamePlaceholder": "اسمك",
+      "countryLabel": "أين تعمل بشكل رئيسي",
+      "currencyLabel": "العملة الافتراضية",
+      "currencyHint": "نملؤها مسبقًا من بلدك. قابلة للتعديل."
+    },
+    "product": {
+      "title": "أيّ منتج تريد متابعته أولًا؟",
+      "sub": "يمكنك إضافة منتجات أخرى لاحقًا.",
+      "nameLabel": "اسم المنتج",
+      "namePlaceholder": "مثال: قميص ضيق",
+      "countryLabel": "البلد المستهدف",
+      "currencyLabel": "عملة المنتج"
+    },
+    "entry": {
+      "title": "أرقامك الأولى.",
+      "sub": "نُحوِّلها إلى مؤشرات على الفور.",
+      "leadsLabel": "العملاء المحتملون",
+      "leadsHelp": "من نقروا أو ملؤوا النموذج.",
+      "ordersLabel": "الطلبات",
+      "ordersHelp": "كم منها تم تأكيده.",
+      "deliveredLabel": "المُسلَّمة",
+      "deliveredHelp": "كم منها وصل فعلًا إلى العميل.",
+      "revenueLabel": "الإيرادات ({currency})",
+      "revenueHelp": "إجمالي المُحصَّل.",
+      "adsSpendLabel": "مصروفات الإعلانات ({currency})",
+      "adsSpendHelp": "ما أنفقته على الإعلانات.",
+      "moreCosts": "+ تكاليف إضافية (اختياري)",
+      "testSpendLabel": "الاختبارات ({currency})",
+      "adAccountLabel": "حسابات الإعلانات ({currency})",
+      "productCostLabel": "تكلفة المنتج ({currency})",
+      "serviceCostLabel": "التوصيل ({currency})",
+      "bonusLabel": "مكافآت الوكلاء ({currency})",
+      "preview": "معاينة مباشرة",
+      "kpiNetProfit": "صافي الربح",
+      "kpiMargin": "الهامش",
+      "kpiRoas": "ROAS",
+      "kpiDelivery": "التوصيل"
+    },
+    "reveal": {
+      "titlePositive": "ليست بداية سيئة.",
+      "titleNegative": "تبدأ من هنا — لنرَ إلى أين سيصل بك الأمر.",
+      "body": "هذا ما تقوله أرقامك. يمكنك تعديلها وإضافة المزيد متى شئت.",
+      "cta": "افتح لوحة التحكم"
+    }
+  },
   "settings": {
     "title": "الإعدادات",
     "pickSection": "اختر قسمًا من اليمين.",

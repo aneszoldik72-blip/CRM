@@ -1,6 +1,7 @@
 import { getLocale } from "next-intl/server";
 
 import { redirect } from "@/i18n/navigation";
+import { getProfile } from "@/lib/db/profile";
 import { createClient } from "@/lib/supabase/server";
 import { MobileNav } from "@/components/app-shell/mobile-nav";
 import { Sidebar } from "@/components/app-shell/sidebar";
@@ -18,6 +19,19 @@ export default async function AppLayout({
   if (!user) {
     const locale = await getLocale();
     redirect({ href: "/login", locale });
+  }
+
+  // Onboarding gate. Until the user has flipped onboarding_complete, every
+  // /app/* route bounces to /onboarding. Skip path (handled in actions) sets
+  // the flag and lands them on the dashboard.
+  //
+  // NB: optional chaining is important — a missing profile (trigger didn't
+  // fire, RLS edge case) reads as "not complete" so we send the user to
+  // /onboarding rather than letting them slip past the gate.
+  const profile = await getProfile();
+  if (!profile?.onboarding_complete) {
+    const locale = await getLocale();
+    redirect({ href: "/onboarding", locale });
   }
 
   const userProps = {

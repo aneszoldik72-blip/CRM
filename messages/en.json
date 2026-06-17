@@ -419,6 +419,67 @@
       "failed": "Export failed."
     }
   },
+  "onboarding": {
+    "stepOf": "Step {n} of {total}",
+    "back": "Back",
+    "continue": "Continue",
+    "skip": "I'll do this later",
+    "submitting": "Setting up your dashboard…",
+    "errorToast": "Could not save. Try again.",
+    "welcome": {
+      "title": "Right, let's set you up.",
+      "body": "Three minutes and you'll see your first numbers. You can change everything after — nothing's set in stone.",
+      "cta": "Let's go"
+    },
+    "profile": {
+      "title": "Tell us about you.",
+      "sub": "So we can tailor the dashboard to your operation.",
+      "fullNameLabel": "What's your name?",
+      "fullNamePlaceholder": "Your name",
+      "countryLabel": "Where you mostly operate",
+      "currencyLabel": "Default currency",
+      "currencyHint": "Pre-filled from your country. You can change it."
+    },
+    "product": {
+      "title": "Which product do you want to track first?",
+      "sub": "You can add more later.",
+      "nameLabel": "Product name",
+      "namePlaceholder": "e.g. Slim Fit T-Shirt",
+      "countryLabel": "Target country",
+      "currencyLabel": "Product currency"
+    },
+    "entry": {
+      "title": "Your first numbers.",
+      "sub": "We turn them into metrics right away.",
+      "leadsLabel": "Leads",
+      "leadsHelp": "People who clicked or filled your form.",
+      "ordersLabel": "Orders",
+      "ordersHelp": "How many confirmed the purchase.",
+      "deliveredLabel": "Delivered",
+      "deliveredHelp": "How many actually got the product.",
+      "revenueLabel": "Revenue ({currency})",
+      "revenueHelp": "Total collected.",
+      "adsSpendLabel": "Ad spend ({currency})",
+      "adsSpendHelp": "What you paid for ads.",
+      "moreCosts": "+ Other costs (optional)",
+      "testSpendLabel": "Tests ({currency})",
+      "adAccountLabel": "Ad accounts ({currency})",
+      "productCostLabel": "Product cost ({currency})",
+      "serviceCostLabel": "Delivery ({currency})",
+      "bonusLabel": "Agent bonus ({currency})",
+      "preview": "Live preview",
+      "kpiNetProfit": "Net profit",
+      "kpiMargin": "Margin",
+      "kpiRoas": "ROAS",
+      "kpiDelivery": "Delivery"
+    },
+    "reveal": {
+      "titlePositive": "Not bad for a start.",
+      "titleNegative": "You start here — let's see where this goes.",
+      "body": "Here's what your numbers say. You can change them and add more whenever.",
+      "cta": "Open my dashboard"
+    }
+  },
   "settings": {
     "title": "Settings",
     "pickSection": "Pick a section on the left.",

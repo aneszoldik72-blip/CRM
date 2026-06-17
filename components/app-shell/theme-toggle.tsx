@@ -13,7 +13,25 @@ export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  const isDark = mounted ? resolvedTheme === "dark" : true;
+  // Until `next-themes` resolves on the client, the server-rendered icon
+  // and aria-label can't agree with the client. Render a same-sized
+  // placeholder so layout stays stable; swap to the real button after
+  // mount. This eliminates the hydration mismatch from this subtree.
+  if (!mounted) {
+    return (
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon-sm"
+        aria-hidden
+        tabIndex={-1}
+        // suppressHydrationWarning is unnecessary here because the
+        // placeholder is identical on server and client.
+      />
+    );
+  }
+
+  const isDark = resolvedTheme === "dark";
 
   return (
     <Button

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   HelpCircle,
@@ -41,7 +42,12 @@ function initialsFrom(user: UserMenuUser, fallback: string) {
 export function UserMenu({ user }: { user: UserMenuUser }) {
   const t = useTranslations("user");
   const { resolvedTheme, setTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  // Defer reading the theme until after mount so the dropdown's theme item
+  // doesn't render a server/client-divergent icon. The dropdown content
+  // itself is portaled and only paints after open, so this is cheap.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const isDark = mounted && resolvedTheme === "dark";
   const fallback = t("fallback");
   const displayName =
     user.name?.trim() || user.email?.split("@")[0] || fallback;
@@ -78,12 +84,14 @@ export function UserMenu({ user }: { user: UserMenuUser }) {
         <DropdownMenuItem render={<Link href="/settings" />}>
           <SettingsIcon /> {t("settings")}
         </DropdownMenuItem>
-        <DropdownMenuItem
-          className="md:hidden"
-          onClick={() => setTheme(isDark ? "light" : "dark")}
-        >
-          {isDark ? <Sun /> : <Moon />} {t("theme")}
-        </DropdownMenuItem>
+        {mounted && (
+          <DropdownMenuItem
+            className="md:hidden"
+            onClick={() => setTheme(isDark ? "light" : "dark")}
+          >
+            {isDark ? <Sun /> : <Moon />} {t("theme")}
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem render={<Link href="/help" />}>
           <HelpCircle /> {t("help")}

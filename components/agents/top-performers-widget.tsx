@@ -3,11 +3,12 @@
 import { useTranslations } from "next-intl";
 import { Crown, Users } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import type { AgentRow } from "@/lib/db/agents";
 import type { AgentSnapshot } from "@/lib/agent-metrics";
 import { Leaderboard } from "@/components/agents/leaderboard";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 export type TopPerformersWidgetProps = {
   // Echoed back in the link target so the widget is visibly scoped to
@@ -42,14 +43,15 @@ export function TopPerformersWidget({
             <p className="text-xs text-muted-foreground">{t("emptyBody")}</p>
           </div>
         </div>
-        <Button
-          render={<Link href="/agents" />}
-          variant="outline"
-          size="sm"
-          className="gap-1"
+        <Link
+          href="/agents"
+          className={cn(
+            buttonVariants({ variant: "outline", size: "sm" }),
+            "gap-1",
+          )}
         >
           {t("emptyCta")} →
-        </Button>
+        </Link>
       </section>
     );
   }

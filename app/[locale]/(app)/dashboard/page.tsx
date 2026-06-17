@@ -17,6 +17,7 @@ import { isBaseCurrency, type BaseCurrency } from "@/lib/validators/profile";
 import { CurrencySwitcher } from "@/components/dashboard/currency-switcher";
 import { DashboardEmptyState } from "@/components/dashboard/empty-state";
 import { ExportDialog } from "@/components/dashboard/export-dialog";
+import { WelcomeConfetti } from "@/components/onboarding/welcome-confetti";
 import {
   FunnelComparisonChart,
   type FunnelRow,
@@ -144,11 +145,16 @@ function resolveBaseCurrency(
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: Promise<{ month?: string; currency?: string }>;
+  searchParams: Promise<{
+    month?: string;
+    currency?: string;
+    welcome?: string;
+  }>;
 }) {
-  const { month, currency } = await searchParams;
+  const { month, currency, welcome } = await searchParams;
   const yyyymm = parseMonthOrCurrent(month);
   const t = await getTranslations("dashboard");
+  const showConfetti = welcome === "1";
 
   const [snapshot, profile, rates] = await Promise.all([
     listProductsWithMonthSnapshot(yyyymm),
@@ -164,6 +170,7 @@ export default async function DashboardPage({
   if (snapshot.length === 0) {
     return (
       <main className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-6 md:px-8">
+        {showConfetti && <WelcomeConfetti />}
         <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-2xl font-semibold tracking-tight">
             {t("title")}
@@ -262,6 +269,7 @@ export default async function DashboardPage({
 
   return (
     <main className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-6 md:px-8">
+      {showConfetti && <WelcomeConfetti />}
       <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
         <div className="flex items-center gap-2">
