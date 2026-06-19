@@ -25,16 +25,57 @@ const cairo = Cairo({
   subsets: ["arabic", "latin"],
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "common" });
+  const tCommon = await getTranslations({ locale, namespace: "common" });
+  const tMarketing = await getTranslations({ locale, namespace: "marketing.meta" });
+  const title = tMarketing("title");
+  const description = tMarketing("description");
+  const ogAlt = tMarketing("ogAlt");
+
   return {
-    title: t("appName"),
-    description: t("appTagline"),
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: title,
+      template: `%s · ${tCommon("appName")}`,
+    },
+    description,
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        fr: "/fr",
+        ar: "/ar",
+        en: "/en",
+      },
+    },
+    openGraph: {
+      type: "website",
+      siteName: tCommon("appName"),
+      title,
+      description,
+      url: `/${locale}`,
+      locale,
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: ogAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/og-image.png"],
+    },
   };
 }
 

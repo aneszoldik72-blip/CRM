@@ -779,5 +779,252 @@
   },
   "settingsBack": {
     "label": "Retour aux paramètres"
+  },
+  "marketing": {
+    "meta": {
+      "title": "VOIDCRAFT — Le CRM des dropshippers COD",
+      "description": "Suis tes ventes, tes agents, ton stock et ton profit net en temps réel. Multi-pays, multi-devises, FR/AR/EN.",
+      "ogAlt": "VOIDCRAFT — tableau de bord profit en temps réel"
+    },
+    "header": {
+      "nav": {
+        "features": "Fonctionnalités",
+        "pricing": "Tarifs",
+        "faq": "FAQ"
+      },
+      "signIn": "Connexion",
+      "signUp": "Essai gratuit",
+      "openMenu": "Ouvrir le menu"
+    },
+    "hero": {
+      "headline": "Arrête de deviner ton bénéfice.",
+      "sub": "Le CRM pour dropshippers COD. Suis tes ventes, tes agents, ton stock et ton profit net — en temps réel, en français.",
+      "ctaPrimary": "Essai gratuit 14 jours",
+      "ctaSecondary": "Voir la démo",
+      "imageAlt": "Tableau de bord VOIDCRAFT — courbe de profit, sélecteur de mois, performance des agents"
+    },
+    "socialProof": {
+      "line": "12 dropshippers suivent 47 produits sur 8 marchés.",
+      "hosting": "Hébergé en UE · Conforme RGPD"
+    },
+    "problem": {
+      "title": "Tu reconnais ces galères ?",
+      "items": {
+        "chaos": {
+          "title": "Excel + WhatsApp = chaos.",
+          "body": "Tu sautes entre dix onglets, tu copies des chiffres à la main, tu finis par perdre le fil — et tes vraies marges avec."
+        },
+        "agents": {
+          "title": "Tes agents : qui livre vraiment ?",
+          "body": "Sans données par agent, impossible de savoir qui te fait gagner et qui te brûle ton stock."
+        },
+        "profit": {
+          "title": "Revenu ≠ profit. Tu le sais ?",
+          "body": "Ton chiffre d'affaires monte, mais après ads, COGS et frais de compte pub… il reste quoi, vraiment ?"
+        }
+      },
+      "beforeAfter": {
+        "before": "Avant",
+        "after": "Avec VOIDCRAFT"
+      }
+    },
+    "solution": {
+      "title": "Tout ce dont tu as besoin.",
+      "items": {
+        "profit": {
+          "title": "Profit net en temps réel",
+          "body": "Vois ton vrai bénéfice par produit, par mois — calculé après ads, COGS, frais de compte et bonus.",
+          "alt": "Tableau de bord profit"
+        },
+        "agents": {
+          "title": "Suivi des agents",
+          "body": "Taux de confirmation, taux de livraison, profit attribué — par agent, sur n'importe quelle période.",
+          "alt": "Page de suivi des agents"
+        },
+        "products": {
+          "title": "Produits & coûts",
+          "body": "Saisis tes ads, COGS, frais de compte pub et bonus une seule fois. Tout est recalculé partout.",
+          "alt": "Page produit avec saisie des coûts"
+        },
+        "stock": {
+          "title": "Alertes stock",
+          "body": "Sache quand recommander avant la rupture, par produit et par marché.",
+          "alt": "Page stock avec alertes"
+        },
+        "multi": {
+          "title": "Multi-pays, multi-devises, FR/AR/EN",
+          "body": "Une seule app pour tous tes marchés. Interface arabe RTL native. Devise par pays.",
+          "alt": "Interface VOIDCRAFT en arabe"
+        }
+      }
+    },
+    "agent": {
+      "title": "Sais qui fait gagner ton équipe — et qui te coûte.",
+      "body": "VOIDCRAFT est le seul CRM COD à attribuer le profit par agent. Plus de favoritisme, plus de doute : les chiffres décident.",
+      "bullets": {
+        "confirmation": "Taux de confirmation par agent",
+        "delivery": "Taux de livraison par agent",
+        "profit": "Profit attribué par agent"
+      },
+      "cta": "Voir comment ça marche",
+      "imageAlt": "Page détaillée d'un agent avec top performers, taux de confirmation et profit attribué"
+    },
+    "pricing": {
+      "title": "Un seul plan. Tout inclus.",
+      "toggleMonthly": "Mensuel",
+      "toggleAnnual": "Annuel",
+      "annualBadge": "−2 mois offerts",
+      "priceMonthly": "19€",
+      "priceAnnual": "190€",
+      "priceSuffixMonthly": "/mois",
+      "priceSuffixAnnual": "/an",
+      "features": {
+        "products": "Produits illimités",
+        "agents": "Agents illimités",
+        "languages": "FR · AR · EN",
+        "export": "Export CSV",
+        "support": "Support email"
+      },
+      "cta": "Démarrer l'essai gratuit",
+      "terms": "14 jours gratuits · pas de carte · annulation en 1 clic",
+      "contactSales": "Tarification spéciale 5+ comptes — contacte-nous."
+    },
+    "faq": {
+      "title": "Questions fréquentes.",
+      "items": {
+        "security": {
+          "q": "Mes données sont-elles en sécurité ?",
+          "a": "Oui. Hébergées sur Supabase en Union européenne, chiffrées au repos et en transit. Chaque table est protégée par Row-Level Security — tes données ne sont jamais accessibles à un autre utilisateur. Sauvegardes quotidiennes."
+        },
+        "export": {
+          "q": "Je peux exporter mes données ?",
+          "a": "Oui, à tout moment. Export CSV de tes produits, agents, mois et confirmations depuis les paramètres. Aucun frais, aucun verrou."
+        },
+        "arabic": {
+          "q": "L'app est-elle en arabe ?",
+          "a": "Oui. Interface complète en arabe avec mise en page RTL native, en plus du français et de l'anglais. Tu peux changer de langue à tout moment."
+        },
+        "vsLocal": {
+          "q": "En quoi c'est mieux que les outils locaux ?",
+          "a": "VOIDCRAFT calcule ton profit NET, pas juste tes leads. Suivi par agent. Multi-pays et multi-devises dans une seule app. Et c'est bilingue arabe/français dès le départ."
+        },
+        "mobile": {
+          "q": "Ça marche sur mobile ?",
+          "a": "Oui. Interface pensée pour smartphone, saisie rapide depuis le terrain. Pas besoin d'installer une app — ça marche dans ton navigateur."
+        },
+        "limits": {
+          "q": "Combien d'agents / produits je peux suivre ?",
+          "a": "Illimité. Pas de quotas cachés, pas de paliers. Ajoute autant de produits et d'agents que tu veux."
+        },
+        "payments": {
+          "q": "Quels moyens de paiement ?",
+          "a": "Carte bancaire (Visa, Mastercard, Amex) via Stripe. Mobile Money (Maroc, Sénégal, Côte d'Ivoire) en cours d'intégration."
+        },
+        "cancel": {
+          "q": "Et si j'annule ?",
+          "a": "Aucun engagement. Annulation en 1 clic dans les paramètres. Tu gardes l'accès jusqu'à la fin du mois payé, et tu peux exporter toutes tes données."
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Prêt à voir ton vrai profit ?",
+      "button": "Essai gratuit 14 jours"
+    },
+    "footer": {
+      "tagline": "Le CRM des dropshippers COD.",
+      "columns": {
+        "product": {
+          "title": "Produit",
+          "features": "Fonctionnalités",
+          "pricing": "Tarifs",
+          "changelog": "Changelog"
+        },
+        "company": {
+          "title": "Société",
+          "about": "À propos",
+          "contact": "Contact",
+          "blog": "Blog"
+        },
+        "legal": {
+          "title": "Légal",
+          "privacy": "Confidentialité",
+          "terms": "CGU",
+          "cookies": "Cookies"
+        }
+      },
+      "copyright": "© {year} VOIDCRAFT"
+    },
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "lastUpdated": "Dernière mise à jour : juin 2026",
+      "draft": "Brouillon v0.1 — à finaliser avant mise en production.",
+      "intro": "VOIDCRAFT respecte ta vie privée. Cette page explique quelles données nous collectons, pourquoi, et comment tu peux les contrôler.",
+      "sections": {
+        "collected": {
+          "title": "Données collectées",
+          "body": "Email, nom (optionnel), langue préférée, et toutes les données métier que tu saisis (produits, agents, ventes, coûts). Aucune donnée n'est collectée à ton insu."
+        },
+        "hosting": {
+          "title": "Hébergement",
+          "body": "Tes données sont hébergées sur Supabase, en Union européenne (Francfort), chiffrées au repos et en transit. Sauvegardes quotidiennes."
+        },
+        "rights": {
+          "title": "Tes droits (RGPD)",
+          "body": "Tu peux accéder à toutes tes données, les exporter en CSV, les rectifier ou les supprimer à tout moment depuis tes paramètres. Pour exercer tes droits : privacy@voidcraft.app."
+        },
+        "cookies": {
+          "title": "Cookies",
+          "body": "Nous utilisons uniquement des cookies essentiels (session, préférence de langue, préférence de thème). Aucun cookie publicitaire, aucun tracker tiers."
+        },
+        "analytics": {
+          "title": "Analytique",
+          "body": "PostHog est utilisé pour comprendre l'usage produit, en mode anonymisé. Aucune donnée métier n'est partagée avec des tiers."
+        },
+        "contact": {
+          "title": "Contact",
+          "body": "Pour toute question : privacy@voidcraft.app."
+        }
+      }
+    },
+    "terms": {
+      "title": "Conditions générales d'utilisation",
+      "lastUpdated": "Dernière mise à jour : juin 2026",
+      "draft": "Brouillon v0.1 — à finaliser avant mise en production.",
+      "intro": "Ces conditions encadrent l'utilisation de VOIDCRAFT. En créant un compte, tu acceptes ces termes.",
+      "sections": {
+        "object": {
+          "title": "Objet",
+          "body": "VOIDCRAFT est un service SaaS de CRM pour dropshippers COD : suivi des ventes, des agents, du stock et du profit."
+        },
+        "account": {
+          "title": "Compte",
+          "body": "Tu es responsable de la confidentialité de tes identifiants et des actions effectuées depuis ton compte. Un compte = une personne physique."
+        },
+        "subscription": {
+          "title": "Abonnement & paiement",
+          "body": "L'abonnement est mensuel ou annuel, prélevé d'avance via Stripe. Les prix affichés sont en euros, hors taxes locales applicables."
+        },
+        "trial": {
+          "title": "Essai gratuit",
+          "body": "14 jours d'essai gratuit, sans carte requise. À l'issue de l'essai, le compte est désactivé sauf souscription."
+        },
+        "cancellation": {
+          "title": "Résiliation",
+          "body": "Tu peux résilier à tout moment depuis tes paramètres. L'accès est maintenu jusqu'à la fin de la période payée. Aucun remboursement au prorata."
+        },
+        "ip": {
+          "title": "Propriété intellectuelle",
+          "body": "VOIDCRAFT et son logo sont des marques. Tu restes propriétaire de toutes les données que tu saisis."
+        },
+        "liability": {
+          "title": "Responsabilité",
+          "body": "VOIDCRAFT est fourni « tel quel ». Nous mettons tout en œuvre pour la disponibilité et l'intégrité du service mais ne pouvons garantir une absence totale d'interruption."
+        },
+        "law": {
+          "title": "Droit applicable",
+          "body": "Ces conditions sont régies par le droit français. Tout litige sera porté devant les tribunaux compétents."
+        }
+      }
+    }
   }
 }

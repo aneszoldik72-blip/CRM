@@ -779,5 +779,252 @@
   },
   "settingsBack": {
     "label": "Back to settings"
+  },
+  "marketing": {
+    "meta": {
+      "title": "VOIDCRAFT — The CRM for COD dropshippers",
+      "description": "Track your sales, agents, stock and net profit in real time. Multi-country, multi-currency, FR/AR/EN.",
+      "ogAlt": "VOIDCRAFT — real-time profit dashboard"
+    },
+    "header": {
+      "nav": {
+        "features": "Features",
+        "pricing": "Pricing",
+        "faq": "FAQ"
+      },
+      "signIn": "Sign in",
+      "signUp": "Free trial",
+      "openMenu": "Open menu"
+    },
+    "hero": {
+      "headline": "Stop guessing your profit.",
+      "sub": "The CRM for COD dropshippers. Track your sales, your agents, your stock and your net profit — in real time.",
+      "ctaPrimary": "Start free trial",
+      "ctaSecondary": "Watch demo",
+      "imageAlt": "VOIDCRAFT dashboard — profit chart, month switcher, agent performance"
+    },
+    "socialProof": {
+      "line": "12 dropshippers tracking 47 products across 8 markets.",
+      "hosting": "Hosted in the EU · GDPR compliant"
+    },
+    "problem": {
+      "title": "Sound familiar?",
+      "items": {
+        "chaos": {
+          "title": "Excel + WhatsApp = chaos.",
+          "body": "Ten tabs open, numbers copied by hand, threads lost — and your real margins with them."
+        },
+        "agents": {
+          "title": "Your agents: who actually delivers?",
+          "body": "Without per-agent data, there's no way to know who's making you money and who's burning your stock."
+        },
+        "profit": {
+          "title": "Revenue ≠ profit. Do you know which?",
+          "body": "Top-line up, but after ads, COGS and account fees — what's actually left?"
+        }
+      },
+      "beforeAfter": {
+        "before": "Before",
+        "after": "With VOIDCRAFT"
+      }
+    },
+    "solution": {
+      "title": "Everything you need.",
+      "items": {
+        "profit": {
+          "title": "Net profit in real time",
+          "body": "See your true margin per product, per month — computed after ads, COGS, account fees and bonuses.",
+          "alt": "Profit dashboard"
+        },
+        "agents": {
+          "title": "Agent tracking",
+          "body": "Confirmation rate, delivery rate, attributed profit — per agent, over any period.",
+          "alt": "Agent tracking page"
+        },
+        "products": {
+          "title": "Products & costs",
+          "body": "Enter your ads, COGS, account fees and bonuses once. Everything recalculates everywhere.",
+          "alt": "Product page with cost entry"
+        },
+        "stock": {
+          "title": "Stock alerts",
+          "body": "Know when to reorder before you stock out, per product and per market.",
+          "alt": "Stock page with alerts"
+        },
+        "multi": {
+          "title": "Multi-country, multi-currency, FR/AR/EN",
+          "body": "One app for every market. Native Arabic RTL. Currency per country.",
+          "alt": "VOIDCRAFT interface in Arabic"
+        }
+      }
+    },
+    "agent": {
+      "title": "Know who makes your team money — and who costs it.",
+      "body": "VOIDCRAFT is the only COD CRM that attributes profit per agent. No favoritism, no guessing — the numbers decide.",
+      "bullets": {
+        "confirmation": "Confirmation rate per agent",
+        "delivery": "Delivery rate per agent",
+        "profit": "Attributed profit per agent"
+      },
+      "cta": "See how it works",
+      "imageAlt": "Agent detail page with top performers, confirmation rate, attributed profit"
+    },
+    "pricing": {
+      "title": "One plan. Everything in.",
+      "toggleMonthly": "Monthly",
+      "toggleAnnual": "Annual",
+      "annualBadge": "2 months free",
+      "priceMonthly": "€19",
+      "priceAnnual": "€190",
+      "priceSuffixMonthly": "/mo",
+      "priceSuffixAnnual": "/yr",
+      "features": {
+        "products": "Unlimited products",
+        "agents": "Unlimited agents",
+        "languages": "FR · AR · EN",
+        "export": "CSV export",
+        "support": "Email support"
+      },
+      "cta": "Start free trial",
+      "terms": "14 days free · no card required · cancel in 1 click",
+      "contactSales": "Special pricing for 5+ accounts — get in touch."
+    },
+    "faq": {
+      "title": "Common questions.",
+      "items": {
+        "security": {
+          "q": "Is my data safe?",
+          "a": "Yes. Hosted on Supabase in the European Union, encrypted at rest and in transit. Every table is protected by Row-Level Security — your data is never accessible to another user. Daily backups."
+        },
+        "export": {
+          "q": "Can I export my data?",
+          "a": "Yes, anytime. CSV export of your products, agents, months and confirmations from settings. No fee, no lock-in."
+        },
+        "arabic": {
+          "q": "Is the app available in Arabic?",
+          "a": "Yes. Full Arabic interface with native RTL layout, alongside French and English. Switch languages anytime."
+        },
+        "vsLocal": {
+          "q": "Why VOIDCRAFT over local tools?",
+          "a": "We compute NET profit, not just leads. Per-agent tracking. Multi-country and multi-currency in one app. Bilingual Arabic/French from day one."
+        },
+        "mobile": {
+          "q": "Does it work on mobile?",
+          "a": "Yes. Built for smartphone, fast data entry from the field. No install needed — it runs in your browser."
+        },
+        "limits": {
+          "q": "How many agents / products can I track?",
+          "a": "Unlimited. No hidden caps, no tiers. Add as many products and agents as you want."
+        },
+        "payments": {
+          "q": "What payment methods?",
+          "a": "Credit card (Visa, Mastercard, Amex) via Stripe. Mobile Money (Morocco, Senegal, Côte d'Ivoire) coming soon."
+        },
+        "cancel": {
+          "q": "What if I cancel?",
+          "a": "No commitment. One-click cancel in settings. You keep access until the end of the paid month, and you can export everything."
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Ready to see your real profit?",
+      "button": "Start free trial"
+    },
+    "footer": {
+      "tagline": "The CRM for COD dropshippers.",
+      "columns": {
+        "product": {
+          "title": "Product",
+          "features": "Features",
+          "pricing": "Pricing",
+          "changelog": "Changelog"
+        },
+        "company": {
+          "title": "Company",
+          "about": "About",
+          "contact": "Contact",
+          "blog": "Blog"
+        },
+        "legal": {
+          "title": "Legal",
+          "privacy": "Privacy",
+          "terms": "Terms",
+          "cookies": "Cookies"
+        }
+      },
+      "copyright": "© {year} VOIDCRAFT"
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "lastUpdated": "Last updated: June 2026",
+      "draft": "Draft v0.1 — to be finalized before launch.",
+      "intro": "VOIDCRAFT respects your privacy. This page explains what data we collect, why, and how you can control it.",
+      "sections": {
+        "collected": {
+          "title": "Data we collect",
+          "body": "Email, name (optional), preferred language, and all business data you enter (products, agents, sales, costs). Nothing is collected without your knowledge."
+        },
+        "hosting": {
+          "title": "Hosting",
+          "body": "Your data is hosted on Supabase, in the European Union (Frankfurt), encrypted at rest and in transit. Daily backups."
+        },
+        "rights": {
+          "title": "Your rights (GDPR)",
+          "body": "You can access all your data, export it to CSV, correct it or delete it anytime from your settings. To exercise your rights: privacy@voidcraft.app."
+        },
+        "cookies": {
+          "title": "Cookies",
+          "body": "We only use essential cookies (session, language preference, theme preference). No ad cookies, no third-party trackers."
+        },
+        "analytics": {
+          "title": "Analytics",
+          "body": "PostHog is used to understand product usage, in anonymized mode. No business data is shared with third parties."
+        },
+        "contact": {
+          "title": "Contact",
+          "body": "For any questions: privacy@voidcraft.app."
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms of service",
+      "lastUpdated": "Last updated: June 2026",
+      "draft": "Draft v0.1 — to be finalized before launch.",
+      "intro": "These terms govern the use of VOIDCRAFT. By creating an account, you accept them.",
+      "sections": {
+        "object": {
+          "title": "Purpose",
+          "body": "VOIDCRAFT is a SaaS CRM for COD dropshippers: tracking sales, agents, stock and profit."
+        },
+        "account": {
+          "title": "Account",
+          "body": "You are responsible for keeping your credentials private and for actions taken from your account. One account = one person."
+        },
+        "subscription": {
+          "title": "Subscription & payment",
+          "body": "The subscription is monthly or annual, charged in advance via Stripe. Prices are in euros, excluding any applicable local taxes."
+        },
+        "trial": {
+          "title": "Free trial",
+          "body": "14 days free, no card required. After the trial, the account is deactivated unless you subscribe."
+        },
+        "cancellation": {
+          "title": "Cancellation",
+          "body": "You can cancel anytime in settings. Access continues until the end of the paid period. No pro-rated refund."
+        },
+        "ip": {
+          "title": "Intellectual property",
+          "body": "VOIDCRAFT and its logo are trademarks. You retain ownership of all data you enter."
+        },
+        "liability": {
+          "title": "Liability",
+          "body": "VOIDCRAFT is provided \"as is\". We do everything possible to maintain availability and data integrity but cannot guarantee zero interruption."
+        },
+        "law": {
+          "title": "Governing law",
+          "body": "These terms are governed by French law. Any dispute will be brought before the competent courts."
+        }
+      }
+    }
   }
 }
