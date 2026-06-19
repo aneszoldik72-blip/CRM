@@ -37,6 +37,7 @@ export function IntegerInput({
       {...rest}
       type="text"
       inputMode="numeric"
+      pattern="[0-9]*"
       autoComplete="off"
       value={draft}
       onChange={(e) => {

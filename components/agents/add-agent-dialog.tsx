@@ -146,6 +146,8 @@ export function AddAgentDialog({
                       </FormLabel>
                       <FormControl>
                         <Input
+                          type="tel"
+                          inputMode="tel"
                           autoComplete="tel"
                           className="h-11"
                           {...field}

@@ -63,6 +63,7 @@ export function CurrencyInput({
         {...rest}
         type="text"
         inputMode="decimal"
+        pattern="[0-9.,]*"
         autoComplete="off"
         value={draft}
         onChange={(e) => {

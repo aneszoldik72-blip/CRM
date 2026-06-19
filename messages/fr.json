@@ -734,6 +734,13 @@
     "invalidProductId": "Identifiant produit invalide.",
     "invalidMonthId": "Identifiant mois invalide.",
     "invalidCurrency": "Devise invalide.",
+    "screen": {
+      "title": "Quelque chose s'est mal passé",
+      "body": "Une erreur inattendue s'est produite. Réessaie, ou contacte le support si ça persiste.",
+      "retry": "Réessayer",
+      "contact": "Contacter le support",
+      "backHome": "Retour à l'accueil"
+    },
     "agent": {
       "nameRequired": "Nom requis.",
       "nameTooLong": "80 caractères maximum.",
@@ -764,5 +771,13 @@
       "passwordMismatch": "Les mots de passe ne sont pas identiques.",
       "deleteConfirmationMismatch": "Phrase de confirmation incorrecte."
     }
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "body": "Le lien est cassé ou la page a été déplacée.",
+    "backHome": "Retour à l'accueil"
+  },
+  "settingsBack": {
+    "label": "Retour aux paramètres"
   }
 }

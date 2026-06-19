@@ -734,6 +734,13 @@
     "invalidProductId": "Invalid product identifier.",
     "invalidMonthId": "Invalid month identifier.",
     "invalidCurrency": "Invalid currency.",
+    "screen": {
+      "title": "Something went wrong",
+      "body": "An unexpected error happened. Try again, or contact support if it keeps happening.",
+      "retry": "Try again",
+      "contact": "Contact support",
+      "backHome": "Back home"
+    },
     "agent": {
       "nameRequired": "Name required.",
       "nameTooLong": "80 characters maximum.",
@@ -764,5 +771,13 @@
       "passwordMismatch": "Passwords do not match.",
       "deleteConfirmationMismatch": "Confirmation phrase doesn't match."
     }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The link is broken or the page moved.",
+    "backHome": "Back home"
+  },
+  "settingsBack": {
+    "label": "Back to settings"
   }
 }

@@ -43,8 +43,8 @@ export default async function ProductDetailPage({
 
   let months = await listMonths(id);
   if (months.length === 0) {
-    await getOrCreateCurrentMonth(id);
-    months = await listMonths(id);
+    const created = await getOrCreateCurrentMonth(id);
+    months = [created];
   }
 
   let selected: MonthRow | undefined;
@@ -60,8 +60,8 @@ export default async function ProductDetailPage({
   }
 
   if (!selected) {
-    // Should not happen given the auto-create above, but a defensive guard.
-    throw new Error(t("noMonths"));
+    // Final safety net — auto-create rather than throw.
+    selected = await getOrCreateCurrentMonth(id);
   }
 
   const country = getCountry(product.country);
