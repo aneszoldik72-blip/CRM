@@ -8,6 +8,7 @@ import { Toaster } from "sonner";
 
 import { routing, isRtl, type AppLocale } from "@/i18n/routing";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { PostHogProvider } from "@/components/providers/posthog-provider";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -109,13 +110,15 @@ export default async function LocaleLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <TooltipProvider delay={150}>{children}</TooltipProvider>
-            <Toaster
-              theme="system"
-              position="top-center"
-              richColors
-              closeButton
-            />
+            <PostHogProvider>
+              <TooltipProvider delay={150}>{children}</TooltipProvider>
+              <Toaster
+                theme="system"
+                position="top-center"
+                richColors
+                closeButton
+              />
+            </PostHogProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

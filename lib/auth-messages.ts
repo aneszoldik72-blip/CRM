@@ -12,6 +12,7 @@ const KEY_MAP: Record<string, string> = {
   "auth.password.mismatch": "passwordMismatch",
   "auth.fullName.tooLong": "fullNameTooLong",
   "auth.signin.invalidCredentials": "invalidCredentials",
+  "auth.rateLimit": "rateLimit",
 };
 
 export function useResolveAuthError(): (key: string) => string {

@@ -7,6 +7,8 @@ export const revalidate = false;
 const SECTIONS = [
   "collected",
   "hosting",
+  "subprocessors",
+  "retention",
   "rights",
   "cookies",
   "analytics",

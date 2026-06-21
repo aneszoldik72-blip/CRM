@@ -40,6 +40,11 @@ function stripLocale(pathname: string): {
 }
 
 export async function middleware(request: NextRequest) {
+  // Rate-limiting for auth POSTs (signIn, signUp, requestPasswordReset)
+  // lives inside the server actions themselves — not here. Returning a
+  // plain-text 429 from middleware breaks the React Server Action wire
+  // protocol and surfaces as a generic crash to the user.
+
   // Let next-intl decide on the canonical URL first. If it wants to redirect
   // (e.g. add a locale prefix on first visit), do that immediately — auth
   // logic runs on the next request.

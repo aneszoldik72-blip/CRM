@@ -42,6 +42,37 @@ export async function getProfile(): Promise<ProfileRow | null> {
   return created;
 }
 
+// Atomically claims the welcome-email slot for the current user. Returns
+// true exactly once per user — the caller that wins the race. All other
+// concurrent callers (prefetch, parallel server renders, retries) get false
+// and MUST NOT send.
+//
+// Atomicity comes from a single conditional UPDATE:
+//   UPDATE profiles SET welcome_email_sent_at = now()
+//   WHERE id = $1 AND welcome_email_sent_at IS NULL
+//   RETURNING id;
+//
+// Under Postgres READ COMMITTED (the default), the WHERE clause is
+// re-evaluated against the latest committed row version when an UPDATE
+// blocks on a concurrent write. The second updater therefore sees the
+// column is no longer NULL and updates zero rows. RLS additionally scopes
+// the update to the calling user.
+export async function claimWelcomeEmail(): Promise<boolean> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return false;
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ welcome_email_sent_at: new Date().toISOString() })
+    .eq("id", user.id)
+    .is("welcome_email_sent_at", null)
+    .select("id");
+  if (error) throw error;
+  return (data?.length ?? 0) > 0;
+}
+
 export async function updateDefaultCurrency(currency: string): Promise<void> {
   const supabase = await createClient();
   const {

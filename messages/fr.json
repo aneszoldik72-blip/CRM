@@ -129,7 +129,8 @@
       "passwordTooShort": "Au moins 8 caractères.",
       "passwordMismatch": "Les mots de passe ne sont pas identiques.",
       "fullNameTooLong": "Nom trop long.",
-      "invalidCredentials": "Email ou mot de passe incorrect."
+      "invalidCredentials": "Email ou mot de passe incorrect.",
+      "rateLimit": "Trop de tentatives. Patiente quelques minutes avant de réessayer."
     }
   },
   "dashboard": {
@@ -930,6 +931,13 @@
       "title": "Prêt à voir ton vrai profit ?",
       "button": "Essai gratuit 14 jours"
     },
+    "cookies": {
+      "aria": "Préférences de cookies",
+      "body": "On utilise des cookies anonymes pour comprendre comment le site est utilisé. Tu peux refuser à tout moment.",
+      "accept": "OK",
+      "reject": "Refuser",
+      "dismiss": "Fermer"
+    },
     "footer": {
       "tagline": "Le CRM des dropshippers COD.",
       "columns": {
@@ -957,8 +965,8 @@
     "privacy": {
       "title": "Politique de confidentialité",
       "lastUpdated": "Dernière mise à jour : juin 2026",
-      "draft": "Brouillon v0.1 — à finaliser avant mise en production.",
-      "intro": "VOIDCRAFT respecte ta vie privée. Cette page explique quelles données nous collectons, pourquoi, et comment tu peux les contrôler.",
+      "draft": "Brouillon v0.2 — placeholders légaux à compléter avant production.",
+      "intro": "VOIDCRAFT, édité par {{COMPANY_NAME}}, respecte ta vie privée. Cette page explique quelles données nous collectons, pourquoi, à qui nous les confions, et comment tu peux les contrôler.",
       "sections": {
         "collected": {
           "title": "Données collectées",
@@ -968,29 +976,37 @@
           "title": "Hébergement",
           "body": "Tes données sont hébergées sur Supabase, en Union européenne (Francfort), chiffrées au repos et en transit. Sauvegardes quotidiennes."
         },
+        "subprocessors": {
+          "title": "Sous-traitants",
+          "body": "Pour faire fonctionner le service, nous partageons des données strictement nécessaires avec : Supabase (base de données et auth, UE), Stripe (paiements, US/UE, conforme PCI-DSS), Resend (email transactionnel, UE), Sentry (suivi d'erreurs, UE), PostHog (analytique produit, US), Upstash (rate limiting, UE). Aucune donnée n'est revendue."
+        },
+        "retention": {
+          "title": "Conservation des données",
+          "body": "Tes données métier sont conservées tant que ton compte est actif. À la résiliation, elles sont supprimées définitivement après 90 jours (délai de grâce pour réactivation). Les logs techniques sont conservés 30 jours maximum."
+        },
         "rights": {
           "title": "Tes droits (RGPD)",
-          "body": "Tu peux accéder à toutes tes données, les exporter en CSV, les rectifier ou les supprimer à tout moment depuis tes paramètres. Pour exercer tes droits : privacy@voidcraft.app."
+          "body": "Tu peux accéder à toutes tes données, les exporter en CSV, les rectifier ou les supprimer à tout moment depuis tes paramètres. Pour exercer tes droits : {{DPO_EMAIL}}."
         },
         "cookies": {
           "title": "Cookies",
-          "body": "Nous utilisons uniquement des cookies essentiels (session, préférence de langue, préférence de thème). Aucun cookie publicitaire, aucun tracker tiers."
+          "body": "Nous utilisons des cookies essentiels (session, préférence de langue, préférence de thème) et des cookies analytiques anonymes (PostHog). Le bandeau en bas de page te permet de refuser les cookies analytiques à tout moment. Aucun cookie publicitaire, aucun tracker tiers."
         },
         "analytics": {
           "title": "Analytique",
-          "body": "PostHog est utilisé pour comprendre l'usage produit, en mode anonymisé. Aucune donnée métier n'est partagée avec des tiers."
+          "body": "PostHog est utilisé pour comprendre l'usage produit, en mode anonymisé par défaut. Aucune donnée métier n'est partagée avec des tiers."
         },
         "contact": {
           "title": "Contact",
-          "body": "Pour toute question : privacy@voidcraft.app."
+          "body": "Pour toute question : {{DPO_EMAIL}}. Adresse postale : {{COMPANY_ADDRESS}}."
         }
       }
     },
     "terms": {
       "title": "Conditions générales d'utilisation",
       "lastUpdated": "Dernière mise à jour : juin 2026",
-      "draft": "Brouillon v0.1 — à finaliser avant mise en production.",
-      "intro": "Ces conditions encadrent l'utilisation de VOIDCRAFT. En créant un compte, tu acceptes ces termes.",
+      "draft": "Brouillon v0.2 — placeholders légaux à compléter avant production.",
+      "intro": "Ces conditions encadrent l'utilisation de VOIDCRAFT, édité par {{COMPANY_NAME}}, {{COMPANY_ADDRESS}}, immatriculé {{COMPANY_REGISTRATION}}. En créant un compte, tu acceptes ces termes.",
       "sections": {
         "object": {
           "title": "Objet",

@@ -1,9 +1,11 @@
-import { getTranslations } from "next-intl/server";
+import { after } from "next/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { Separator } from "@/components/ui/separator";
 import { convertCents, getRates, type Rates } from "@/lib/currency";
 import { currentYyyymm } from "@/lib/date";
-import { getProfile } from "@/lib/db/profile";
+import { sendWelcome } from "@/lib/email/send";
+import { claimWelcomeEmail, getProfile } from "@/lib/db/profile";
 import {
   listProductsWithMonthSnapshot,
   type ProductWithMonthSnapshot,
@@ -161,6 +163,50 @@ export default async function DashboardPage({
     getProfile(),
     getRates(),
   ]);
+
+  // Welcome email — at-most-once per user, mathematically guaranteed.
+  //
+  // The previous "check → send → mark" sequence was racy: under concurrent
+  // dashboard renders (Next.js prefetch, parallel server-component fetches,
+  // post-signup redirects) every render would read welcome_email_sent_at as
+  // NULL, see "first visit", and enqueue its own send. Result: 6-7 emails.
+  //
+  // The fast-path skip avoids a DB write on every visit after the flag is
+  // set. The atomic claim is the source of truth — if profile.welcome_email_
+  // sent_at is stale (e.g. another render flipped it microseconds ago),
+  // claimWelcomeEmail() will return false and we won't send.
+  if (profile && !profile.welcome_email_sent_at) {
+    const claimed = await claimWelcomeEmail();
+    if (claimed) {
+      const locale = await getLocale();
+      const siteUrl =
+        process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+      const dashboardUrl = `${siteUrl}/${locale}/dashboard`;
+      const firstName = profile.full_name?.split(" ")[0];
+      console.log("[welcome-email] claimed, scheduling send", {
+        to: profile.email,
+        firstName,
+      });
+      after(async () => {
+        const result = await sendWelcome(profile.email, { firstName, dashboardUrl });
+        if (!result.sent) {
+          // At-most-once: don't unclaim. If the send fails, the user just
+          // doesn't get the email. Reset welcome_email_sent_at to NULL in
+          // the DB by hand if you want to retry for a specific user.
+          console.error(
+            "[welcome-email] CLAIMED but send failed — NOT retrying",
+            result,
+          );
+        } else {
+          console.log("[welcome-email] sent for", profile.email);
+        }
+      });
+    } else {
+      console.log(
+        "[welcome-email] another render already claimed this user, skipping",
+      );
+    }
+  }
 
   const baseCurrency = resolveBaseCurrency(
     currency,

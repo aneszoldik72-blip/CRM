@@ -26,6 +26,7 @@ export type Database = {
           notification_payment_failed: boolean;
           notification_trial_ending: boolean;
           notification_weekly_summary: boolean;
+          welcome_email_sent_at: string | null;
           created_at: string;
         };
         Insert: {
@@ -40,6 +41,7 @@ export type Database = {
           notification_payment_failed?: boolean;
           notification_trial_ending?: boolean;
           notification_weekly_summary?: boolean;
+          welcome_email_sent_at?: string | null;
           created_at?: string;
         };
         Update: {
@@ -54,6 +56,7 @@ export type Database = {
           notification_payment_failed?: boolean;
           notification_trial_ending?: boolean;
           notification_weekly_summary?: boolean;
+          welcome_email_sent_at?: string | null;
           created_at?: string;
         };
         Relationships: [

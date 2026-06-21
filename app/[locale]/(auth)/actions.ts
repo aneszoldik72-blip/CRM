@@ -5,6 +5,7 @@ import { getLocale } from "next-intl/server";
 
 import { redirect } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { checkRateLimit, getClientIp, type LimitedRoute } from "@/lib/ratelimit";
 import {
   requestResetSchema,
   signInSchema,
@@ -16,7 +17,24 @@ export type ActionResult = {
   ok: boolean;
   fieldErrors?: Record<string, string>;
   serverError?: string;
+  // Present only when serverError === "auth.rateLimit". Lets the form show
+  // "Réessaie dans N min." instead of a static message.
+  retryAfterSeconds?: number;
 };
+
+// Wraps a server action with a per-IP rate limit. Returns the limit hit
+// response (ActionResult) or null to continue.
+async function rateLimited(route: LimitedRoute): Promise<ActionResult | null> {
+  const ip = await getClientIp();
+  const { success, reset } = await checkRateLimit(route, ip);
+  if (success) return null;
+  const retryAfterSeconds = Math.max(0, Math.ceil((reset - Date.now()) / 1000));
+  return {
+    ok: false,
+    serverError: "auth.rateLimit",
+    retryAfterSeconds,
+  };
+}
 
 async function getOrigin() {
   const h = await headers();
@@ -35,6 +53,9 @@ function zodErrorsToMap(err: import("zod").ZodError): Record<string, string> {
 }
 
 export async function signUp(formData: FormData): Promise<ActionResult> {
+  const limited = await rateLimited("signup");
+  if (limited) return limited;
+
   const parsed = signUpSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -73,6 +94,9 @@ export async function signUp(formData: FormData): Promise<ActionResult> {
 }
 
 export async function signIn(formData: FormData): Promise<ActionResult> {
+  const limited = await rateLimited("login");
+  if (limited) return limited;
+
   const parsed = signInSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -108,6 +132,9 @@ export async function signOut() {
 export async function requestPasswordReset(
   formData: FormData,
 ): Promise<ActionResult> {
+  const limited = await rateLimited("forgot");
+  if (limited) return limited;
+
   const parsed = requestResetSchema.safeParse({
     email: formData.get("email"),
   });

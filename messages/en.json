@@ -129,7 +129,8 @@
       "passwordTooShort": "At least 8 characters.",
       "passwordMismatch": "Passwords do not match.",
       "fullNameTooLong": "Name too long.",
-      "invalidCredentials": "Wrong email or password."
+      "invalidCredentials": "Wrong email or password.",
+      "rateLimit": "Too many attempts. Please wait a few minutes and try again."
     }
   },
   "dashboard": {
@@ -930,6 +931,13 @@
       "title": "Ready to see your real profit?",
       "button": "Start free trial"
     },
+    "cookies": {
+      "aria": "Cookie preferences",
+      "body": "We use anonymous cookies to understand how the site is used. You can opt out anytime.",
+      "accept": "OK",
+      "reject": "Opt out",
+      "dismiss": "Close"
+    },
     "footer": {
       "tagline": "The CRM for COD dropshippers.",
       "columns": {
@@ -957,8 +965,8 @@
     "privacy": {
       "title": "Privacy policy",
       "lastUpdated": "Last updated: June 2026",
-      "draft": "Draft v0.1 — to be finalized before launch.",
-      "intro": "VOIDCRAFT respects your privacy. This page explains what data we collect, why, and how you can control it.",
+      "draft": "Draft v0.2 — legal placeholders to fill in before launch.",
+      "intro": "VOIDCRAFT, operated by {{COMPANY_NAME}}, respects your privacy. This page explains what data we collect, why, who we entrust it to, and how you can control it.",
       "sections": {
         "collected": {
           "title": "Data we collect",
@@ -968,29 +976,37 @@
           "title": "Hosting",
           "body": "Your data is hosted on Supabase, in the European Union (Frankfurt), encrypted at rest and in transit. Daily backups."
         },
+        "subprocessors": {
+          "title": "Sub-processors",
+          "body": "To operate the service we share strictly necessary data with: Supabase (database and auth, EU), Stripe (payments, US/EU, PCI-DSS compliant), Resend (transactional email, EU), Sentry (error monitoring, EU), PostHog (product analytics, US), Upstash (rate limiting, EU). No data is sold."
+        },
+        "retention": {
+          "title": "Data retention",
+          "body": "Your business data is kept while your account is active. On cancellation, it is permanently deleted after 90 days (grace period for reactivation). Technical logs are kept for 30 days maximum."
+        },
         "rights": {
           "title": "Your rights (GDPR)",
-          "body": "You can access all your data, export it to CSV, correct it or delete it anytime from your settings. To exercise your rights: privacy@voidcraft.app."
+          "body": "You can access all your data, export it to CSV, correct it or delete it anytime from your settings. To exercise your rights: {{DPO_EMAIL}}."
         },
         "cookies": {
           "title": "Cookies",
-          "body": "We only use essential cookies (session, language preference, theme preference). No ad cookies, no third-party trackers."
+          "body": "We use essential cookies (session, language preference, theme preference) and anonymous analytics cookies (PostHog). The banner at the bottom of the page lets you opt out of analytics cookies at any time. No ad cookies, no third-party trackers."
         },
         "analytics": {
           "title": "Analytics",
-          "body": "PostHog is used to understand product usage, in anonymized mode. No business data is shared with third parties."
+          "body": "PostHog is used to understand product usage, in anonymized mode by default. No business data is shared with third parties."
         },
         "contact": {
           "title": "Contact",
-          "body": "For any questions: privacy@voidcraft.app."
+          "body": "For any questions: {{DPO_EMAIL}}. Postal address: {{COMPANY_ADDRESS}}."
         }
       }
     },
     "terms": {
       "title": "Terms of service",
       "lastUpdated": "Last updated: June 2026",
-      "draft": "Draft v0.1 — to be finalized before launch.",
-      "intro": "These terms govern the use of VOIDCRAFT. By creating an account, you accept them.",
+      "draft": "Draft v0.2 — legal placeholders to fill in before launch.",
+      "intro": "These terms govern the use of VOIDCRAFT, operated by {{COMPANY_NAME}}, {{COMPANY_ADDRESS}}, registered under {{COMPANY_REGISTRATION}}. By creating an account, you accept these terms.",
       "sections": {
         "object": {
           "title": "Purpose",

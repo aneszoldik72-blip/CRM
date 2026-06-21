@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
+import { CookieBanner } from "@/components/shared/cookie-banner";
 
 export default async function MarketingLayout({
   children,
@@ -18,6 +19,7 @@ export default async function MarketingLayout({
       <MarketingHeader />
       <main className="flex-1">{children}</main>
       <MarketingFooter />
+      <CookieBanner />
     </div>
   );
 }
