@@ -8,14 +8,13 @@ import { computeMetrics, type MetricsInput } from "../metrics";
 
 export type ExportInclude = "kpis" | "full";
 
-// Header strings live in English regardless of UI locale — downstream
-// pipelines (Sheets imports, scripts) expect stable identifiers.
+// Header strings live in English regardless of UI locale.
 export const FULL_COLUMNS = [
   "Product",
   "Month",
   "Currency",
   "Leads",
-  "Orders",
+  "Confirmed",
   "Delivered",
   "Revenue",
   "Total Spend",
@@ -23,7 +22,7 @@ export const FULL_COLUMNS = [
   "ROAS",
   "Margin %",
   "Delivery Rate",
-  "EPO",
+  "Profit per delivery",
 ] as const;
 
 export const KPI_COLUMNS = [
@@ -77,7 +76,7 @@ export function buildRow(input: BuildRowInput, locale = "fr-FR"): ExportRow {
       Month: month,
       Currency: input.currency,
       Leads: 0,
-      Orders: 0,
+      Confirmed: 0,
       Delivered: 0,
       Revenue: 0,
       "Total Spend": 0,
@@ -85,7 +84,7 @@ export function buildRow(input: BuildRowInput, locale = "fr-FR"): ExportRow {
       ROAS: NULL_NUM(),
       "Margin %": NULL_NUM(),
       "Delivery Rate": NULL_NUM(),
-      EPO: NULL_NUM(),
+      "Profit per delivery": NULL_NUM(),
     };
   }
 
@@ -104,7 +103,7 @@ export function buildRow(input: BuildRowInput, locale = "fr-FR"): ExportRow {
     Month: month,
     Currency: input.currency,
     Leads: e.leads,
-    Orders: e.orders,
+    Confirmed: e.orders,
     Delivered: e.delivered,
     Revenue: cents(e.revenue_cents),
     "Total Spend": m.totalSpend.value === null ? 0 : cents(m.totalSpend.value),
@@ -112,7 +111,7 @@ export function buildRow(input: BuildRowInput, locale = "fr-FR"): ExportRow {
     ROAS: m.roas.value === null ? null : Math.round(m.roas.value * 100) / 100,
     "Margin %": pct(m.margin.value),
     "Delivery Rate": pct(m.deliveryRate.value),
-    EPO: m.epo.value === null ? null : cents(m.epo.value),
+    "Profit per delivery": m.epo.value === null ? null : cents(m.epo.value),
   };
 }
 

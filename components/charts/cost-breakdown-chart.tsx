@@ -46,16 +46,25 @@ export default function CostBreakdownChart({
 
   const values = useWatch({ control }) as EntryValues;
 
-  const slices: Slice[] = useMemo(
-    () =>
-      CATEGORIES.map((c) => ({
+  const slices: Slice[] = useMemo(() => {
+    const delivered = values.delivered ?? 0;
+    // product_cost_cents and service_cost_cents are per-unit and must be
+    // scaled by delivered to represent their true contribution to spend.
+    const perUnitKeys: ReadonlySet<keyof EntryValues> = new Set([
+      "product_cost_cents",
+      "service_cost_cents",
+    ]);
+    return CATEGORIES.map((c) => {
+      const raw = (values[c.key] as number | null) ?? 0;
+      const cents = perUnitKeys.has(c.key) ? raw * delivered : raw;
+      return {
         key: c.key,
         name: t(c.labelKey),
-        cents: (values[c.key] as number | null) ?? 0,
+        cents,
         color: c.color,
-      })),
-    [values, t],
-  );
+      };
+    });
+  }, [values, t]);
 
   const total = slices.reduce((sum, s) => sum + s.cents, 0);
 

@@ -66,6 +66,16 @@ export type ConfirmationEntryFormProps = {
   minDate: string;
   /** Inclusive upper bound — the selected month's last day. */
   maxDate: string;
+  /** Sum of `called` across the month for days OTHER than initialDate. The
+   * form adds today's in-form value on top to get the live month total. */
+  monthOtherDaysCalled: number;
+  /** Same as monthOtherDaysCalled, but for `confirmed`. */
+  monthOtherDaysConfirmed: number;
+  /** Product entry's monthly leads. `null` when no entry exists for this
+   * month yet → warning is suppressed. */
+  productLeads: number | null;
+  /** Product entry's monthly orders (labelled "Confirmed" in the UI). */
+  productConfirmed: number | null;
 };
 
 export function ConfirmationEntryForm({
@@ -75,8 +85,13 @@ export function ConfirmationEntryForm({
   initialConfirmations,
   minDate,
   maxDate,
+  monthOtherDaysCalled,
+  monthOtherDaysConfirmed,
+  productLeads,
+  productConfirmed,
 }: ConfirmationEntryFormProps) {
   const t = useTranslations("confirmations.entry");
+  const tWarning = useTranslations("confirmations.entry.warning");
   const tSave = useTranslations("entries.save");
   const locale = useLocale() as AppLocale;
   const bcp = bcp47(locale);
@@ -120,6 +135,16 @@ export function ConfirmationEntryForm({
     [rows],
   );
   const teamRate = confirmationRate(teamTotals);
+
+  // Live whole-month totals: server-provided sum across other days, plus
+  // the current in-form values for the open day. Recomputes on every
+  // keystroke so the warning tracks the user's edits.
+  const monthCalled = monthOtherDaysCalled + teamTotals.called;
+  const monthConfirmed = monthOtherDaysConfirmed + teamTotals.confirmed;
+  const callsExceedLeads =
+    productLeads !== null && monthCalled > productLeads;
+  const confirmedExceedConfirmed =
+    productConfirmed !== null && monthConfirmed > productConfirmed;
 
   const performSave = useCallback(
     async (agentId: string) => {
@@ -378,6 +403,31 @@ export function ConfirmationEntryForm({
           );
         })}
       </ul>
+
+      {(callsExceedLeads || confirmedExceedConfirmed) && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="flex flex-col gap-1 rounded-lg border border-amber-500/40 bg-amber-500/10 p-3 text-xs text-amber-900 dark:text-amber-200"
+        >
+          {callsExceedLeads && (
+            <p>
+              {tWarning("callsExceedLeads", {
+                total: formatNumber(monthCalled, bcp),
+                leads: formatNumber(productLeads!, bcp),
+              })}
+            </p>
+          )}
+          {confirmedExceedConfirmed && (
+            <p>
+              {tWarning("confirmedExceedConfirmed", {
+                total: formatNumber(monthConfirmed, bcp),
+                confirmed: formatNumber(productConfirmed!, bcp),
+              })}
+            </p>
+          )}
+        </div>
+      )}
 
       <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3 text-xs text-muted-foreground">
         <span>

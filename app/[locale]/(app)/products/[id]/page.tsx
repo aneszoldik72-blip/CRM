@@ -103,13 +103,26 @@ export default async function ProductDetailPage({
   //   WHERE product_id = $1
   //     AND date >= $2 AND date <= $3
   // Both filters are required; RLS additionally scopes by user.
-  const [monthConfirmations, todayConfirmations] = await Promise.all([
-    listConfirmationsForProductRange(product.id, {
-      from: widgetRange.start,
-      to: widgetRange.end,
-    }),
-    listConfirmationsForProductOnDate(product.id, logDate),
-  ]);
+  const [monthConfirmations, todayConfirmations, monthEntry] =
+    await Promise.all([
+      listConfirmationsForProductRange(product.id, {
+        from: widgetRange.start,
+        to: widgetRange.end,
+      }),
+      listConfirmationsForProductOnDate(product.id, logDate),
+      getEntry(selected.id),
+    ]);
+
+  // Whole-month agent totals EXCLUDING the day currently open in the form.
+  // The form adds its live in-form values to this baseline so the warning
+  // updates as the user types and is correct after day navigation.
+  let monthOtherDaysCalled = 0;
+  let monthOtherDaysConfirmed = 0;
+  for (const c of monthConfirmations) {
+    if (c.date === logDate) continue;
+    monthOtherDaysCalled += c.called;
+    monthOtherDaysConfirmed += c.confirmed;
+  }
 
   const snapshotByAgent = buildSnapshots(
     activeAgents.map((a) => a.id),
@@ -182,7 +195,7 @@ export default async function ProductDetailPage({
 
       <EntryForm
         key={selected.id}
-        entry={await getEntry(selected.id)}
+        entry={monthEntry}
         month={selected}
         product={product}
         daysElapsed={daysElapsedFor(selected, new Date())}
@@ -197,6 +210,10 @@ export default async function ProductDetailPage({
         initialConfirmations={todayConfirmations}
         minDate={widgetRange.start}
         maxDate={widgetRange.end}
+        monthOtherDaysCalled={monthOtherDaysCalled}
+        monthOtherDaysConfirmed={monthOtherDaysConfirmed}
+        productLeads={monthEntry?.leads ?? null}
+        productConfirmed={monthEntry?.orders ?? null}
       />
     </div>
   );
@@ -221,6 +238,7 @@ async function buildTrendData(productId: string): Promise<TrendPoint[]> {
     startDate: row.start_date,
     profitCents: row.entries
       ? computeNetProfitCents({
+          delivered: row.entries.delivered,
           revenue_cents: row.entries.revenue_cents,
           ads_spend_cents: row.entries.ads_spend_cents,
           test_spend_cents: row.entries.test_spend_cents,

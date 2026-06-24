@@ -20,8 +20,6 @@ const FIELDS = [
   { name: "test_spend_cents", labelKey: "tests" },
   { name: "product_cost_cents", labelKey: "product" },
   { name: "service_cost_cents", labelKey: "delivery" },
-  { name: "bonus_cents", labelKey: "bonus" },
-  { name: "ad_account_cents", labelKey: "adAccount" },
 ] as const;
 
 export function CostsSection({ currency, onFieldChange }: SectionProps) {

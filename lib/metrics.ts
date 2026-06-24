@@ -43,8 +43,6 @@ export type Metrics = {
   conversion: MetricValue;
   epo: MetricValue;
   costPerDelivered: MetricValue;
-  avgRevenuePerOrder: MetricValue;
-  avgRevenuePerDelivered: MetricValue;
   breakEvenLead: MetricValue;
   stockDaysLeft: MetricValue;
 };
@@ -55,11 +53,14 @@ const NULL = (kind: MetricKind, tone: MetricTone = "neutral"): MetricValue => ({
   tone,
 });
 
-// Net profit in cents = revenue − sum of all cost cents. Same formula used by
-// computeMetrics and by the trend chart's server-side aggregation.
+// Net profit in cents = revenue − sum of all cost cents. product_cost_cents
+// and service_cost_cents are per-unit; they scale with `delivered`. Same
+// formula used by computeMetrics and the trend chart's server-side
+// aggregation.
 export function computeNetProfitCents(
   e: Pick<
     MetricsInput,
+    | "delivered"
     | "revenue_cents"
     | "ads_spend_cents"
     | "test_spend_cents"
@@ -74,20 +75,24 @@ export function computeNetProfitCents(
     (e.ads_spend_cents +
       e.test_spend_cents +
       e.ad_account_cents +
-      e.product_cost_cents +
-      e.service_cost_cents +
+      e.product_cost_cents * e.delivered +
+      e.service_cost_cents * e.delivered +
       e.bonus_cents)
   );
 }
 
 type AggregatableEntry = Omit<MetricsInput, "daysElapsed">;
 
-// Sums per-field across many entries. Stock fields collapse to null because
-// summing "initial_stock" across products has no meaningful interpretation.
+// Sums per-field across many entries. Per-unit costs (product_cost_cents,
+// service_cost_cents) collapse into a weighted-by-delivered average so that
+// downstream `computeMetrics(aggregated).totalSpend` recovers
+// Σ(per_entry.cost × per_entry.delivered) correctly. Stock fields collapse
+// to null because summing "initial_stock" across products has no meaningful
+// interpretation.
 export function aggregateEntries(
   entries: AggregatableEntry[],
 ): AggregatableEntry {
-  return entries.reduce<AggregatableEntry>(
+  const flat = entries.reduce(
     (acc, e) => ({
       leads: acc.leads + e.leads,
       orders: acc.orders + e.orders,
@@ -96,11 +101,11 @@ export function aggregateEntries(
       ads_spend_cents: acc.ads_spend_cents + e.ads_spend_cents,
       test_spend_cents: acc.test_spend_cents + e.test_spend_cents,
       ad_account_cents: acc.ad_account_cents + e.ad_account_cents,
-      product_cost_cents: acc.product_cost_cents + e.product_cost_cents,
-      service_cost_cents: acc.service_cost_cents + e.service_cost_cents,
       bonus_cents: acc.bonus_cents + e.bonus_cents,
-      initial_stock: null,
-      current_stock: null,
+      productContribution:
+        acc.productContribution + e.product_cost_cents * e.delivered,
+      serviceContribution:
+        acc.serviceContribution + e.service_cost_cents * e.delivered,
     }),
     {
       leads: 0,
@@ -110,13 +115,34 @@ export function aggregateEntries(
       ads_spend_cents: 0,
       test_spend_cents: 0,
       ad_account_cents: 0,
-      product_cost_cents: 0,
-      service_cost_cents: 0,
       bonus_cents: 0,
-      initial_stock: null,
-      current_stock: null,
+      productContribution: 0,
+      serviceContribution: 0,
     },
   );
+
+  // Weighted-by-delivered average per-unit cost. When no units were
+  // delivered, the contribution is zero anyway; setting the per-unit value
+  // to zero keeps `computeMetrics` from producing NaN.
+  const productPerUnit =
+    flat.delivered > 0 ? flat.productContribution / flat.delivered : 0;
+  const servicePerUnit =
+    flat.delivered > 0 ? flat.serviceContribution / flat.delivered : 0;
+
+  return {
+    leads: flat.leads,
+    orders: flat.orders,
+    delivered: flat.delivered,
+    revenue_cents: flat.revenue_cents,
+    ads_spend_cents: flat.ads_spend_cents,
+    test_spend_cents: flat.test_spend_cents,
+    ad_account_cents: flat.ad_account_cents,
+    product_cost_cents: productPerUnit,
+    service_cost_cents: servicePerUnit,
+    bonus_cents: flat.bonus_cents,
+    initial_stock: null,
+    current_stock: null,
+  };
 }
 
 function toneFromBands(
@@ -145,12 +171,14 @@ export function computeMetrics(input: MetricsInput): Metrics {
     daysElapsed,
   } = input;
 
+  // product_cost_cents and service_cost_cents are per-unit; they scale with
+  // delivered to give the true cost contribution.
   const totalCosts =
     ads_spend_cents +
     test_spend_cents +
     ad_account_cents +
-    product_cost_cents +
-    service_cost_cents +
+    product_cost_cents * delivered +
+    service_cost_cents * delivered +
     bonus_cents;
 
   const profit = revenue_cents - totalCosts;
@@ -188,13 +216,13 @@ export function computeMetrics(input: MetricsInput): Metrics {
         }
       : NULL("percent");
 
-  // 4. Delivery rate = delivered / orders
+  // 4. Delivery rate = delivered / leads
   const deliveryRate: MetricValue =
-    orders > 0
+    leads > 0
       ? {
-          value: delivered / orders,
+          value: delivered / leads,
           kind: "percent",
-          tone: toneFromBands(delivered / orders, {
+          tone: toneFromBands(delivered / leads, {
             good: 0.6,
             bad: 0.4,
           }),
@@ -221,13 +249,13 @@ export function computeMetrics(input: MetricsInput): Metrics {
         }
       : NULL("percent");
 
-  // 7. EPO (earnings per order) = profit / orders
+  // 7. Profit per delivery = profit / delivered
   const epo: MetricValue =
-    orders > 0
+    delivered > 0
       ? {
-          value: profit / orders,
+          value: profit / delivered,
           kind: "currency",
-          tone: profit / orders > 0 ? "good" : "bad",
+          tone: profit / delivered > 0 ? "good" : "bad",
         }
       : NULL("currency");
 
@@ -241,27 +269,7 @@ export function computeMetrics(input: MetricsInput): Metrics {
         }
       : NULL("currency");
 
-  // 9. Avg revenue per order
-  const avgRevenuePerOrder: MetricValue =
-    orders > 0
-      ? {
-          value: revenue_cents / orders,
-          kind: "currency",
-          tone: "neutral",
-        }
-      : NULL("currency");
-
-  // 10. Avg revenue per delivered
-  const avgRevenuePerDelivered: MetricValue =
-    delivered > 0
-      ? {
-          value: revenue_cents / delivered,
-          kind: "currency",
-          tone: "neutral",
-        }
-      : NULL("currency");
-
-  // 11. Break-even lead cost: max ads_spend per lead that keeps profit ≥ 0.
+  // 9. Break-even lead cost: max ads_spend per lead that keeps profit ≥ 0.
   // breakEvenAdsTotal = revenue − (all costs except ads)
   // breakEvenPerLead  = breakEvenAdsTotal / leads
   const breakEvenLead: MetricValue =
@@ -271,8 +279,8 @@ export function computeMetrics(input: MetricsInput): Metrics {
             (revenue_cents -
               (test_spend_cents +
                 ad_account_cents +
-                product_cost_cents +
-                service_cost_cents +
+                product_cost_cents * delivered +
+                service_cost_cents * delivered +
                 bonus_cents)) /
             leads,
           kind: "currency",
@@ -280,28 +288,26 @@ export function computeMetrics(input: MetricsInput): Metrics {
         }
       : NULL("currency");
 
-  // 12. Stock days left = current_stock / (delivered / daysElapsed)
-  let stockDaysLeft: MetricValue = NULL("days");
-  if (
-    current_stock != null &&
-    current_stock >= 0 &&
-    delivered > 0 &&
-    daysElapsed != null &&
-    daysElapsed > 0
-  ) {
-    const dailyRate = delivered / daysElapsed;
-    const days = current_stock / dailyRate;
-    stockDaysLeft = {
-      value: days,
-      kind: "days",
-      tone:
+  // 10. Stock units left = current_stock. Tone derived from implied days remaining.
+  let stockDaysLeft: MetricValue = NULL("count");
+  if (current_stock != null && current_stock >= 0) {
+    let tone: MetricTone = "neutral";
+    if (delivered > 0 && daysElapsed != null && daysElapsed > 0) {
+      const dailyRate = delivered / daysElapsed;
+      const days = current_stock / dailyRate;
+      tone =
         days < 3
           ? "critical"
           : days < 7
             ? "bad"
             : days < 14
               ? "neutral"
-              : "good",
+              : "good";
+    }
+    stockDaysLeft = {
+      value: current_stock,
+      kind: "count",
+      tone,
     };
   }
 
@@ -314,8 +320,6 @@ export function computeMetrics(input: MetricsInput): Metrics {
     conversion,
     epo,
     costPerDelivered,
-    avgRevenuePerOrder,
-    avgRevenuePerDelivered,
     breakEvenLead,
     stockDaysLeft,
   };

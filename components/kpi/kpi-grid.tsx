@@ -108,20 +108,6 @@ export function KpiGrid({ control, currency, daysElapsed }: KpiGridProps) {
         />
         <KpiCard
           variant="secondary"
-          label={t("avgRevenuePerOrder")}
-          formula={t("avgRevenuePerOrderFormula")}
-          value={metrics.avgRevenuePerOrder}
-          currency={currency}
-        />
-        <KpiCard
-          variant="secondary"
-          label={t("avgRevenuePerDelivered")}
-          formula={t("avgRevenuePerDeliveredFormula")}
-          value={metrics.avgRevenuePerDelivered}
-          currency={currency}
-        />
-        <KpiCard
-          variant="secondary"
           label={t("breakEvenLead")}
           formula={t("breakEvenLeadFormula")}
           value={metrics.breakEvenLead}

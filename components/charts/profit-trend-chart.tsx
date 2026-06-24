@@ -60,6 +60,7 @@ export default function ProfitTrendChart({
 
   const values = useWatch({ control }) as EntryValues;
   const liveCurrentProfit = computeNetProfitCents({
+    delivered: values.delivered ?? 0,
     revenue_cents: values.revenue_cents ?? 0,
     ads_spend_cents: values.ads_spend_cents ?? 0,
     test_spend_cents: values.test_spend_cents ?? 0,

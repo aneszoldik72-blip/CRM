@@ -143,12 +143,6 @@ export function StepFirstEntry({
               onChange={(v) => setField("test_spend_cents", v)}
             />
             <MoneyField
-              label={tEntry("adAccountLabel", { currency })}
-              currency={currency}
-              value={value.ad_account_cents}
-              onChange={(v) => setField("ad_account_cents", v)}
-            />
-            <MoneyField
               label={tEntry("productCostLabel", { currency })}
               currency={currency}
               value={value.product_cost_cents}
@@ -159,12 +153,6 @@ export function StepFirstEntry({
               currency={currency}
               value={value.service_cost_cents}
               onChange={(v) => setField("service_cost_cents", v)}
-            />
-            <MoneyField
-              label={tEntry("bonusLabel", { currency })}
-              currency={currency}
-              value={value.bonus_cents}
-              onChange={(v) => setField("bonus_cents", v)}
             />
           </div>
         )}

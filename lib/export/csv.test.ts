@@ -30,8 +30,10 @@ describe("buildRow", () => {
       entry: SAMPLE_ENTRY,
     });
     expect(row.Revenue).toBe(5400);
-    expect(row["Total Spend"]).toBe(3250);   // 2000 + 800 + 360 + 90
-    expect(row["Net Profit"]).toBe(2150);    // 5400 − 3250
+    // product (800/unit × 18) + service (360/unit × 18) = 20 880; plus
+    // ads 2000 + bonus 90 = 22 970.
+    expect(row["Total Spend"]).toBe(22_970);
+    expect(row["Net Profit"]).toBe(-17_570); // 5400 − 22 970
   });
 
   it("emits ratios as percentage numbers (not 0.xx)", () => {
@@ -41,10 +43,10 @@ describe("buildRow", () => {
       currency: "MAD",
       entry: SAMPLE_ENTRY,
     });
-    // 2150 / 5400 = 0.3981… → 39.81%
-    expect(row["Margin %"]).toBe(39.81);
-    // 18 / 25 = 0.72 → 72.00%
-    expect(row["Delivery Rate"]).toBe(72);
+    // -17 570 / 5 400 = -3.2537… → -325.37%
+    expect(row["Margin %"]).toBe(-325.37);
+    // 18 / 100 = 0.18 → 18.00% (delivered / leads)
+    expect(row["Delivery Rate"]).toBe(18);
   });
 
   it("ROAS uses a multiplier, two decimals", () => {
@@ -66,12 +68,12 @@ describe("buildRow", () => {
       entry: null,
     });
     expect(row.Leads).toBe(0);
-    expect(row.Orders).toBe(0);
+    expect(row.Confirmed).toBe(0);
     expect(row.Revenue).toBe(0);
     expect(row.ROAS).toBeNull();
     expect(row["Margin %"]).toBeNull();
     expect(row["Delivery Rate"]).toBeNull();
-    expect(row.EPO).toBeNull();
+    expect(row["Profit per delivery"]).toBeNull();
   });
 
   it("formats the Month column with the given locale", () => {
@@ -125,7 +127,7 @@ describe("toCsv", () => {
     const csv = toCsv([empty], "full");
     const dataLine = csv.slice(1).split(/\r?\n/)[1]!;
     expect(dataLine).not.toMatch(/null/i);
-    // Final 4 columns (ROAS, Margin %, Delivery Rate, EPO) should be empty.
+    // Final 4 columns (ROAS, Margin %, Delivery Rate, Profit per delivery) should be empty.
     const trailing = dataLine.split(",").slice(-4);
     expect(trailing).toEqual(["", "", "", ""]);
   });

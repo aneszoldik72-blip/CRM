@@ -46,7 +46,9 @@
       "Bash(rm \"C:/Users/Administrator/Desktop/COD CRM/Saas CRM website build/app/[locale]/page.tsx\")",
       "Bash(rm \"C:/Users/Administrator/Desktop/COD CRM/Saas CRM website build/app/[locale]/\\(marketing\\)/.gitkeep\")",
       "Bash(echo \"exit=$?\")",
-      "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 pnpm add @sentry/nextjs posthog-js resend @react-email/components @upstash/redis @upstash/ratelimit)"
+      "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 pnpm add @sentry/nextjs posthog-js resend @react-email/components @upstash/redis @upstash/ratelimit)",
+      "Bash(pnpm vitest *)",
+      "Bash(pnpm tsc *)"
     ]
   }
 }
