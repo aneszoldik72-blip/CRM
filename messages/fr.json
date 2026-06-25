@@ -274,6 +274,8 @@
     "added": "Mois ajouté"
   },
   "entries": {
+    "salesCurrency": "Devise des ventes",
+    "costsCurrency": "Devise des coûts",
     "save": {
       "dirty": "Modifications non enregistrées…",
       "saving": "Enregistrement…",

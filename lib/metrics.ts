@@ -1,5 +1,7 @@
 // Pure metric computation for the entry form. No React, no locale, no DB.
 
+import { convertCents, type Rates } from "./currency";
+
 export type MetricKind =
   | "currency"
   | "percent"
@@ -323,4 +325,153 @@ export function computeMetrics(input: MetricsInput): Metrics {
     breakEvenLead,
     stockDaysLeft,
   };
+}
+
+// ============================================================================
+// Per-entry wrappers — apply sales_currency / costs_currency conversion at the
+// boundary so the pure functions above stay currency-naive. Revenue is read
+// in `sales_currency`; all cost fields are read in `costs_currency`. Both
+// get converted to `baseCurrency` (the product's currency) before metrics
+// run, which means all derived values are denominated in baseCurrency.
+// ============================================================================
+
+export type EntryCurrencies = {
+  sales_currency: string;
+  costs_currency: string;
+};
+
+export type EntryConversionCtx = {
+  baseCurrency: string;
+  rates: Rates;
+};
+
+type EntryForMetricsInput = Omit<
+  MetricsInput,
+  "daysElapsed"
+> & EntryCurrencies;
+
+function convertEntryToBase(
+  e: EntryForMetricsInput,
+  ctx: EntryConversionCtx,
+): Omit<MetricsInput, "daysElapsed"> {
+  const { baseCurrency, rates } = ctx;
+  return {
+    leads: e.leads,
+    orders: e.orders,
+    delivered: e.delivered,
+    revenue_cents: convertCents(
+      e.revenue_cents,
+      e.sales_currency,
+      baseCurrency,
+      rates,
+    ),
+    ads_spend_cents: convertCents(
+      e.ads_spend_cents,
+      e.costs_currency,
+      baseCurrency,
+      rates,
+    ),
+    test_spend_cents: convertCents(
+      e.test_spend_cents,
+      e.costs_currency,
+      baseCurrency,
+      rates,
+    ),
+    ad_account_cents: convertCents(
+      e.ad_account_cents,
+      e.costs_currency,
+      baseCurrency,
+      rates,
+    ),
+    product_cost_cents: convertCents(
+      e.product_cost_cents,
+      e.costs_currency,
+      baseCurrency,
+      rates,
+    ),
+    service_cost_cents: convertCents(
+      e.service_cost_cents,
+      e.costs_currency,
+      baseCurrency,
+      rates,
+    ),
+    bonus_cents: convertCents(
+      e.bonus_cents,
+      e.costs_currency,
+      baseCurrency,
+      rates,
+    ),
+    initial_stock: e.initial_stock,
+    current_stock: e.current_stock,
+  };
+}
+
+export function computeMetricsForEntry(
+  entry: EntryForMetricsInput & { daysElapsed: number | null },
+  ctx: EntryConversionCtx,
+): Metrics {
+  const converted = convertEntryToBase(entry, ctx);
+  return computeMetrics({ ...converted, daysElapsed: entry.daysElapsed });
+}
+
+export function computeNetProfitCentsForEntry(
+  entry: Pick<
+    MetricsInput,
+    | "delivered"
+    | "revenue_cents"
+    | "ads_spend_cents"
+    | "test_spend_cents"
+    | "ad_account_cents"
+    | "product_cost_cents"
+    | "service_cost_cents"
+    | "bonus_cents"
+  > & EntryCurrencies,
+  ctx: EntryConversionCtx,
+): number {
+  const { baseCurrency, rates } = ctx;
+  return computeNetProfitCents({
+    delivered: entry.delivered,
+    revenue_cents: convertCents(
+      entry.revenue_cents,
+      entry.sales_currency,
+      baseCurrency,
+      rates,
+    ),
+    ads_spend_cents: convertCents(
+      entry.ads_spend_cents,
+      entry.costs_currency,
+      baseCurrency,
+      rates,
+    ),
+    test_spend_cents: convertCents(
+      entry.test_spend_cents,
+      entry.costs_currency,
+      baseCurrency,
+      rates,
+    ),
+    ad_account_cents: convertCents(
+      entry.ad_account_cents,
+      entry.costs_currency,
+      baseCurrency,
+      rates,
+    ),
+    product_cost_cents: convertCents(
+      entry.product_cost_cents,
+      entry.costs_currency,
+      baseCurrency,
+      rates,
+    ),
+    service_cost_cents: convertCents(
+      entry.service_cost_cents,
+      entry.costs_currency,
+      baseCurrency,
+      rates,
+    ),
+    bonus_cents: convertCents(
+      entry.bonus_cents,
+      entry.costs_currency,
+      baseCurrency,
+      rates,
+    ),
+  });
 }

@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { Link, redirect } from "@/i18n/navigation";
 
 import { getCountry } from "@/lib/data/countries";
+import { getRates, type Rates } from "@/lib/currency";
 import { listAgents } from "@/lib/db/agents";
 import {
   listConfirmationsForProductOnDate,
@@ -19,7 +20,7 @@ import {
 } from "@/lib/db/months";
 import { getProduct } from "@/lib/db/products";
 import { buildSnapshots, rankAgents } from "@/lib/agent-metrics";
-import { computeNetProfitCents } from "@/lib/metrics";
+import { computeNetProfitCentsForEntry } from "@/lib/metrics";
 import { Badge } from "@/components/ui/badge";
 import { EntryForm } from "@/components/entries/entry-form";
 import { ConfirmationEntryForm } from "@/components/agents/confirmation-entry-form";
@@ -103,7 +104,7 @@ export default async function ProductDetailPage({
   //   WHERE product_id = $1
   //     AND date >= $2 AND date <= $3
   // Both filters are required; RLS additionally scopes by user.
-  const [monthConfirmations, todayConfirmations, monthEntry] =
+  const [monthConfirmations, todayConfirmations, monthEntry, rates] =
     await Promise.all([
       listConfirmationsForProductRange(product.id, {
         from: widgetRange.start,
@@ -111,18 +112,8 @@ export default async function ProductDetailPage({
       }),
       listConfirmationsForProductOnDate(product.id, logDate),
       getEntry(selected.id),
+      getRates(),
     ]);
-
-  // Whole-month agent totals EXCLUDING the day currently open in the form.
-  // The form adds its live in-form values to this baseline so the warning
-  // updates as the user types and is correct after day navigation.
-  let monthOtherDaysCalled = 0;
-  let monthOtherDaysConfirmed = 0;
-  for (const c of monthConfirmations) {
-    if (c.date === logDate) continue;
-    monthOtherDaysCalled += c.called;
-    monthOtherDaysConfirmed += c.confirmed;
-  }
 
   const snapshotByAgent = buildSnapshots(
     activeAgents.map((a) => a.id),
@@ -199,7 +190,8 @@ export default async function ProductDetailPage({
         month={selected}
         product={product}
         daysElapsed={daysElapsedFor(selected, new Date())}
-        trendData={await buildTrendData(product.id)}
+        trendData={await buildTrendData(product.id, product.currency, rates)}
+        rates={rates}
       />
 
       <ConfirmationEntryForm
@@ -210,8 +202,6 @@ export default async function ProductDetailPage({
         initialConfirmations={todayConfirmations}
         minDate={widgetRange.start}
         maxDate={widgetRange.end}
-        monthOtherDaysCalled={monthOtherDaysCalled}
-        monthOtherDaysConfirmed={monthOtherDaysConfirmed}
         productLeads={monthEntry?.leads ?? null}
         productConfirmed={monthEntry?.orders ?? null}
       />
@@ -230,23 +220,32 @@ function todayIso(): string {
   ).padStart(2, "0")}`;
 }
 
-async function buildTrendData(productId: string): Promise<TrendPoint[]> {
+async function buildTrendData(
+  productId: string,
+  baseCurrency: string,
+  rates: Rates,
+): Promise<TrendPoint[]> {
   const rows = await getMonthsWithEntries(productId);
   return rows.map((row) => ({
     id: row.id,
     label: row.label,
     startDate: row.start_date,
     profitCents: row.entries
-      ? computeNetProfitCents({
-          delivered: row.entries.delivered,
-          revenue_cents: row.entries.revenue_cents,
-          ads_spend_cents: row.entries.ads_spend_cents,
-          test_spend_cents: row.entries.test_spend_cents,
-          ad_account_cents: row.entries.ad_account_cents,
-          product_cost_cents: row.entries.product_cost_cents,
-          service_cost_cents: row.entries.service_cost_cents,
-          bonus_cents: row.entries.bonus_cents,
-        })
+      ? computeNetProfitCentsForEntry(
+          {
+            delivered: row.entries.delivered,
+            revenue_cents: row.entries.revenue_cents,
+            ads_spend_cents: row.entries.ads_spend_cents,
+            test_spend_cents: row.entries.test_spend_cents,
+            ad_account_cents: row.entries.ad_account_cents,
+            product_cost_cents: row.entries.product_cost_cents,
+            service_cost_cents: row.entries.service_cost_cents,
+            bonus_cents: row.entries.bonus_cents,
+            sales_currency: row.entries.sales_currency,
+            costs_currency: row.entries.costs_currency,
+          },
+          { baseCurrency, rates },
+        )
       : 0,
   }));
 }

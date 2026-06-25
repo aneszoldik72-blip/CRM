@@ -146,6 +146,9 @@ export type Database = {
         ];
       };
       entries: {
+        // MANUAL EDIT: sales_currency / costs_currency added per migration 0008.
+        // If regenerating this file via `supabase gen types typescript`,
+        // those two fields must be preserved.
         Row: {
           id: string;
           month_id: string;
@@ -161,6 +164,8 @@ export type Database = {
           bonus_cents: number;
           initial_stock: number | null;
           current_stock: number | null;
+          sales_currency: string;
+          costs_currency: string;
           created_at: string;
           updated_at: string;
         };
@@ -179,6 +184,8 @@ export type Database = {
           bonus_cents?: number;
           initial_stock?: number | null;
           current_stock?: number | null;
+          sales_currency?: string;
+          costs_currency?: string;
           created_at?: string;
           updated_at?: string;
         };
@@ -197,6 +204,8 @@ export type Database = {
           bonus_cents?: number;
           initial_stock?: number | null;
           current_stock?: number | null;
+          sales_currency?: string;
+          costs_currency?: string;
           created_at?: string;
           updated_at?: string;
         };

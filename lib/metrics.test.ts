@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
 
+import type { Rates } from "./currency";
 import {
   aggregateEntries,
   computeMetrics,
+  computeMetricsForEntry,
   computeNetProfitCents,
+  computeNetProfitCentsForEntry,
   type MetricsInput,
 } from "./metrics";
 
@@ -440,5 +443,151 @@ describe("aggregateEntries", () => {
     const agg = aggregateEntries([eA, eB]);
     const aggMetrics = computeMetrics({ ...agg, daysElapsed: null });
     expect(aggMetrics.totalSpend.value).toBe(sumSpend);
+  });
+});
+
+describe("currency-aware wrappers", () => {
+  // USD-based rate table: 1 USD = 0.9 EUR = 10 MAD. So 1 EUR = ~11.11 MAD.
+  const RATES: Rates = {
+    base: "USD",
+    rates: { USD: 1, EUR: 0.9, MAD: 10 },
+    fetchedAt: "2026-06-01T00:00:00Z",
+    stale: false,
+  };
+  const STALE_RATES: Rates = {
+    base: "USD",
+    rates: { USD: 1 }, // EUR and MAD missing → 1:1 fallback
+    fetchedAt: "2020-01-01T00:00:00Z",
+    stale: true,
+  };
+
+  describe("computeMetricsForEntry", () => {
+    it("same-currency entry: no conversion, identity to computeMetrics", () => {
+      const entry = {
+        leads: 100,
+        orders: 50,
+        delivered: 30,
+        revenue_cents: 600_000,
+        ads_spend_cents: 200_000,
+        test_spend_cents: 10_000,
+        ad_account_cents: 0,
+        product_cost_cents: 2_000,
+        service_cost_cents: 1_000,
+        bonus_cents: 0,
+        initial_stock: null,
+        current_stock: null,
+        sales_currency: "USD",
+        costs_currency: "USD",
+        daysElapsed: null,
+      };
+      const wrapped = computeMetricsForEntry(entry, {
+        baseCurrency: "USD",
+        rates: RATES,
+      });
+      const direct = computeMetrics(entry);
+      expect(wrapped.totalSpend.value).toBe(direct.totalSpend.value);
+      expect(wrapped.netProfit.value).toBe(direct.netProfit.value);
+    });
+
+    it("cross-currency: revenue in EUR converts to USD base", () => {
+      // 900 EUR revenue at 1 USD = 0.9 EUR → 1000 USD.
+      const m = computeMetricsForEntry(
+        {
+          leads: 100,
+          orders: 50,
+          delivered: 0,
+          revenue_cents: 90_000, // 900.00 EUR
+          ads_spend_cents: 0,
+          test_spend_cents: 0,
+          ad_account_cents: 0,
+          product_cost_cents: 0,
+          service_cost_cents: 0,
+          bonus_cents: 0,
+          initial_stock: null,
+          current_stock: null,
+          sales_currency: "EUR",
+          costs_currency: "USD",
+          daysElapsed: null,
+        },
+        { baseCurrency: "USD", rates: RATES },
+      );
+      expect(m.netProfit.value).toBe(100_000); // 1000.00 USD
+    });
+
+    it("cross-currency: costs in MAD convert to USD base", () => {
+      // 1000 MAD ads at 1 USD = 10 MAD → 100 USD.
+      const m = computeMetricsForEntry(
+        {
+          leads: 0,
+          orders: 0,
+          delivered: 0,
+          revenue_cents: 0,
+          ads_spend_cents: 100_000, // 1 000.00 MAD
+          test_spend_cents: 0,
+          ad_account_cents: 0,
+          product_cost_cents: 0,
+          service_cost_cents: 0,
+          bonus_cents: 0,
+          initial_stock: null,
+          current_stock: null,
+          sales_currency: "USD",
+          costs_currency: "MAD",
+          daysElapsed: null,
+        },
+        { baseCurrency: "USD", rates: RATES },
+      );
+      expect(m.totalSpend.value).toBe(10_000); // 100.00 USD
+    });
+
+    it("missing rate → 1:1 fallback (no data loss)", () => {
+      // EUR isn't in STALE_RATES → convertCents returns cents unchanged.
+      const m = computeMetricsForEntry(
+        {
+          leads: 0,
+          orders: 0,
+          delivered: 0,
+          revenue_cents: 90_000,
+          ads_spend_cents: 0,
+          test_spend_cents: 0,
+          ad_account_cents: 0,
+          product_cost_cents: 0,
+          service_cost_cents: 0,
+          bonus_cents: 0,
+          initial_stock: null,
+          current_stock: null,
+          sales_currency: "EUR",
+          costs_currency: "USD",
+          daysElapsed: null,
+        },
+        { baseCurrency: "USD", rates: STALE_RATES },
+      );
+      // 90 000 EUR cents pass through unchanged as 90 000 USD cents.
+      expect(m.netProfit.value).toBe(90_000);
+    });
+  });
+
+  describe("computeNetProfitCentsForEntry", () => {
+    it("scales per-unit costs AND converts currencies together", () => {
+      // revenue: 900 EUR → 1000 USD.
+      // ads: 0
+      // product_cost: 100 MAD/unit × 40 delivered → 4000 MAD → 400 USD.
+      // Net = 1000 − 400 = 600 USD = 60 000 cents.
+      const profit = computeNetProfitCentsForEntry(
+        {
+          delivered: 40,
+          revenue_cents: 90_000,
+          ads_spend_cents: 0,
+          test_spend_cents: 0,
+          ad_account_cents: 0,
+          product_cost_cents: 10_000, // 100.00 MAD per unit
+          service_cost_cents: 0,
+          bonus_cents: 0,
+          sales_currency: "EUR",
+          costs_currency: "MAD",
+        },
+        { baseCurrency: "USD", rates: RATES },
+      );
+      expect(profit).toBe(60_000);
+    });
   });
 });

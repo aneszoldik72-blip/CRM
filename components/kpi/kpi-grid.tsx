@@ -4,39 +4,46 @@ import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { useWatch, type Control } from "react-hook-form";
 
-import { computeMetrics, type MetricsInput } from "@/lib/metrics";
+import type { Rates } from "@/lib/currency";
+import { computeMetricsForEntry } from "@/lib/metrics";
 import type { EntryValues } from "@/lib/validators/entry";
 import { Separator } from "@/components/ui/separator";
 import { KpiCard } from "@/components/kpi/kpi-card";
 
 export type KpiGridProps = {
   control: Control<EntryValues>;
+  /** Product's base currency — all KPIs are denominated in this. */
   currency: string;
   daysElapsed: number | null;
+  rates: Rates;
 };
 
-export function KpiGrid({ control, currency, daysElapsed }: KpiGridProps) {
+export function KpiGrid({ control, currency, daysElapsed, rates }: KpiGridProps) {
   const t = useTranslations("metrics");
   const values = useWatch({ control }) as EntryValues;
 
   const metrics = useMemo(() => {
-    const input: MetricsInput = {
-      leads: values.leads ?? 0,
-      orders: values.orders ?? 0,
-      delivered: values.delivered ?? 0,
-      revenue_cents: values.revenue_cents ?? 0,
-      ads_spend_cents: values.ads_spend_cents ?? 0,
-      test_spend_cents: values.test_spend_cents ?? 0,
-      ad_account_cents: values.ad_account_cents ?? 0,
-      product_cost_cents: values.product_cost_cents ?? 0,
-      service_cost_cents: values.service_cost_cents ?? 0,
-      bonus_cents: values.bonus_cents ?? 0,
-      initial_stock: values.initial_stock,
-      current_stock: values.current_stock,
-      daysElapsed,
-    };
-    return computeMetrics(input);
-  }, [values, daysElapsed]);
+    return computeMetricsForEntry(
+      {
+        leads: values.leads ?? 0,
+        orders: values.orders ?? 0,
+        delivered: values.delivered ?? 0,
+        revenue_cents: values.revenue_cents ?? 0,
+        ads_spend_cents: values.ads_spend_cents ?? 0,
+        test_spend_cents: values.test_spend_cents ?? 0,
+        ad_account_cents: values.ad_account_cents ?? 0,
+        product_cost_cents: values.product_cost_cents ?? 0,
+        service_cost_cents: values.service_cost_cents ?? 0,
+        bonus_cents: values.bonus_cents ?? 0,
+        initial_stock: values.initial_stock,
+        current_stock: values.current_stock,
+        sales_currency: values.sales_currency ?? currency,
+        costs_currency: values.costs_currency ?? currency,
+        daysElapsed,
+      },
+      { baseCurrency: currency, rates },
+    );
+  }, [values, daysElapsed, currency, rates]);
 
   return (
     <section aria-live="polite" className="flex flex-col gap-3">

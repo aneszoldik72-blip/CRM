@@ -1,9 +1,15 @@
 import { z } from "zod";
 
+import { SUPPORTED_CURRENCIES } from "@/lib/currency";
+
 const nonNegInt = z
   .number()
   .int({ message: "Doit être un entier." })
   .nonnegative({ message: "Doit être positif ou zéro." });
+
+const currency = z.enum(SUPPORTED_CURRENCIES, {
+  message: "Devise non supportée.",
+});
 
 export const entrySchema = z.object({
   leads: nonNegInt,
@@ -20,6 +26,12 @@ export const entrySchema = z.object({
 
   initial_stock: nonNegInt.nullable(),
   current_stock: nonNegInt.nullable(),
+
+  // Per-entry currencies (see migration 0008). Sales and costs are denominated
+  // in their own currency; downstream conversions take them to the product's
+  // base currency before computing metrics.
+  sales_currency: currency,
+  costs_currency: currency,
 });
 
 export const entryPatchSchema = entrySchema.partial();

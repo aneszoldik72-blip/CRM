@@ -1,5 +1,6 @@
-import "server-only";
-
+// `convertCents` and `SUPPORTED_CURRENCIES` are pure and used client-side
+// (live KPI conversion in the entry form). `getRates` is only ever called
+// from server components — its fetch cache wouldn't make sense client-side.
 export const SUPPORTED_CURRENCIES = [
   "USD",
   "EUR",
@@ -60,8 +61,10 @@ export async function getRates(): Promise<Rates> {
   }
 }
 
-// Converts cents from one currency to another. Returns 0 if either side is
-// missing from the rate table.
+// Converts cents from one currency to another. Falls back to 1:1 (returns
+// the input cents) when either side is missing from the rate table —
+// previous behaviour returned 0, which silently destroyed data. Stale-rate
+// detection happens at the data fetch layer (Rates.stale).
 export function convertCents(
   cents: number,
   from: string,
@@ -71,6 +74,6 @@ export function convertCents(
   if (from === to) return cents;
   const fromRate = rates.rates[from];
   const toRate = rates.rates[to];
-  if (!fromRate || !toRate) return 0;
+  if (!fromRate || !toRate) return cents;
   return Math.round((cents / fromRate) * toRate);
 }

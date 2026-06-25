@@ -274,6 +274,8 @@
     "added": "تمت إضافة الشهر"
   },
   "entries": {
+    "salesCurrency": "عملة المبيعات",
+    "costsCurrency": "عملة التكاليف",
     "save": {
       "dirty": "تغييرات غير محفوظة…",
       "saving": "جاري الحفظ…",

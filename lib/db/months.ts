@@ -49,6 +49,16 @@ export async function createMonth(
   const bounds = monthBounds(input.month);
   if (!bounds) throw new Error("Mois invalide.");
 
+  // The product's currency is the default for both sales_currency and
+  // costs_currency when there's no source month to copy from.
+  const { data: productRow, error: productErr } = await supabase
+    .from("products")
+    .select("currency")
+    .eq("id", productId)
+    .single();
+  if (productErr) throw productErr;
+  const productCurrency = productRow.currency;
+
   // Optionally pull the source entries so we can carry cost values over.
   let source: EntriesRow | null = null;
   if (input.copyFromMonthId) {
@@ -92,8 +102,16 @@ export async function createMonth(
         // is a separate feature.
         initial_stock: null,
         current_stock: null,
+        // Per-entry currencies carry over so the user doesn't have to
+        // re-pick them every month.
+        sales_currency: source.sales_currency,
+        costs_currency: source.costs_currency,
       }
-    : { month_id: monthRow.id };
+    : {
+        month_id: monthRow.id,
+        sales_currency: productCurrency,
+        costs_currency: productCurrency,
+      };
 
   const { error: entriesErr } = await supabase
     .from("entries")

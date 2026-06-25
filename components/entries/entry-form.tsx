@@ -2,11 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { updateEntryAction } from "@/app/[locale]/(app)/products/[id]/actions";
+import type { Rates } from "@/lib/currency";
 import type { EntryRow } from "@/lib/db/entries";
 import type { MonthRow } from "@/lib/db/months";
 import type { ProductRow } from "@/lib/db/products";
@@ -29,7 +31,10 @@ import { KpiGrid } from "@/components/kpi/kpi-grid";
 
 const DEBOUNCE_MS = 800;
 
-function toFormValues(entry: EntryRow | null): EntryValues {
+function toFormValues(
+  entry: EntryRow | null,
+  productCurrency: string,
+): EntryValues {
   if (!entry) {
     return {
       leads: 0,
@@ -44,6 +49,8 @@ function toFormValues(entry: EntryRow | null): EntryValues {
       bonus_cents: 0,
       initial_stock: null,
       current_stock: null,
+      sales_currency: productCurrency as EntryValues["sales_currency"],
+      costs_currency: productCurrency as EntryValues["costs_currency"],
     };
   }
   return {
@@ -59,6 +66,8 @@ function toFormValues(entry: EntryRow | null): EntryValues {
     bonus_cents: entry.bonus_cents,
     initial_stock: entry.initial_stock,
     current_stock: entry.current_stock,
+    sales_currency: entry.sales_currency as EntryValues["sales_currency"],
+    costs_currency: entry.costs_currency as EntryValues["costs_currency"],
   };
 }
 
@@ -68,15 +77,18 @@ export function EntryForm({
   product,
   daysElapsed,
   trendData,
+  rates,
 }: {
   entry: EntryRow | null;
   month: MonthRow;
   product: ProductRow;
   daysElapsed: number | null;
   trendData: TrendPoint[];
+  rates: Rates;
 }) {
   const tSave = useTranslations("entries.save");
-  const initial = toFormValues(entry);
+  const router = useRouter();
+  const initial = toFormValues(entry, product.currency);
 
   const form = useForm<EntryValues>({
     resolver: zodResolver(entrySchema),
@@ -104,7 +116,7 @@ export function EntryForm({
   }, []);
 
   const performSave = useCallback(
-    async (field: EntryField, value: number | null) => {
+    async (field: EntryField, value: number | string | null) => {
       // Per-field validation against the full schema isolates errors to one
       // field while still using strict types.
       const fieldSchema = entrySchema.shape[field];
@@ -141,6 +153,13 @@ export function EntryForm({
           ) {
             setSaveState({ kind: "saved", at: Date.now() });
           }
+          // Refresh the route's server data so the sibling confirmation
+          // form's warning recomputes against the latest leads / orders.
+          // Other fields don't influence the warning — skip the refresh
+          // to avoid re-running all server queries on every keystroke.
+          if (field === "leads" || field === "orders") {
+            router.refresh();
+          }
         } else {
           // Roll back only if the user hasn't moved on to a newer value.
           if (form.getValues(field) === value) {
@@ -164,11 +183,11 @@ export function EntryForm({
 
       settleIndicator();
     },
-    [form, month.id, settleIndicator, tSave],
+    [form, month.id, router, settleIndicator, tSave],
   );
 
   const scheduleSave = useCallback(
-    (field: EntryField, value: number | null) => {
+    (field: EntryField, value: number | string | null) => {
       pending.current.add(field);
       setSaveState({ kind: "dirty" });
 
@@ -191,7 +210,7 @@ export function EntryForm({
       if (pending.current.size > 0) {
         const fields = Array.from(pending.current);
         for (const f of fields) {
-          scheduleSave(f, form.getValues(f) as number | null);
+          scheduleSave(f, form.getValues(f) as number | string | null);
         }
       } else {
         setSaveState((s) => (s.kind === "offline" ? { kind: "idle" } : s));
@@ -229,6 +248,7 @@ export function EntryForm({
           control={form.control}
           currency={product.currency}
           daysElapsed={daysElapsed}
+          rates={rates}
         />
 
         <ChartsTabs
@@ -236,6 +256,7 @@ export function EntryForm({
           currency={product.currency}
           serverTrend={trendData}
           currentMonthId={month.id}
+          rates={rates}
         />
 
         <div className="flex flex-col gap-8">

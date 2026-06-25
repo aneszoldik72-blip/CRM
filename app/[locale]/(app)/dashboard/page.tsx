@@ -13,6 +13,7 @@ import {
 import {
   aggregateEntries,
   computeMetrics,
+  computeMetricsForEntry,
   computeNetProfitCents,
 } from "@/lib/metrics";
 import { isBaseCurrency, type BaseCurrency } from "@/lib/validators/profile";
@@ -58,38 +59,60 @@ type EntryNumbers = {
   current_stock: number | null;
 };
 
-// Converts every cents-valued field of an entry from `from` → `to`.
-// Counts (leads/orders/delivered) and stock pass through unchanged.
+// Converts every cents-valued field of an entry to the dashboard's base
+// currency. Revenue is converted from sales_currency; all cost fields are
+// converted from costs_currency (those two are per-entry, not per-product).
+// Counts and stock pass through unchanged.
 function convertEntry(
   entry: EntryNumbers,
-  from: string,
+  salesCurrency: string,
+  costsCurrency: string,
   to: string,
   rates: Rates,
 ): EntryNumbers {
-  if (from === to) return entry;
   return {
     ...entry,
-    revenue_cents: convertCents(entry.revenue_cents, from, to, rates),
-    ads_spend_cents: convertCents(entry.ads_spend_cents, from, to, rates),
-    test_spend_cents: convertCents(entry.test_spend_cents, from, to, rates),
-    ad_account_cents: convertCents(entry.ad_account_cents, from, to, rates),
+    revenue_cents: convertCents(
+      entry.revenue_cents,
+      salesCurrency,
+      to,
+      rates,
+    ),
+    ads_spend_cents: convertCents(
+      entry.ads_spend_cents,
+      costsCurrency,
+      to,
+      rates,
+    ),
+    test_spend_cents: convertCents(
+      entry.test_spend_cents,
+      costsCurrency,
+      to,
+      rates,
+    ),
+    ad_account_cents: convertCents(
+      entry.ad_account_cents,
+      costsCurrency,
+      to,
+      rates,
+    ),
     product_cost_cents: convertCents(
       entry.product_cost_cents,
-      from,
+      costsCurrency,
       to,
       rates,
     ),
     service_cost_cents: convertCents(
       entry.service_cost_cents,
-      from,
+      costsCurrency,
       to,
       rates,
     ),
-    bonus_cents: convertCents(entry.bonus_cents, from, to, rates),
+    bonus_cents: convertCents(entry.bonus_cents, costsCurrency, to, rates),
   };
 }
 
-function toTableRow(p: ProductWithMonthSnapshot): TableRow {
+function toTableRow(p: ProductWithMonthSnapshot, rates: Rates): TableRow {
   if (!p.entry) {
     return {
       id: p.id,
@@ -105,28 +128,42 @@ function toTableRow(p: ProductWithMonthSnapshot): TableRow {
       deliveryRate: null,
     };
   }
-  const m = computeMetrics({
-    leads: p.entry.leads,
-    orders: p.entry.orders,
-    delivered: p.entry.delivered,
-    revenue_cents: p.entry.revenue_cents,
-    ads_spend_cents: p.entry.ads_spend_cents,
-    test_spend_cents: p.entry.test_spend_cents,
-    ad_account_cents: p.entry.ad_account_cents,
-    product_cost_cents: p.entry.product_cost_cents,
-    service_cost_cents: p.entry.service_cost_cents,
-    bonus_cents: p.entry.bonus_cents,
-    initial_stock: p.entry.initial_stock,
-    current_stock: p.entry.current_stock,
-    daysElapsed: null,
-  });
+  // Row is displayed in the product's currency. Sales and costs are
+  // converted from their entry-level currencies into the product currency
+  // first so the per-product totals are honest.
+  const m = computeMetricsForEntry(
+    {
+      leads: p.entry.leads,
+      orders: p.entry.orders,
+      delivered: p.entry.delivered,
+      revenue_cents: p.entry.revenue_cents,
+      ads_spend_cents: p.entry.ads_spend_cents,
+      test_spend_cents: p.entry.test_spend_cents,
+      ad_account_cents: p.entry.ad_account_cents,
+      product_cost_cents: p.entry.product_cost_cents,
+      service_cost_cents: p.entry.service_cost_cents,
+      bonus_cents: p.entry.bonus_cents,
+      initial_stock: p.entry.initial_stock,
+      current_stock: p.entry.current_stock,
+      sales_currency: p.entry.sales_currency,
+      costs_currency: p.entry.costs_currency,
+      daysElapsed: null,
+    },
+    { baseCurrency: p.currency, rates },
+  );
+  const revenueInProductCurrency = convertCents(
+    p.entry.revenue_cents,
+    p.entry.sales_currency,
+    p.currency,
+    rates,
+  );
   return {
     id: p.id,
     name: p.name,
     country: p.country,
     currency: p.currency,
     hasEntry: true,
-    revenueCents: p.entry.revenue_cents,
+    revenueCents: revenueInProductCurrency,
     spendCents: m.totalSpend.value ?? 0,
     profitCents: m.netProfit.value ?? 0,
     margin: m.margin.value,
@@ -248,8 +285,10 @@ export default async function DashboardPage({
   const allWithData = snapshot.filter((p) => p.entry);
   const noDataCount = snapshot.filter((p) => !p.entry).length;
 
-  // Convert every product's entry into the base currency BEFORE aggregating
-  // so the totals are honest across currencies.
+  // Convert every product's entry into the dashboard base currency BEFORE
+  // aggregating so the totals are honest across currencies. Each entry now
+  // carries its own sales_currency and costs_currency, which take precedence
+  // over the product's currency for the actual money values.
   const convertedEntries = allWithData.map((p) =>
     convertEntry(
       {
@@ -266,7 +305,8 @@ export default async function DashboardPage({
         initial_stock: p.entry!.initial_stock,
         current_stock: p.entry!.current_stock,
       },
-      p.currency,
+      p.entry!.sales_currency,
+      p.entry!.costs_currency,
       baseCurrency,
       rates,
     ),
@@ -299,7 +339,7 @@ export default async function DashboardPage({
         b.leads + b.orders + b.delivered - (a.leads + a.orders + a.delivered),
     );
 
-  const tableRows: TableRow[] = snapshot.map(toTableRow);
+  const tableRows: TableRow[] = snapshot.map((p) => toTableRow(p, rates));
 
   const totalsRow: TotalsRow = {
     currency: baseCurrency,

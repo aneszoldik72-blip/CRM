@@ -32,6 +32,10 @@ export type EntryStepValue = {
   // optional). Onboarding never asks for stock — we always send null.
   initial_stock: number | null;
   current_stock: number | null;
+  // Onboarding has no per-section currency selector; both default to the
+  // product currency at submit time.
+  sales_currency: string;
+  costs_currency: string;
 };
 
 export type StepFirstEntryProps = {

@@ -82,17 +82,26 @@ function oneYearAhead(yyyymm: string): string {
   return cursor;
 }
 
-// Convert every cents-valued field of the entry from `from` → `to`.
+// Convert every cents-valued field of the entry to `to`. Revenue is
+// converted from the entry's sales_currency; all cost fields are converted
+// from costs_currency.
 function convertEntry<E extends Record<string, number>>(
   entry: E,
-  from: string,
+  salesCurrency: string,
+  costsCurrency: string,
   to: string,
   rates: Rates,
 ): E {
-  if (from === to) return entry;
   const out: Record<string, number> = { ...entry };
+  if (typeof out.revenue_cents === "number") {
+    out.revenue_cents = convertCents(
+      out.revenue_cents,
+      salesCurrency,
+      to,
+      rates,
+    );
+  }
   for (const key of [
-    "revenue_cents",
     "ads_spend_cents",
     "test_spend_cents",
     "ad_account_cents",
@@ -101,7 +110,7 @@ function convertEntry<E extends Record<string, number>>(
     "bonus_cents",
   ]) {
     if (typeof out[key] === "number") {
-      out[key] = convertCents(out[key]!, from, to, rates);
+      out[key] = convertCents(out[key]!, costsCurrency, to, rates);
     }
   }
   return out as E;
@@ -180,7 +189,8 @@ export async function GET(request: NextRequest) {
         service_cost_cents: entry.service_cost_cents,
         bonus_cents: entry.bonus_cents,
       },
-      product.currency,
+      entry.sales_currency,
+      entry.costs_currency,
       baseCurrency,
       rates,
     );

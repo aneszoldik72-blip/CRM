@@ -274,6 +274,8 @@
     "added": "Month added"
   },
   "entries": {
+    "salesCurrency": "Sales currency",
+    "costsCurrency": "Costs currency",
     "save": {
       "dirty": "Unsaved changes…",
       "saving": "Saving…",

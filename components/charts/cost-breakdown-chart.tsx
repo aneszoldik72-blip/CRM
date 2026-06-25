@@ -6,6 +6,7 @@ import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { useWatch, type Control } from "react-hook-form";
 
 import { bcp47, type AppLocale } from "@/i18n/routing";
+import { convertCents, type Rates } from "@/lib/currency";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import type { EntryValues } from "@/lib/validators/entry";
 
@@ -35,9 +36,11 @@ type TooltipProps = {
 export default function CostBreakdownChart({
   control,
   currency,
+  rates,
 }: {
   control: Control<EntryValues>;
   currency: string;
+  rates: Rates;
 }) {
   const t = useTranslations("charts.costs");
   const tCommon = useTranslations("common");
@@ -48,6 +51,8 @@ export default function CostBreakdownChart({
 
   const slices: Slice[] = useMemo(() => {
     const delivered = values.delivered ?? 0;
+    const costsCurrency =
+      (values.costs_currency as string | undefined) ?? currency;
     // product_cost_cents and service_cost_cents are per-unit and must be
     // scaled by delivered to represent their true contribution to spend.
     const perUnitKeys: ReadonlySet<keyof EntryValues> = new Set([
@@ -56,7 +61,10 @@ export default function CostBreakdownChart({
     ]);
     return CATEGORIES.map((c) => {
       const raw = (values[c.key] as number | null) ?? 0;
-      const cents = perUnitKeys.has(c.key) ? raw * delivered : raw;
+      const scaled = perUnitKeys.has(c.key) ? raw * delivered : raw;
+      // All slices are denominated in costs_currency; convert to base so the
+      // pie reflects each category's true contribution in product currency.
+      const cents = convertCents(scaled, costsCurrency, currency, rates);
       return {
         key: c.key,
         name: t(c.labelKey),
@@ -64,7 +72,7 @@ export default function CostBreakdownChart({
         color: c.color,
       };
     });
-  }, [values, t]);
+  }, [values, t, currency, rates]);
 
   const total = slices.reduce((sum, s) => sum + s.cents, 0);
 

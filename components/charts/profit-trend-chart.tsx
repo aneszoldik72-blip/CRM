@@ -15,8 +15,9 @@ import {
 import { useWatch, type Control } from "react-hook-form";
 
 import { bcp47, type AppLocale } from "@/i18n/routing";
+import type { Rates } from "@/lib/currency";
 import { formatCurrency, formatCurrencyShort } from "@/lib/format";
-import { computeNetProfitCents } from "@/lib/metrics";
+import { computeNetProfitCentsForEntry } from "@/lib/metrics";
 import type { EntryValues } from "@/lib/validators/entry";
 
 export type TrendPoint = {
@@ -47,11 +48,13 @@ export default function ProfitTrendChart({
   currency,
   serverTrend,
   currentMonthId,
+  rates,
 }: {
   control: Control<EntryValues>;
   currency: string;
   serverTrend: TrendPoint[];
   currentMonthId: string;
+  rates: Rates;
 }) {
   const t = useTranslations("charts.trend");
   const tCommon = useTranslations("common");
@@ -59,16 +62,21 @@ export default function ProfitTrendChart({
   const bcp = bcp47(locale);
 
   const values = useWatch({ control }) as EntryValues;
-  const liveCurrentProfit = computeNetProfitCents({
-    delivered: values.delivered ?? 0,
-    revenue_cents: values.revenue_cents ?? 0,
-    ads_spend_cents: values.ads_spend_cents ?? 0,
-    test_spend_cents: values.test_spend_cents ?? 0,
-    ad_account_cents: values.ad_account_cents ?? 0,
-    product_cost_cents: values.product_cost_cents ?? 0,
-    service_cost_cents: values.service_cost_cents ?? 0,
-    bonus_cents: values.bonus_cents ?? 0,
-  });
+  const liveCurrentProfit = computeNetProfitCentsForEntry(
+    {
+      delivered: values.delivered ?? 0,
+      revenue_cents: values.revenue_cents ?? 0,
+      ads_spend_cents: values.ads_spend_cents ?? 0,
+      test_spend_cents: values.test_spend_cents ?? 0,
+      ad_account_cents: values.ad_account_cents ?? 0,
+      product_cost_cents: values.product_cost_cents ?? 0,
+      service_cost_cents: values.service_cost_cents ?? 0,
+      bonus_cents: values.bonus_cents ?? 0,
+      sales_currency: values.sales_currency ?? currency,
+      costs_currency: values.costs_currency ?? currency,
+    },
+    { baseCurrency: currency, rates },
+  );
 
   const data = useMemo(() => {
     return serverTrend.map((d, i) => {

@@ -8,6 +8,7 @@ import type { Control } from "react-hook-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChartSkeleton } from "@/components/charts/chart-skeleton";
 import type { TrendPoint } from "@/components/charts/profit-trend-chart";
+import type { Rates } from "@/lib/currency";
 import type { EntryValues } from "@/lib/validators/entry";
 
 const FunnelChart = dynamic(
@@ -41,11 +42,13 @@ export function ChartsTabs({
   currency,
   serverTrend,
   currentMonthId,
+  rates,
 }: {
   control: Control<EntryValues>;
   currency: string;
   serverTrend: TrendPoint[];
   currentMonthId: string;
+  rates: Rates;
 }) {
   const t = useTranslations("charts");
   const [active, setActive] = useState<TabKey>("funnel");
@@ -86,7 +89,11 @@ export function ChartsTabs({
 
         <TabsContent value="costs" className="pt-3">
           {activated.has("costs") ? (
-            <CostBreakdownChart control={control} currency={currency} />
+            <CostBreakdownChart
+              control={control}
+              currency={currency}
+              rates={rates}
+            />
           ) : (
             <ChartSkeleton variant="donut" />
           )}
@@ -99,6 +106,7 @@ export function ChartsTabs({
               currency={currency}
               serverTrend={serverTrend}
               currentMonthId={currentMonthId}
+              rates={rates}
             />
           ) : (
             <ChartSkeleton variant="trend" />

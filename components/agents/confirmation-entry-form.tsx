@@ -66,13 +66,9 @@ export type ConfirmationEntryFormProps = {
   minDate: string;
   /** Inclusive upper bound — the selected month's last day. */
   maxDate: string;
-  /** Sum of `called` across the month for days OTHER than initialDate. The
-   * form adds today's in-form value on top to get the live month total. */
-  monthOtherDaysCalled: number;
-  /** Same as monthOtherDaysCalled, but for `confirmed`. */
-  monthOtherDaysConfirmed: number;
-  /** Product entry's monthly leads. `null` when no entry exists for this
-   * month yet → warning is suppressed. */
+  /** Product entry's monthly leads. `null`/`0` when no entry exists for this
+   * month yet → warning is suppressed. Compared against today's agent calls
+   * only (not a cumulative monthly total). */
   productLeads: number | null;
   /** Product entry's monthly orders (labelled "Confirmed" in the UI). */
   productConfirmed: number | null;
@@ -85,8 +81,6 @@ export function ConfirmationEntryForm({
   initialConfirmations,
   minDate,
   maxDate,
-  monthOtherDaysCalled,
-  monthOtherDaysConfirmed,
   productLeads,
   productConfirmed,
 }: ConfirmationEntryFormProps) {
@@ -136,15 +130,18 @@ export function ConfirmationEntryForm({
   );
   const teamRate = confirmationRate(teamTotals);
 
-  // Live whole-month totals: server-provided sum across other days, plus
-  // the current in-form values for the open day. Recomputes on every
-  // keystroke so the warning tracks the user's edits.
-  const monthCalled = monthOtherDaysCalled + teamTotals.called;
-  const monthConfirmed = monthOtherDaysConfirmed + teamTotals.confirmed;
+  // Compare today's agent totals (already in `teamTotals` since the form
+  // edits one day at a time) against the product's monthly baseline.
+  // Suppress when the baseline is null or zero — that means "not entered
+  // yet" and shouldn't trigger an alert.
+  const todayCalled = teamTotals.called;
+  const todayConfirmed = teamTotals.confirmed;
   const callsExceedLeads =
-    productLeads !== null && monthCalled > productLeads;
+    !!productLeads && productLeads > 0 && todayCalled > productLeads;
   const confirmedExceedConfirmed =
-    productConfirmed !== null && monthConfirmed > productConfirmed;
+    !!productConfirmed &&
+    productConfirmed > 0 &&
+    todayConfirmed > productConfirmed;
 
   const performSave = useCallback(
     async (agentId: string) => {
@@ -413,7 +410,7 @@ export function ConfirmationEntryForm({
           {callsExceedLeads && (
             <p>
               {tWarning("callsExceedLeads", {
-                total: formatNumber(monthCalled, bcp),
+                total: formatNumber(todayCalled, bcp),
                 leads: formatNumber(productLeads!, bcp),
               })}
             </p>
@@ -421,7 +418,7 @@ export function ConfirmationEntryForm({
           {confirmedExceedConfirmed && (
             <p>
               {tWarning("confirmedExceedConfirmed", {
-                total: formatNumber(monthConfirmed, bcp),
+                total: formatNumber(todayConfirmed, bcp),
                 confirmed: formatNumber(productConfirmed!, bcp),
               })}
             </p>

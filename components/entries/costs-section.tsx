@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 
 import {
   FormControl,
@@ -14,6 +14,7 @@ import { CurrencyInput } from "@/components/inputs/currency-input";
 import type { EntryValues } from "@/lib/validators/entry";
 
 import type { SectionProps } from "./sales-section";
+import { SectionCurrencySelector } from "./section-currency-selector";
 
 const FIELDS = [
   { name: "ads_spend_cents", labelKey: "ads" },
@@ -24,11 +25,22 @@ const FIELDS = [
 
 export function CostsSection({ currency, onFieldChange }: SectionProps) {
   const t = useTranslations("entries.costs");
+  const tCurrency = useTranslations("entries");
   const form = useFormContext<EntryValues>();
+  const costsCurrency =
+    (useWatch({ control: form.control, name: "costs_currency" }) as
+      | string
+      | undefined) ?? currency;
 
   return (
     <section className="grid gap-4">
       <h2 className="text-base font-semibold tracking-tight">{t("title")}</h2>
+
+      <SectionCurrencySelector
+        field="costs_currency"
+        label={tCurrency("costsCurrency")}
+        onFieldChange={onFieldChange}
+      />
 
       {FIELDS.map((f) => (
         <FormField
@@ -38,7 +50,7 @@ export function CostsSection({ currency, onFieldChange }: SectionProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                {t(f.labelKey)} ({currency})
+                {t(f.labelKey)} ({costsCurrency})
               </FormLabel>
               <FormControl>
                 <CurrencyInput
@@ -47,7 +59,7 @@ export function CostsSection({ currency, onFieldChange }: SectionProps) {
                     field.onChange(c);
                     onFieldChange(f.name, c);
                   }}
-                  currency={currency}
+                  currency={costsCurrency}
                   enterKeyHint="next"
                 />
               </FormControl>

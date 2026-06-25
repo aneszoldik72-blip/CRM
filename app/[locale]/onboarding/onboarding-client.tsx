@@ -50,6 +50,9 @@ const EMPTY_ENTRY: EntryStepValue = {
   // Required by entrySchema (nullable but the key has to exist).
   initial_stock: null,
   current_stock: null,
+  // Placeholders — overwritten with product.currency on final submit.
+  sales_currency: "USD",
+  costs_currency: "USD",
 };
 
 // Persist mid-flow progress so a refresh resumes where the user was. We
@@ -188,7 +191,13 @@ export function OnboardingClient({
       const res = await completeOnboardingAction({
         profile,
         product,
-        entry,
+        // Onboarding has no per-section currency selector; both sales and
+        // costs default to the product currency the user picked.
+        entry: {
+          ...entry,
+          sales_currency: product.currency,
+          costs_currency: product.currency,
+        },
       });
       if (res.ok) {
         clearPersisted();
